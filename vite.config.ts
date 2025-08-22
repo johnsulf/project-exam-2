@@ -4,6 +4,7 @@ import path from "path";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
+  base: "/project-exam-2/",
   plugins: [react(), tailwindcss() as PluginOption],
   resolve: {
     alias: {
