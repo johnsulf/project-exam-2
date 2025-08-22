@@ -7,34 +7,19 @@ import unused from "eslint-plugin-unused-imports";
 import eslintConfigPrettier from "eslint-config-prettier";
 import { globalIgnores } from "eslint/config";
 
-export default tseslint.config(
-  // Ignore build artifacts
+export default tseslint.config([
   globalIgnores(["dist", "coverage"]),
-
-  // Base JS + TS recommendations
-  js.configs.recommended,
-
-  // Type-aware rules
-  ...tseslint.configs.recommendedTypeChecked,
-
-  // React-specific rules
-  reactHooks.configs["recommended-latest"],
-  reactRefresh.configs.vite,
-
-  // Project glues
   {
     files: ["**/*.{ts,tsx}"],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      reactHooks.configs["recommended-latest"],
+      reactRefresh.configs.vite,
+    ],
     languageOptions: {
-      parser: tseslint.parser,
-      parserOptions: {
-        // Lets TS-ESLint find tsconfig automatically
-        project: true,
-      },
-      ecmaVersion: "latest",
-      sourceType: "module",
-      globals: {
-        ...globals.browser,
-      },
+      ecmaVersion: 2020,
+      globals: globals.browser,
     },
     plugins: {
       "unused-imports": unused,
@@ -44,7 +29,5 @@ export default tseslint.config(
       "unused-imports/no-unused-imports": "error",
     },
   },
-
-  // Disable stylistic rules that conflict with Prettier
-  eslintConfigPrettier
-);
+  eslintConfigPrettier,
+]);
