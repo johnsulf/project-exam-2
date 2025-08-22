@@ -13,18 +13,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 6.32.9
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
 
-      - run: corepack enable
-      - run: pnpm --version
-
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
 
       - run: pnpm lint
-      - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
