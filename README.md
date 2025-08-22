@@ -1,69 +1,185 @@
-# React + TypeScript + Vite
+## Project Exam 2
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![CI](https://github.com/johnsulf/project-exam-2/actions/workflows/ci.yml/badge.svg)](https://github.com/johnsulf/project-exam-2/actions/workflows/ci.yml)
+[![Pages Deploy](https://github.com/johnsulf/project-exam-2/actions/workflows/pages.yml/badge.svg)](https://github.com/johnsulf/project-exam-2/actions/workflows/pages.yml)
 
-Currently, two official plugins are available:
+Modern front‑end application scaffold using:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React (with TypeScript)
+- Vite (fast dev + build)
+- Tailwind CSS v4 (utility-first styling)
+- shadcn/ui (accessible component primitives on top of Tailwind)
 
-## Expanding the ESLint configuration
+The goal: a production‑ready, strongly typed, testable app with minimal startup friction. A newcomer should be able to clone, install, and run locally in under 5 minutes.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+## Quick Start
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+Prerequisites:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+- Node 20+ (LTS recommended)
+- pnpm (install globally: `npm i -g pnpm` if needed)
+
+Clone & run:
+
+```bash
+git clone <repo-url>
+cd project-exam-2
+pnpm install
+pnpm dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Then open the printed local URL (usually http://localhost:5173).
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+If Tailwind or shadcn/ui not yet initialized, follow the notes below.
 
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+---
+
+## Scripts
+
+| Script           | Purpose                                     |
+| ---------------- | ------------------------------------------- |
+| `pnpm dev`       | Start Vite dev server with HMR              |
+| `pnpm build`     | Type check then build production bundle     |
+| `pnpm test`      | Run Vitest test suite (CI friendly)         |
+| `pnpm test:ui`   | Interactive test watcher/UI (if configured) |
+| `pnpm lint`      | Run ESLint over source                      |
+| `pnpm typecheck` | Run TypeScript without emitting             |
+
+Optional additions you can add later: `pnpm format` (Prettier), `pnpm preview` (serve built assets).
+
+---
+
+## Stack Details
+
+### React + TypeScript
+
+Strong typing, hooks, and modern JSX runtime.
+
+### Vite
+
+Ultra fast dev server, optimized production build, first‑class TS + JSX support.
+
+### Tailwind CSS v4
+
+Utility classes for rapid UI building. v4 introduces simplified config & layering.
+
+Initialization (if not already done):
+
+```bash
+pnpm dlx tailwindcss init -p
 ```
+
+Add Tailwind directives in your global stylesheet and ensure the `content` array includes `src/**/*.{ts,tsx,html}`.
+
+### shadcn/ui
+
+Composable, accessible components (Radix + Tailwind). Initialize:
+
+```bash
+pnpm dlx shadcn-ui@latest init
+```
+
+Add components as needed:
+
+```bash
+pnpm dlx shadcn-ui@latest add button card dialog
+```
+
+---
+
+## Testing
+
+Vitest + @testing-library/react + jsdom for DOM-centric unit tests.
+Example smoke test lives in `src/` (expand with component tests + hooks tests).
+
+Run tests:
+
+```bash
+pnpm test
+```
+
+---
+
+## Deployment
+
+Target: GitHub Pages.
+
+Placeholder live URL (update after first deploy):
+`https://<username>.github.io/project-exam-2/`
+
+Basic steps (once build + gh-pages workflow configured):
+
+1. Set `base` in `vite.config.ts` to `/project-exam-2/`.
+2. Build: `pnpm build`.
+3. Publish `dist/` (via GH Action or `gh-pages` branch strategy).
+
+---
+
+## Required Project Links (Placeholders)
+
+- Figma: <ADD FIGMA LINK>
+- Style Guide: <ADD STYLE GUIDE LINK>
+- Gantt Chart: <ADD GANTT LINK>
+- Kanban Board: <ADD KANBAN (e.g. GitHub Projects / Trello) LINK>
+- Repository: <ADD REPO URL>
+- Live Demo: <ADD DEPLOYED APP URL>
+
+Keep these updated for examiner & collaborators.
+
+---
+
+## Project Structure (Evolving)
+
+```
+src/
+  components/        # Reusable UI pieces (may include shadcn/ui wrappers)
+  modules/           # Feature / domain modules
+  hooks/             # Shared React hooks
+  lib/               # Utilities, API clients, config
+  styles/            # Global & design tokens
+  tests/ (optional)  # Additional test organization
+```
+
+---
+
+## Verification Checklist (New Contributor <5 min)
+
+- [ ] Cloned repository
+- [ ] Ran `pnpm install` without errors
+- [ ] `pnpm dev` starts server & homepage renders
+- [ ] Tailwind classes apply (inspect element to confirm) _(if initialized)_
+- [ ] `pnpm test` passes
+- [ ] `pnpm build` produces a `dist/` folder
+
+If any box fails, open an issue titled "Onboarding friction: <short description>".
+
+---
+
+## Roadmap (Initial)
+
+- [ ] Configure Tailwind v4 + base design tokens
+- [ ] Add shadcn/ui foundational components
+- [ ] Set up API layer (fetch wrapper + error handling)
+- [ ] Implement routing (if multi-page / dashboard required)
+- [ ] Accessibility & keyboard navigation audit
+- [ ] GitHub Pages deploy workflow (CI)
+
+---
+
+## Conventions
+
+- Commits: `feat:`, `fix:`, `chore:`, `refactor:`, `test:`, `docs:`
+- Branches: `feature/<name>`, `fix/<issue-id>`, `chore/<task>`
+- PRs: concise description + screenshots (UI) + test notes
+
+---
+
+## License
+
+Add license info here if required by assignment guidelines.
+
+---
+
+Update this README continuously as architecture & scope evolve.
