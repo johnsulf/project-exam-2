@@ -1,6 +1,6 @@
 export const routes = {
   home: "/",
   venues: "/venues",
-  venue: (id = ":id") => `/venue/${id}`,
+  venue: (id = ":id") => `/venues/${id}`,
   profile: "/profile",
 };
