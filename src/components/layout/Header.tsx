@@ -11,7 +11,7 @@ import { User } from "lucide-react";
 export function Header() {
   return (
     <header className="w-full bg-sky-50">
-      <div className="p-12 flex justify-between items-center">
+      <div className="p-4 flex justify-between items-center max-w-[1280px] mx-auto">
         <section className="flex gap-4">
           {/* Logo */}
           <NavLink to="/" className="flex items-center gap-2">
