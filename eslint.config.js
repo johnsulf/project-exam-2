@@ -27,6 +27,10 @@ export default tseslint.config([
     rules: {
       "no-console": ["warn", { allow: ["warn", "error"] }],
       "unused-imports/no-unused-imports": "error",
+      "react-refresh/only-export-components": [
+        "warn",
+        { allowConstantExport: true },
+      ],
     },
   },
   eslintConfigPrettier,
