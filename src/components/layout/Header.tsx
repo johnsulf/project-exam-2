@@ -10,7 +10,7 @@ import { User } from "lucide-react";
 
 export function Header() {
   return (
-    <header className="w-full bg-sky-50">
+    <header className="w-full border-b border-b-neutral-200 bg-white ">
       <div className="p-4 flex justify-between items-center max-w-[1280px] mx-auto">
         <section className="flex gap-4">
           {/* Logo */}

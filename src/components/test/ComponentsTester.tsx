@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/sheet";
 import { useState } from "react";
 
-export default function Tester() {
+export default function ComponentsTester() {
   const [openDialog, setOpenDialog] = useState(false);
   const [openSheet, setOpenSheet] = useState(false);
 
