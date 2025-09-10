@@ -80,7 +80,7 @@ function normalizeApiError(err: unknown): ApiError {
   return new ApiError("Unknown error");
 }
 
-// ---- Thin helpers ----
+// ---- Helpers ----
 export async function getJson<T>(
   url: string,
   params?: unknown,
