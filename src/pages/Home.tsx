@@ -1,11 +1,11 @@
 import ApiSmokeTest from "@/components/test/ApiSmokeTest";
-import Tester from "@/components/test/Tester";
+import ComponentsTester from "@/components/test/ComponentsTester";
 
 export default function Home() {
   return (
     <>
       <h1>Home</h1>
-      <Tester />
+      <ComponentsTester />
       <ApiSmokeTest />
     </>
   );
