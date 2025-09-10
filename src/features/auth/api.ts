@@ -29,3 +29,13 @@ export async function updateProfile(
 ) {
   return postJson<Profile, typeof partial>(`/profiles/${name}`, partial);
 }
+
+// Create API key
+export async function createApiKey(token: string, name = "Holidaze Web") {
+  const res = await authApi.post(
+    "/auth/create-api-key",
+    { name },
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  return res.data as { data: { key: string } };
+}

@@ -1,11 +1,21 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Profile } from "./types";
-import { configureAuthTokenGetter, setUnauthorizedHandler } from "@/lib/api";
-import { fetchProfile, loginRequest, registerRequest } from "./api";
+import {
+  configureApiKeyGetter,
+  configureAuthTokenGetter,
+  setUnauthorizedHandler,
+} from "@/lib/api";
+import {
+  createApiKey,
+  fetchProfile,
+  loginRequest,
+  registerRequest,
+} from "./api";
 
 type AuthState = {
   token: string | null;
+  apiKey: string | null;
   profile: Profile | null;
   loading: boolean;
   error?: string;
@@ -26,6 +36,7 @@ export const useAuth = create<AuthState>()(
   persist(
     (set, get) => ({
       token: null,
+      apiKey: null,
       profile: null,
       loading: false,
 
@@ -37,6 +48,14 @@ export const useAuth = create<AuthState>()(
           set({ token });
 
           configureAuthTokenGetter(() => get().token);
+
+          let key = get().apiKey;
+          if (!key) {
+            const created = await createApiKey(token, "Holidaze Web");
+            key = created.data.key;
+            set({ apiKey: key });
+          }
+          configureApiKeyGetter(() => get().apiKey);
 
           const name = data.name ?? email.split("@")[0];
           try {
@@ -83,15 +102,20 @@ export const useAuth = create<AuthState>()(
       },
 
       signOut() {
-        set({ token: null, profile: null });
+        set({ token: null, profile: null, apiKey: null });
       },
     }),
     {
       name: "holidaze_auth_v1",
-      partialize: (s) => ({ token: s.token, profile: s.profile }),
+      partialize: (s) => ({
+        token: s.token,
+        apiKey: s.apiKey,
+        profile: s.profile,
+      }),
     },
   ),
 );
 
 configureAuthTokenGetter(() => useAuth.getState().token);
+configureApiKeyGetter(() => useAuth.getState().apiKey);
 setUnauthorizedHandler(() => useAuth.getState().signOut());

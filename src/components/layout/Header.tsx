@@ -1,16 +1,24 @@
 import { NavLink } from "react-router-dom";
-import Logo from "../../assets/Logo.svg";
+import Logo from "@/assets/Logo.svg";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from "../ui/navigation-menu";
+} from "@/components/ui/navigation-menu";
 import { User } from "lucide-react";
+import { useState } from "react";
+import { useAuth } from "@/features/auth/store";
+import { AuthDialog } from "@/features/auth/AuthDialog";
+import { ProfileMenu } from "@/features/auth/ProfileMenu";
+import { Button } from "@/components/ui/button";
 
 export function Header() {
+  const { token } = useAuth();
+  const [openAuth, setOpenAuth] = useState(false);
+
   return (
-    <header className="w-full border-b border-b-neutral-200 bg-white ">
+    <header className="w-full border-b border-b-neutral-200 bg-white">
       <div className="p-4 flex justify-between items-center max-w-[1280px] mx-auto">
         <section className="flex gap-4">
           {/* Logo */}
@@ -41,14 +49,24 @@ export function Header() {
           </nav>
         </section>
 
-        {/* Profile icon */}
-        <a
-          href="/profile"
-          aria-label="Go to profile"
-          className="bg-neutral-200 p-2 rounded-xl"
-        >
-          <User />
-        </a>
+        {/* Right side */}
+        <section>
+          {token ? (
+            <ProfileMenu />
+          ) : (
+            <>
+              <Button
+                variant="secondary"
+                className="rounded-xl"
+                onClick={() => setOpenAuth(true)}
+                aria-label="Sign in or register"
+              >
+                <User className="mr-2 h-4 w-4" /> Sign in
+              </Button>
+              <AuthDialog open={openAuth} onOpenChange={setOpenAuth} />
+            </>
+          )}
+        </section>
       </div>
     </header>
   );
