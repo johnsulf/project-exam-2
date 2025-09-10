@@ -17,6 +17,13 @@ export function configureAuthTokenGetter(fn: TokenGetter) {
   getToken = fn;
 }
 
+type ApiKeyGetter = () => string | null;
+let getApiKey: ApiKeyGetter = () => null;
+
+export function configureApiKeyGetter(fn: ApiKeyGetter) {
+  getApiKey = fn;
+}
+
 type UnauthorizedHandler = () => void;
 let on401: UnauthorizedHandler | null = null;
 export function setUnauthorizedHandler(fn: UnauthorizedHandler) {
@@ -30,6 +37,11 @@ api.interceptors.request.use((config) => {
     config.headers = config.headers ?? {};
     (config.headers as Record<string, string>).Authorization =
       `Bearer ${token}`;
+  }
+  const apiKey = getApiKey?.();
+  if (apiKey) {
+    config.headers = config.headers ?? {};
+    (config.headers as Record<string, string>)["X-Noroff-API-Key"] = apiKey;
   }
   return config;
 });

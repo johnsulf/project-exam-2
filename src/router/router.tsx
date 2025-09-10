@@ -5,22 +5,27 @@ import Venues from "@/pages/Venues";
 import VenueDetail from "@/pages/VenueDetail";
 import Profile from "@/pages/Profile";
 import NotFound from "@/pages/NotFound";
-import { routes } from "./routes";
+import { RequireAuth } from "@/features/auth/RequireAuth";
 
 export const router = createBrowserRouter(
   [
     {
-      path: routes.home,
+      path: "/",
       element: <RootLayout />,
       errorElement: <NotFound />,
       children: [
         { index: true, element: <Home /> },
-        { path: routes.venues, element: <Venues /> },
-        { path: routes.venue(), element: <VenueDetail /> },
-        { path: routes.profile, element: <Profile /> },
+        { path: "venues", element: <Venues /> },
+        { path: "venues/:id", element: <VenueDetail /> },
+
+        {
+          element: <RequireAuth />,
+          children: [{ path: "profile", element: <Profile /> }],
+        },
+
         { path: "*", element: <NotFound /> },
       ],
     },
   ],
-  // TODO: set basename for GH Pages
+  { basename: import.meta.env.BASE_URL },
 );
