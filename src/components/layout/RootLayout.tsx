@@ -3,7 +3,8 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { SkipLink } from "./SkipLink";
 import { AppCrashBoundary } from "@/components/errors/AppCrashBoundary";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, Suspense } from "react";
+import { PageSkeleton } from "../skeletons/PageSkeleton";
 
 export default function RootLayout() {
   const mainRef = useRef<HTMLElement>(null);
