@@ -24,9 +24,11 @@ export default function RootLayout() {
         className="flex-1 focus:outline-none"
       >
         <div className="mx-auto max-w-[1280px] px-5 py-6">
-          <AppCrashBoundary>
-            <Outlet />
-          </AppCrashBoundary>
+          <Suspense fallback={<PageSkeleton />}>
+            <AppCrashBoundary>
+              <Outlet />
+            </AppCrashBoundary>
+          </Suspense>
         </div>
       </main>
       <Footer />
