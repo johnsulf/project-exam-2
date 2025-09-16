@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { formatMoney } from "@/lib/money";
+import { VenueListSkeleton } from "@/components/skeletons/VenueListSkeleton";
 
 export default function Venues() {
   const { data, isLoading, isError, refetch, isFetching } = useVenues({
