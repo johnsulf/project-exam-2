@@ -44,6 +44,11 @@ export function Header() {
                     <NavLink to="/venues">Venues</NavLink>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <NavLink to="/_kitchen">Kitchen Sink</NavLink>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
           </nav>
