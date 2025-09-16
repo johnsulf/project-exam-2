@@ -1,12 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "@/components/layout/RootLayout";
-import Home from "@/pages/Home";
-import Venues from "@/pages/Venues";
-import VenueDetail from "@/pages/VenueDetail";
-import Profile from "@/pages/Profile";
-import NotFound from "@/pages/NotFound";
-import { RequireAuth } from "@/features/auth/RequireAuth";
 import RouteError from "@/components/errors/RouteError";
+import { lazy } from "react";
+import { RequireAuth } from "@/features/auth/RequireAuth";
+
+const Home = lazy(() => import("@/pages/Home"));
+const Venues = lazy(() => import("@/pages/Venues"));
+const VenueDetail = lazy(() => import("@/pages/VenueDetail"));
+const Profile = lazy(() => import("@/pages/Profile"));
+const NotFound = lazy(() => import("@/pages/NotFound"));
 
 export const router = createBrowserRouter(
   [
