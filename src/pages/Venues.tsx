@@ -2,6 +2,7 @@ import { useVenues } from "@/features/venues/hooks";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { formatMoney } from "@/lib/money";
 
 export default function Venues() {
   const { data, isLoading, isError, refetch, isFetching } = useVenues({
@@ -75,7 +76,9 @@ export default function Venues() {
             </div>
 
             <div className="flex justify-between items-center mb-2">
-              <p className="font-semibold">${v.price}</p>
+              <p className="font-semibold">
+                {formatMoney(v.price, { currency: "USD" })} / night
+              </p>
               <Button variant="default">
                 View Details
                 <ArrowRight size={16} />
