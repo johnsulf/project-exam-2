@@ -57,26 +57,26 @@ export default function VenueDetail() {
         )}
         {/* Owner */}
         {venue.owner?.name && (
-          <div className="rounded-xl border p-4">
-            <div className="flex items-center gap-3">
-              {venue.owner.avatar?.url ? (
-                <img
-                  src={venue.owner.avatar.url}
-                  alt={venue.owner.avatar.alt || venue.owner.name}
-                  className="h-8 w-8 rounded-full object-cover"
-                />
-              ) : (
-                <div className="h-8 w-8 rounded-full bg-muted" />
-              )}
-              <div className="text-sm">
-                <span className="font-medium">{venue.owner.name}</span>{" "}
-                <span className="text-muted-foreground">is the owner</span>
-              </div>
+          <div className="flex items-center gap-3">
+            {venue.owner.avatar?.url ? (
+              <img
+                src={venue.owner.avatar.url}
+                alt={venue.owner.avatar.alt || venue.owner.name}
+                className="h-12 w-12 rounded-full bg-neutral-100 p-2 object-cover"
+              />
+            ) : (
+              <div className="h-12 w-12 rounded-full bg-muted" />
+            )}
+            <div className="text-sm">
+              <span className="font-medium text-sky-800">
+                {venue.owner.name}
+              </span>{" "}
+              <span className="font-semibold">is the owner</span>
             </div>
           </div>
         )}
         <article className="prose max-w-none">
-          <p>{venue.description}</p>
+          <p className="font-light">{venue.description}</p>
         </article>
         <div className="sticky top-20">
           <BookingWidget
