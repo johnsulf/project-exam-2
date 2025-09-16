@@ -1,4 +1,5 @@
-import { getEnvelope, getJson } from "@/lib/api";
+import { getEnvelope, getJson, postJson } from "@/lib/api";
+import type { Booking } from "@/types/api";
 import { Envelope, PageMeta, Venue } from "@/types/schemas";
 import z from "zod";
 
@@ -21,4 +22,14 @@ export async function getVenueById(
 ) {
   const raw = await getJson<unknown>(`/venues/${id}`, opts, signal);
   return Venue.parse(raw);
+}
+
+// Create a booking
+export async function createBooking(body: {
+  dateFrom: string; // "YYYY-MM-DD"
+  dateTo: string; // "YYYY-MM-DD" (checkout, exclusive)
+  guests: number;
+  venueId: string;
+}) {
+  return postJson<Booking, typeof body>("/bookings", body);
 }
