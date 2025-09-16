@@ -18,6 +18,18 @@ export interface VenueLocation {
   lng?: number;
 }
 
+export interface Profile {
+  name: string;
+  email: string;
+  bio?: string | null;
+  banner?: Media;
+  avatar?: Media;
+  venueManager?: boolean;
+  _count?: { venues?: number; bookings?: number };
+  bookings?: Booking[];
+  venues?: Venue[];
+}
+
 export interface Venue {
   id: string;
   name: string;
@@ -30,6 +42,8 @@ export interface Venue {
   updated?: string;
   meta?: VenueMeta;
   location?: VenueLocation;
+  owner?: Profile;
+  bookings?: Booking[];
 }
 
 export interface Booking {
