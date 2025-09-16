@@ -4,6 +4,7 @@ import { VenueGallery } from "@/features/venues/VenueGallery";
 import { BookingWidget } from "@/features/bookings/BookingWidget";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Star } from "lucide-react";
 
 export default function VenueDetail() {
   const { id } = useParams<{ id: string }>();
@@ -26,13 +27,13 @@ export default function VenueDetail() {
           venueName={venue.name}
           className=""
         />
+      </section>
 
-        <header className="space-y-1">
-          <h1 className="text-3xl font-semibold">{venue.name}</h1>
-          {locLine && <p className="text-muted-foreground">{locLine}</p>}
-        </header>
-
-        <div className="flex flex-wrap gap-2">
+      {/* Right column */}
+      <aside className="md:pl-2">
+        <h1 className="text-3xl font-semibold">{venue.name}</h1>
+        <h2 className="text-2xl font-medium">{locLine}</h2>
+        <div className="flex flex-wrap gap-2 my-2">
           <Badge variant="secondary">Guests {venue.maxGuests}</Badge>
           {venue.meta?.parking && <Badge variant="secondary">Parking</Badge>}
           {venue.meta?.wifi && <Badge variant="secondary">WiFi</Badge>}
@@ -41,41 +42,48 @@ export default function VenueDetail() {
             <Badge variant="secondary">Breakfast</Badge>
           )}
         </div>
-
+        {/* Rating */}
+        {venue.rating !== undefined && (
+          <div className="flex gap-1 items-center font-semibold my-2 ml-auto">
+            <p>
+              {venue.rating == 0 ? "No ratings" : venue.rating!.toPrecision(2)}
+            </p>
+            <Star
+              className={
+                venue.rating! >= 1 ? "text-yellow-500" : "text-muted-foreground"
+              }
+            />
+          </div>
+        )}
         {/* Owner */}
-        {venue._owner?.name && (
+        {venue.owner?.name && (
           <div className="rounded-xl border p-4">
             <div className="flex items-center gap-3">
-              {venue._owner.avatar?.url ? (
+              {venue.owner.avatar?.url ? (
                 <img
-                  src={venue._owner.avatar.url}
-                  alt={venue._owner.avatar.alt || venue._owner.name}
+                  src={venue.owner.avatar.url}
+                  alt={venue.owner.avatar.alt || venue.owner.name}
                   className="h-8 w-8 rounded-full object-cover"
                 />
               ) : (
                 <div className="h-8 w-8 rounded-full bg-muted" />
               )}
               <div className="text-sm">
-                <span className="font-medium">{venue._owner.name}</span>{" "}
+                <span className="font-medium">{venue.owner.name}</span>{" "}
                 <span className="text-muted-foreground">is the owner</span>
               </div>
             </div>
           </div>
         )}
-
         <article className="prose max-w-none">
           <p>{venue.description}</p>
         </article>
-      </section>
-
-      {/* Right column */}
-      <aside className="md:pl-2">
         <div className="sticky top-20">
           <BookingWidget
             venueId={venue.id}
             price={venue.price}
             maxGuests={venue.maxGuests}
-            bookings={(venue._bookings ?? []).map((b) => ({
+            bookings={(venue.bookings ?? []).map((b) => ({
               dateFrom: b.dateFrom,
               dateTo: b.dateTo,
             }))}
