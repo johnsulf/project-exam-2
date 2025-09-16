@@ -4,6 +4,7 @@ import { ArrowRight, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { formatMoney } from "@/lib/money";
 import { VenueListSkeleton } from "@/components/skeletons/VenueListSkeleton";
+import { Link } from "react-router-dom";
 
 export default function Venues() {
   const { data, isLoading, isError, refetch, isFetching } = useVenues({
@@ -74,10 +75,12 @@ export default function Venues() {
               <p className="font-semibold">
                 {formatMoney(v.price, { currency: "USD" })} / night
               </p>
-              <Button variant="default">
-                View Details
-                <ArrowRight size={16} />
-              </Button>
+              <Link to={`/venues/${v.id}`}>
+                <Button variant="default">
+                  View Details
+                  <ArrowRight size={16} />
+                </Button>
+              </Link>
             </div>
           </div>
         ))}

@@ -1,15 +1,17 @@
 import { z } from "zod";
 
 export const Media = z.object({
-  url: z.string().url(),
+  url: z.url(),
   alt: z.string().optional(),
 });
+
 export const VenueMeta = z.object({
   wifi: z.boolean().optional(),
   parking: z.boolean().optional(),
   breakfast: z.boolean().optional(),
   pets: z.boolean().optional(),
 });
+
 export const VenueLocation = z.object({
   address: z.string().nullable().optional(),
   city: z.string().nullable().optional(),
@@ -18,6 +20,15 @@ export const VenueLocation = z.object({
   continent: z.string().nullable().optional(),
   lat: z.number().nullable().optional(),
   lng: z.number().nullable().optional(),
+});
+
+export const Booking = z.object({
+  id: z.string(),
+  dateFrom: z.string(),
+  dateTo: z.string(),
+  guests: z.number(),
+  created: z.string().optional(),
+  updated: z.string().optional(),
 });
 
 export const Venue = z.object({
@@ -32,20 +43,25 @@ export const Venue = z.object({
   updated: z.string().optional(),
   meta: VenueMeta.optional(),
   location: VenueLocation.optional(),
+  _owner: z.lazy(() => Profile).optional(),
+  _bookings: z.array(Booking).optional(),
 });
 
-export const Booking = z.object({
-  id: z.string(),
-  dateFrom: z.string(),
-  dateTo: z.string(),
-  guests: z.number(),
-  created: z.string().optional(),
-  updated: z.string().optional(),
-});
+type TProfileCount = { venues?: number; bookings?: number };
 
-export const Profile = z.object({
+export const Profile: z.ZodType<{
+  name: string;
+  email: string;
+  bio?: string;
+  avatar?: z.infer<typeof Media>;
+  banner?: z.infer<typeof Media>;
+  venueManager: boolean;
+  _count?: TProfileCount;
+  _bookings?: z.infer<typeof Booking>[];
+  _venues?: z.infer<typeof Venue>[];
+}> = z.object({
   name: z.string(),
-  email: z.string().email(),
+  email: z.email(),
   bio: z.string().optional(),
   avatar: Media.optional(),
   banner: Media.optional(),
@@ -53,6 +69,8 @@ export const Profile = z.object({
   _count: z
     .object({ venues: z.number().optional(), bookings: z.number().optional() })
     .optional(),
+  _bookings: z.array(Booking).optional(),
+  _venues: z.array(Venue).optional(),
 });
 
 export const PageMeta = z.object({

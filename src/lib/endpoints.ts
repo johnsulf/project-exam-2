@@ -3,9 +3,18 @@ import type { Booking } from "@/types/api";
 import { Envelope, PageMeta, Venue } from "@/types/schemas";
 import z from "zod";
 
+export interface VenueQueryParams {
+  page?: number;
+  limit?: number;
+  sort?: string;
+  _owner?: boolean;
+  _bookings?: boolean;
+  [key: string]: unknown;
+}
+
 // List venues
 export async function listVenues(
-  params?: Record<string, unknown>,
+  params?: VenueQueryParams,
   signal?: AbortSignal,
 ) {
   const env = await getEnvelope<unknown>("/venues", params, signal);
@@ -26,8 +35,8 @@ export async function getVenueById(
 
 // Create a booking
 export async function createBooking(body: {
-  dateFrom: string; // "YYYY-MM-DD"
-  dateTo: string; // "YYYY-MM-DD" (checkout, exclusive)
+  dateFrom: string;
+  dateTo: string;
   guests: number;
   venueId: string;
 }) {
