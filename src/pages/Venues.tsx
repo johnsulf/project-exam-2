@@ -2,6 +2,7 @@ import { useVenues } from "@/features/venues/hooks";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { VenueListSkeleton } from "@/components/skeletons/VenueListSkeleton";
 
 export default function Venues() {
   const { data, isLoading, isError, refetch, isFetching } = useVenues({
@@ -10,13 +11,7 @@ export default function Venues() {
   });
 
   if (isLoading) {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <div key={i} className="h-64 rounded-md bg-muted animate-pulse" />
-        ))}
-      </div>
-    );
+    return <VenueListSkeleton count={20} />;
   }
 
   if (isError) {
