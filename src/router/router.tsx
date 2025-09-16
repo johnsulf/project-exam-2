@@ -6,13 +6,14 @@ import VenueDetail from "@/pages/VenueDetail";
 import Profile from "@/pages/Profile";
 import NotFound from "@/pages/NotFound";
 import { RequireAuth } from "@/features/auth/RequireAuth";
+import RouteError from "@/components/errors/RouteError";
 
 export const router = createBrowserRouter(
   [
     {
       path: "/",
       element: <RootLayout />,
-      errorElement: <NotFound />,
+      errorElement: <RouteError />,
       children: [
         { index: true, element: <Home /> },
         { path: "venues", element: <Venues /> },
