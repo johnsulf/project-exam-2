@@ -1,5 +1,5 @@
 import { getEnvelope, getJson, postJson } from "@/lib/api";
-import type { Booking } from "@/types/api";
+import type { Booking, Profile } from "@/types/api";
 import { Envelope, PageMeta, Venue } from "@/types/schemas";
 import z from "zod";
 
@@ -41,4 +41,18 @@ export async function createBooking(body: {
   venueId: string;
 }) {
   return postJson<Booking, typeof body>("/bookings", body);
+}
+
+// Get profile by name
+export async function getProfile(
+  name: string,
+  opts?: { _bookings?: boolean; _venues?: boolean },
+  signal?: AbortSignal,
+) {
+  // /holidaze/profiles/<name>?_bookings=true&_venues=true
+  return getJson<Profile>(
+    `/profiles/${encodeURIComponent(name)}`,
+    opts,
+    signal,
+  );
 }
