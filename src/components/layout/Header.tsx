@@ -10,6 +10,7 @@ import { User } from "lucide-react";
 import { useAuth } from "@/features/auth/store";
 import { ProfileMenu } from "@/features/auth/ProfileMenu";
 import { Button } from "@/components/ui/button";
+import { resolveDestination } from "@/features/auth/returnTo";
 
 export function Header() {
   const { token } = useAuth();
@@ -66,7 +67,7 @@ export function Header() {
               aria-label="Sign in or register"
               asChild
             >
-              <Link to="/login" state={{ from: fromState }}>
+              <Link to="/login" state={{ from: resolveDestination(fromState) }}>
                 <User className="mr-2 h-4 w-4" /> Sign in
               </Link>
             </Button>
