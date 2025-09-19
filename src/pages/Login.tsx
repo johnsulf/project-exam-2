@@ -1,12 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  useLocation,
-  useNavigate,
-  type Location,
-  type To,
-} from "react-router-dom";
+import { useLocation, useNavigate, type Location } from "react-router-dom";
 import { AuthDialog } from "@/features/auth/AuthDialog";
 import { useAuth } from "@/features/auth/store";
+import { resolveDestination } from "@/features/auth/returnTo";
 
 type LocationState = {
   from?:
@@ -14,30 +10,6 @@ type LocationState = {
     | { pathname?: string; search?: string; hash?: string }
     | string;
 };
-
-type PathLike =
-  | Location
-  | { pathname?: string; search?: string; hash?: string }
-  | string
-  | undefined;
-
-function resolveDestination(from: PathLike): To | undefined {
-  if (!from) return undefined;
-  if (typeof from === "string") return from;
-  if (typeof from === "object" && "pathname" in from) {
-    const { pathname, search, hash } = from as {
-      pathname?: string;
-      search?: string;
-      hash?: string;
-    };
-    return {
-      pathname: pathname ?? "/",
-      search,
-      hash,
-    };
-  }
-  return undefined;
-}
 
 export default function Login() {
   const [open, setOpen] = useState(true);
