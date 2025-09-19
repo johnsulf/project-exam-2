@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation, type Location } from "react-router-dom";
 import Logo from "@/assets/Logo.svg";
 import {
   NavigationMenu,
@@ -7,15 +7,16 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { User } from "lucide-react";
-import { useState } from "react";
 import { useAuth } from "@/features/auth/store";
-import { AuthDialog } from "@/features/auth/AuthDialog";
 import { ProfileMenu } from "@/features/auth/ProfileMenu";
 import { Button } from "@/components/ui/button";
 
 export function Header() {
   const { token } = useAuth();
-  const [openAuth, setOpenAuth] = useState(false);
+  const location = useLocation();
+  const fromState =
+    (location.state as { from?: Location | string } | null | undefined)?.from ??
+    location;
 
   return (
     <header className="w-full border-b border-b-neutral-200 bg-white">
@@ -59,17 +60,16 @@ export function Header() {
           {token ? (
             <ProfileMenu />
           ) : (
-            <>
-              <Button
-                variant="secondary"
-                className="rounded-xl"
-                onClick={() => setOpenAuth(true)}
-                aria-label="Sign in or register"
-              >
+            <Button
+              variant="secondary"
+              className="rounded-xl"
+              aria-label="Sign in or register"
+              asChild
+            >
+              <Link to="/login" state={{ from: fromState }}>
                 <User className="mr-2 h-4 w-4" /> Sign in
-              </Button>
-              <AuthDialog open={openAuth} onOpenChange={setOpenAuth} />
-            </>
+              </Link>
+            </Button>
           )}
         </section>
       </div>
