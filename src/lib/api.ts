@@ -120,3 +120,12 @@ export async function postJson<T, B = unknown>(
   const b = res.data;
   return (b && b.data !== undefined ? b.data : b) as T;
 }
+
+export async function putJson<T, B = unknown>(
+  url: string,
+  body?: B,
+): Promise<T> {
+  const res = await api.put(url, body);
+  const b = res.data;
+  return (b && b.data !== undefined ? b.data : b) as T;
+}

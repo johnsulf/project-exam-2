@@ -1,4 +1,4 @@
-import { getEnvelope, getJson, postJson } from "@/lib/api";
+import { getEnvelope, getJson, postJson, putJson } from "@/lib/api";
 import type { Booking, Profile } from "@/types/api";
 import { Envelope, PageMeta, Venue } from "@/types/schemas";
 import z from "zod";
@@ -11,6 +11,13 @@ export interface VenueQueryParams {
   _bookings?: boolean;
   [key: string]: unknown;
 }
+
+type ProfilePatch = {
+  bio?: string | null;
+  avatar?: { url: string; alt?: string | null };
+  banner?: { url: string; alt?: string | null };
+  venueManager?: boolean;
+};
 
 // List venues
 export async function listVenues(
@@ -54,5 +61,14 @@ export async function getProfile(
     `/profiles/${encodeURIComponent(name)}`,
     opts,
     signal,
+  );
+}
+
+// Update profile by name
+export async function updateProfile(name: string, patch: ProfilePatch) {
+  // PUT /holidaze/profiles/<name>
+  return putJson<Profile, ProfilePatch>(
+    `/profiles/${encodeURIComponent(name)}`,
+    patch,
   );
 }

@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Profile } from "./types";
 import {
   configureApiKeyGetter,
   configureAuthTokenGetter,
@@ -12,6 +11,7 @@ import {
   loginRequest,
   registerRequest,
 } from "./api";
+import type { Profile } from "@/types/api";
 
 type AuthState = {
   token: string | null;
@@ -30,6 +30,9 @@ type AuthState = {
   }) => Promise<void>;
   refreshProfile: () => Promise<void>;
   signOut: () => void;
+  setProfile: (
+    next: Profile | ((prev: Profile | null) => Profile | null),
+  ) => void;
 };
 
 export const useAuth = create<AuthState>()(
@@ -39,6 +42,16 @@ export const useAuth = create<AuthState>()(
       apiKey: null,
       profile: null,
       loading: false,
+
+      setProfile(next) {
+        if (typeof next === "function") {
+          set((s) => ({
+            profile: (next as (p: Profile | null) => Profile | null)(s.profile),
+          }));
+        } else {
+          set({ profile: next });
+        }
+      },
 
       async signIn(email, password) {
         set({ loading: true, error: undefined });

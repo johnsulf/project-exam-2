@@ -5,13 +5,16 @@ import { AvatarBlock } from "@/features/profile/AvatarBlock";
 import { StatChip } from "@/features/profile/StatChip";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import { useState } from "react";
+import { AvatarDialog } from "@/features/profile/AvatarDialog";
 
 export default function Profile() {
   const { profile: authProfile } = useAuth();
   const name = authProfile?.name;
 
   const { data: p, isLoading, isError, refetch, isFetching } = useProfile(name);
+
+  const [openAvatar, setOpenAvatar] = useState(false);
 
   if (isLoading) return <ProfileHeaderSkeleton />;
   if (isError || !p) {
@@ -51,13 +54,18 @@ export default function Profile() {
           </div>
         </div>
         <div className="ml-auto flex gap-2">
-          <Button
-            variant="outline"
-            onClick={() => toast.info("Avatar editor coming....")}
-          >
+          <Button variant="outline" onClick={() => setOpenAvatar(true)}>
             Edit avatar
           </Button>
         </div>
+
+        <AvatarDialog
+          open={openAvatar}
+          onOpenChange={setOpenAvatar}
+          name={p.name}
+          currentUrl={p.avatar?.url}
+          currentAlt={p.avatar?.alt}
+        />
       </section>
 
       <section className="flex gap-2">
