@@ -8,6 +8,7 @@ import Kitchen from "@/pages/Kitchen";
 const Home = lazy(() => import("@/pages/Home"));
 const Venues = lazy(() => import("@/pages/Venues"));
 const VenueDetail = lazy(() => import("@/pages/VenueDetail"));
+const Login = lazy(() => import("@/pages/Login"));
 const Profile = lazy(() => import("@/pages/Profile"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
@@ -22,6 +23,7 @@ export const router = createBrowserRouter(
         { path: "venues", element: <Venues /> },
         { path: "venues/:id", element: <VenueDetail /> },
         { path: "_kitchen", element: <Kitchen /> },
+        { path: "login", element: <Login /> },
 
         {
           element: <RequireAuth />,
