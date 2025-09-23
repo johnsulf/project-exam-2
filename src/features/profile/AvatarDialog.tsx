@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useUpdateProfile } from "./hooks";
+import { getErrorMessage } from "@/lib/errors";
 
 const schema = z.object({
   url: z.string().url("Enter a valid image URL (https://...)"),
@@ -48,14 +49,13 @@ export function AvatarDialog({
   });
 
   async function onSubmit(values: FormValues) {
-    try {
-      await mutateAsync({ avatar: { url: values.url, alt: values.alt } });
-      toast.success("Avatar updated");
-      onOpenChange(false);
-    } catch (e: unknown) {
-      const message = e instanceof Error ? e.message : "Update failed";
-      toast.error(message);
-    }
+    const p = mutateAsync({ avatar: { url: values.url, alt: values.alt } });
+    toast.promise(p, {
+      loading: "Updating avatar…",
+      success: "Avatar updated",
+      error: (e) => getErrorMessage(e),
+    });
+    onOpenChange(false);
   }
 
   const watchUrl = f.watch("url");
