@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,7 +12,12 @@ import { Separator } from "@/components/ui/separator";
 import { Calendar as CalendarIcon, Filter, Search, Users } from "lucide-react";
 import type { DateRange } from "react-day-picker";
 
-export function VenuesSearchBar() {
+type Props = {
+  redirectTo?: string;
+};
+
+export function VenuesSearchBar({ redirectTo }: Props) {
+  const navigate = useNavigate();
   const [urlParams, setUrlParams] = useSearchParams();
   const [datesOpen, setDatesOpen] = React.useState(false);
   const [filtersOpen, setFiltersOpen] = React.useState(false);
@@ -98,7 +103,12 @@ export function VenuesSearchBar() {
     setOrDelete("breakfast", breakfast ? "1" : null);
 
     p.set("page", "1");
-    setUrlParams(p, { replace: true });
+
+    if (redirectTo) {
+      navigate({ pathname: redirectTo, search: `?${p.toString()}` });
+    } else {
+      setUrlParams(p, { replace: true });
+    }
   }
 
   function onSubmit(e: React.FormEvent) {
