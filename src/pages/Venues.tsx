@@ -1,8 +1,5 @@
-import { Link, useSearchParams } from "react-router-dom";
-import { ArrowRight, Star } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { formatMoney } from "@/lib/money";
 import { VenueListSkeleton } from "@/components/skeletons/VenueListSkeleton";
 import { useVenues } from "@/features/venues/hooks";
 import { VenuesSearchBar } from "@/features/venues/components/VenuesSearchBar";
@@ -10,6 +7,7 @@ import { PaginationBar } from "@/features/venues/components/PaginationBar";
 import type { TPageMeta } from "@/types/schemas";
 import { isVenueAvailable } from "@/features/venues/utils/availability";
 import { ActiveFilters } from "@/features/venues/components/ActiveFilters";
+import { VenueCard } from "@/features/venues/components/VenueCard";
 
 function bool(v: string | null) {
   return v === "1" || v?.toLowerCase() === "true";
@@ -23,6 +21,7 @@ export default function Venues() {
   const page = Math.max(1, Number(params.get("page") ?? 1));
 
   const q = params.get("q")?.trim() || "";
+  const city = (params.get("city") ?? "").toLowerCase();
   const guests = Number(params.get("guests") ?? 0);
   const from = params.get("from") ? new Date(params.get("from")!) : undefined;
   const to = params.get("to") ? new Date(params.get("to")!) : undefined;
@@ -45,6 +44,7 @@ export default function Venues() {
   );
 
   const hasClientFilters =
+    !!city ||
     guests > 0 ||
     wantWifi ||
     wantParking ||
@@ -80,6 +80,10 @@ export default function Venues() {
 
   if (hasClientFilters) {
     filtered = fetched.filter((v) => {
+      if (city) {
+        const c = (v.location?.city ?? "").toLowerCase();
+        if (c !== city) return false;
+      }
       if (guests && v.maxGuests < guests) return false;
       if (wantWifi && !v.meta?.wifi) return false;
       if (wantParking && !v.meta?.parking) return false;
@@ -150,84 +154,9 @@ export default function Venues() {
       {pageItems.length === 0 ? (
         <p className="mt-4">No venues match your search.</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
           {pageItems.map((v) => {
-            const firstMedia = v.media?.[0];
-            const imageUrl = firstMedia?.url;
-            const imageAlt = firstMedia?.alt ?? `Image of ${v.name}`;
-            const numericRating =
-              typeof v.rating === "number" && !Number.isNaN(v.rating)
-                ? v.rating
-                : null;
-            const hasRating = numericRating !== null && numericRating > 0;
-            const highlightStar = numericRating !== null && numericRating >= 1;
-            return (
-              <div
-                key={v.id}
-                className="rounded-md shadow border p-2 grid gap-2"
-              >
-                {imageUrl ? (
-                  <img
-                    src={imageUrl}
-                    alt={imageAlt}
-                    className="w-full h-48 object-cover rounded-md"
-                  />
-                ) : (
-                  <div
-                    role="img"
-                    aria-label={`No image available for ${v.name}`}
-                    className="w-full h-48 flex items-center justify-center rounded-md bg-muted text-muted-foreground"
-                  >
-                    <span>No image available</span>
-                  </div>
-                )}
-                <div className="flex justify-between items-center">
-                  {v.location?.city && v.location?.country && (
-                    <div className="text-sm font-semibold">
-                      {v.location.city}, {v.location.country}
-                    </div>
-                  )}
-                  <div className="flex gap-1 items-center text-sm font-semibold ml-auto">
-                    <Star
-                      className={
-                        highlightStar
-                          ? "text-yellow-500"
-                          : "text-muted-foreground"
-                      }
-                    />
-                    <p>
-                      {hasRating ? numericRating!.toPrecision(2) : "No ratings"}
-                    </p>
-                  </div>
-                </div>
-
-                <h3>{v.name}</h3>
-
-                <div className="flex gap-1 flex-wrap">
-                  <Badge variant="secondary">Guests: {v.maxGuests}</Badge>
-                  {v.meta?.parking && (
-                    <Badge variant="secondary">Parking</Badge>
-                  )}
-                  {v.meta?.wifi && <Badge variant="secondary">WiFi</Badge>}
-                  {v.meta?.pets && <Badge variant="secondary">Pets</Badge>}
-                  {v.meta?.breakfast && (
-                    <Badge variant="secondary">Breakfast</Badge>
-                  )}
-                </div>
-
-                <div className="flex justify-between items-center mb-2">
-                  <p className="font-semibold">
-                    {formatMoney(v.price, { currency: "USD" })} / night
-                  </p>
-                  <Link to={`/venues/${v.id}`}>
-                    <Button>
-                      View Details
-                      <ArrowRight size={16} />
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            );
+            return <VenueCard key={v.id} v={v} />;
           })}
         </div>
       )}
