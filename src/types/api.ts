@@ -55,6 +55,10 @@ export interface Booking {
   updated?: string;
 }
 
+export interface BookingWithVenue extends Booking {
+  venue?: Venue;
+}
+
 export interface PageMeta {
   isFirstPage: boolean;
   isLastPage: boolean;

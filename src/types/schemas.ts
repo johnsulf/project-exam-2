@@ -74,6 +74,11 @@ export const Venue = z.object({
   bookings: z.array(Booking).optional(),
 });
 
+/* --- Bookings --- */
+export const BookingWithVenue = Booking.extend({
+  venue: Venue.optional(),
+});
+
 /* --- Meta / Envelope --- */
 export const PageMeta = z.object({
   isFirstPage: z.boolean(),
@@ -92,4 +97,5 @@ export type TVenue = z.infer<typeof Venue>;
 export type TBooking = z.infer<typeof Booking>;
 export type TProfile = z.infer<typeof Profile>;
 export type TOwnerProfile = z.infer<typeof OwnerProfile>;
+export type TBookingWithVenue = z.infer<typeof BookingWithVenue>;
 export type TPageMeta = z.infer<typeof PageMeta>;

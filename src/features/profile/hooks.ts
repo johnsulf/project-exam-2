@@ -1,6 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { qk } from "@/lib/queryKeys";
-import { getProfile, updateProfile } from "@/lib/endpoints";
+import {
+  getBookingsByProfile,
+  getProfile,
+  updateProfile,
+} from "@/lib/endpoints";
 import { useAuth } from "../auth/store";
 
 export function useProfile(name?: string) {
@@ -25,5 +29,27 @@ export function useUpdateProfile(name: string) {
       qc.invalidateQueries({ queryKey: qk.profile(name) });
       setProfile(next); // instantly update header/Profile UI
     },
+  });
+}
+
+export function useUpcomingBookings(name?: string) {
+  return useQuery({
+    enabled: !!name,
+    queryKey: name ? qk.bookingsByProfile(name) : ["bookings", "profile"],
+    queryFn: ({ signal }) =>
+      getBookingsByProfile(name!, { _venue: true }, signal),
+    select: (env) => {
+      const now = Date.now();
+      const upcoming = (env.data ?? []).filter(
+        (b) => new Date(b.dateTo).getTime() >= now,
+      );
+      upcoming.sort(
+        (a, b) =>
+          new Date(a.dateFrom).getTime() - new Date(b.dateFrom).getTime(),
+      );
+      return { data: upcoming, meta: env.meta };
+    },
+    staleTime: 60_000,
+    refetchOnWindowFocus: false,
   });
 }

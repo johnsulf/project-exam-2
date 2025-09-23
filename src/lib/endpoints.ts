@@ -1,5 +1,5 @@
 import { getEnvelope, getJson, postJson, putJson } from "@/lib/api";
-import type { Booking, Profile } from "@/types/api";
+import type { Booking, BookingWithVenue, Profile } from "@/types/api";
 import { Envelope, PageMeta, Venue } from "@/types/schemas";
 import z from "zod";
 
@@ -70,5 +70,18 @@ export async function updateProfile(name: string, patch: ProfilePatch) {
   return putJson<Profile, ProfilePatch>(
     `/profiles/${encodeURIComponent(name)}`,
     patch,
+  );
+}
+
+// Get bookings by profile
+export async function getBookingsByProfile(
+  name: string,
+  opts?: { _venue?: boolean; page?: number; limit?: number },
+  signal?: AbortSignal,
+) {
+  return getEnvelope<BookingWithVenue[]>(
+    `/profiles/${encodeURIComponent(name)}/bookings`,
+    { _venue: true, ...(opts ?? {}) },
+    signal,
   );
 }

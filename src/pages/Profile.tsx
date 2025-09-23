@@ -1,5 +1,5 @@
 import { useAuth } from "@/features/auth/store";
-import { useProfile } from "@/features/profile/hooks";
+import { useProfile, useUpcomingBookings } from "@/features/profile/hooks";
 import { ProfileHeaderSkeleton } from "@/features/profile/ProfileHeaderSkeleton";
 import { AvatarBlock } from "@/features/profile/AvatarBlock";
 import { StatChip } from "@/features/profile/StatChip";
@@ -7,12 +7,24 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { AvatarDialog } from "@/features/profile/AvatarDialog";
+import { BookingCard } from "@/features/profile/BookingCard";
+import { EmptyBookings } from "@/features/profile/EmptyBookings";
+import { BookingListSkeleton } from "@/features/profile/BookingListSkeleton";
 
 export default function Profile() {
   const { profile: authProfile } = useAuth();
   const name = authProfile?.name;
 
   const { data: p, isLoading, isError, refetch, isFetching } = useProfile(name);
+
+  const {
+    data: bookingsEnv,
+    isLoading: bLoading,
+    isError: bError,
+    refetch: refetchBookings,
+  } = useUpcomingBookings(name);
+
+  const bookings = bookingsEnv?.data ?? [];
 
   const [openAvatar, setOpenAvatar] = useState(false);
 
@@ -73,12 +85,35 @@ export default function Profile() {
         <StatChip label="Bookings" value={countBookings} />
       </section>
 
-      {/* Future sections (TODO) */}
-      <section className="space-y-2">
-        <h2 className="text-xl font-semibold">Upcoming bookings</h2>
-        <p className="text-muted-foreground text-sm">
-          We’ll list them here in the next task.
-        </p>
+      {/* Upcoming bookings */}
+      <section className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold">Upcoming bookings</h2>
+        </div>
+
+        {bLoading ? (
+          <BookingListSkeleton count={3} />
+        ) : bError ? (
+          <div className="space-y-2">
+            <p className="text-destructive">Couldn’t load bookings.</p>
+            <Button onClick={() => refetchBookings()}>Retry</Button>
+          </div>
+        ) : bookings.length === 0 ? (
+          <EmptyBookings />
+        ) : (
+          <div className="grid gap-3">
+            {bookings.map((b) => (
+              <BookingCard
+                key={b.id}
+                id={b.id}
+                dateFrom={b.dateFrom}
+                dateTo={b.dateTo}
+                guests={b.guests}
+                venue={b.venue}
+              />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
