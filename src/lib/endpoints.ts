@@ -1,7 +1,11 @@
 import { getEnvelope, getJson, postJson, putJson } from "@/lib/api";
-import type { Booking, BookingWithVenue, Profile } from "@/types/api";
-import { Envelope, PageMeta, Venue } from "@/types/schemas";
-import z from "zod";
+import type {
+  Booking,
+  BookingWithVenue,
+  Profile,
+  Venue as ApiVenue,
+} from "@/types/api";
+import { Venue as VenueSchema } from "@/types/schemas";
 
 export interface VenueQueryParams {
   page?: number;
@@ -19,15 +23,29 @@ type ProfilePatch = {
   venueManager?: boolean;
 };
 
+type VenueParams = {
+  page?: number;
+  limit?: number;
+  q?: string;
+  _owner?: boolean;
+  _bookings?: boolean;
+};
+
 // List venues
 export async function listVenues(
-  params?: VenueQueryParams,
+  params: VenueParams = {},
   signal?: AbortSignal,
 ) {
-  const env = await getEnvelope<unknown>("/venues", params, signal);
-  const parsed = Envelope(z.array(Venue)).parse(env);
-  const meta = PageMeta.parse(env.meta);
-  return { ...parsed, meta };
+  const { q, ...rest } = params;
+
+  const query: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(rest)) {
+    if (v !== undefined && v !== null) query[k] = v;
+  }
+  if (q && q.trim()) query.q = q.trim();
+
+  const path = q && q.trim() ? "/venues/search" : "/venues";
+  return getEnvelope<ApiVenue[]>(path, query, signal);
 }
 
 // Single venue by id
@@ -37,7 +55,7 @@ export async function getVenueById(
   signal?: AbortSignal,
 ) {
   const raw = await getJson<unknown>(`/venues/${id}`, opts, signal);
-  return Venue.parse(raw);
+  return VenueSchema.parse(raw);
 }
 
 // Create a booking
