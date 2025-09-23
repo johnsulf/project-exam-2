@@ -1,7 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 export function BookingListSkeleton({ count = 3 }: { count?: number }) {
   return (
-    <div className="grid gap-3">
+    <div className="grid gap-3" aria-hidden="true">
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
