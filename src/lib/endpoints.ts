@@ -1,5 +1,5 @@
-import { getEnvelope, getJson, postJson } from "@/lib/api";
-import type { Booking } from "@/types/api";
+import { getEnvelope, getJson, postJson, putJson } from "@/lib/api";
+import type { Booking, BookingWithVenue, Profile } from "@/types/api";
 import { Envelope, PageMeta, Venue } from "@/types/schemas";
 import z from "zod";
 
@@ -11,6 +11,13 @@ export interface VenueQueryParams {
   _bookings?: boolean;
   [key: string]: unknown;
 }
+
+type ProfilePatch = {
+  bio?: string | null;
+  avatar?: { url: string; alt?: string | null };
+  banner?: { url: string; alt?: string | null };
+  venueManager?: boolean;
+};
 
 // List venues
 export async function listVenues(
@@ -41,4 +48,40 @@ export async function createBooking(body: {
   venueId: string;
 }) {
   return postJson<Booking, typeof body>("/bookings", body);
+}
+
+// Get profile by name
+export async function getProfile(
+  name: string,
+  opts?: { _bookings?: boolean; _venues?: boolean },
+  signal?: AbortSignal,
+) {
+  // /holidaze/profiles/<name>?_bookings=true&_venues=true
+  return getJson<Profile>(
+    `/profiles/${encodeURIComponent(name)}`,
+    opts,
+    signal,
+  );
+}
+
+// Update profile by name
+export async function updateProfile(name: string, patch: ProfilePatch) {
+  // PUT /holidaze/profiles/<name>
+  return putJson<Profile, ProfilePatch>(
+    `/profiles/${encodeURIComponent(name)}`,
+    patch,
+  );
+}
+
+// Get bookings by profile
+export async function getBookingsByProfile(
+  name: string,
+  opts?: { _venue?: boolean; page?: number; limit?: number },
+  signal?: AbortSignal,
+) {
+  return getEnvelope<BookingWithVenue[]>(
+    `/profiles/${encodeURIComponent(name)}/bookings`,
+    { _venue: true, ...(opts ?? {}) },
+    signal,
+  );
 }
