@@ -5,7 +5,7 @@ import type {
   Profile,
   Venue as ApiVenue,
 } from "@/types/api";
-import { Venue as VenueSchema } from "@/types/schemas";
+import { Venue as VenueSchema, type TVenue } from "@/types/schemas";
 
 export interface VenueQueryParams {
   page?: number;
@@ -28,6 +28,13 @@ type VenueParams = {
   limit?: number;
   q?: string;
   _owner?: boolean;
+  _bookings?: boolean;
+};
+
+type ProfileVenuesParams = {
+  page?: number;
+  limit?: number;
+  sort?: string;
   _bookings?: boolean;
 };
 
@@ -100,6 +107,20 @@ export async function getBookingsByProfile(
   return getEnvelope<BookingWithVenue[]>(
     `/profiles/${encodeURIComponent(name)}/bookings`,
     { _venue: true, ...(opts ?? {}) },
+    signal,
+  );
+}
+
+// Get venues by profile
+export async function getVenuesByProfile(
+  name: string,
+  params: ProfileVenuesParams = {},
+  signal?: AbortSignal,
+) {
+  // GET /holidaze/profiles/:name/venues
+  return getEnvelope<TVenue[]>(
+    `/profiles/${encodeURIComponent(name)}/venues`,
+    params,
     signal,
   );
 }

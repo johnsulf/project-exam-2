@@ -4,4 +4,6 @@ export const qk = {
   venue: (id: string) => ["venue", id] as const,
   bookingsByProfile: (name: string) => ["bookings", "profile", name] as const,
   profile: (name: string) => ["profile", name] as const,
+  profileVenues: (name: string, params?: Record<string, unknown>) =>
+    ["profileVenues", name, params ?? {}] as const,
 };
