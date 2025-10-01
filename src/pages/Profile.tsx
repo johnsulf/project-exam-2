@@ -11,6 +11,7 @@ import { BookingCard } from "@/features/profile/BookingCard";
 import { EmptyBookings } from "@/features/profile/EmptyBookings";
 import { BookingListSkeleton } from "@/features/profile/BookingListSkeleton";
 import { useRouteHeadingFocus } from "@/components/a11y/useRouteHeadingFocus";
+import { ManagerToggle } from "@/features/profile/ManagerToggle";
 
 export default function Profile() {
   const { profile: authProfile } = useAuth();
@@ -118,6 +119,7 @@ export default function Profile() {
       <section className="flex gap-2" aria-label="Account statistics">
         <StatChip label="Venues" value={countVenues} />
         <StatChip label="Bookings" value={countBookings} />
+        <ManagerToggle name={p.name} venueManager={!!p.venueManager} />
       </section>
 
       {/* Upcoming bookings */}

@@ -3,6 +3,7 @@ import RootLayout from "@/components/layout/RootLayout";
 import RouteError from "@/components/errors/RouteError";
 import { lazy } from "react";
 import { RequireAuth } from "@/features/auth/RequireAuth";
+import { RequireManager } from "@/features/auth/RequireManager";
 import Kitchen from "@/pages/Kitchen";
 
 const Home = lazy(() => import("@/pages/Home"));
@@ -10,6 +11,7 @@ const Venues = lazy(() => import("@/pages/Venues"));
 const VenueDetail = lazy(() => import("@/pages/VenueDetail"));
 const Login = lazy(() => import("@/pages/Login"));
 const Profile = lazy(() => import("@/pages/Profile"));
+const ManageHome = lazy(() => import("@/pages/manage/ManageHome"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
 export const router = createBrowserRouter(
@@ -25,9 +27,18 @@ export const router = createBrowserRouter(
         { path: "_kitchen", element: <Kitchen /> },
         { path: "login", element: <Login /> },
 
+        // Signed-in only
         {
           element: <RequireAuth />,
-          children: [{ path: "profile", element: <Profile /> }],
+          children: [
+            { path: "profile", element: <Profile /> },
+
+            // Manager-only
+            {
+              element: <RequireManager />,
+              children: [{ path: "manage", element: <ManageHome /> }],
+            },
+          ],
         },
 
         { path: "*", element: <NotFound /> },
