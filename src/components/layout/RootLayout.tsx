@@ -5,6 +5,7 @@ import { SkipLink } from "./SkipLink";
 import { AppCrashBoundary } from "@/components/errors/AppCrashBoundary";
 import { useRef, useEffect, Suspense } from "react";
 import { PageSkeleton } from "../skeletons/PageSkeleton";
+import { RouteAnnouncer } from "../a11y/RouteAnnouncer";
 
 export default function RootLayout() {
   const mainRef = useRef<HTMLElement>(null);
@@ -18,6 +19,7 @@ export default function RootLayout() {
     <div className="min-h-dvh flex flex-col bg-background text-foreground">
       <SkipLink />
       <Header />
+      <RouteAnnouncer />
       <main
         id="main"
         ref={mainRef}

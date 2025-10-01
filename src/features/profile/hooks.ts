@@ -6,9 +6,11 @@ import {
   updateProfile,
 } from "@/lib/endpoints";
 import { useAuth } from "../auth/store";
+import { getErrorMessage } from "@/lib/errors";
+import { useQueryErrorToast } from "@/lib/queryToasts";
 
 export function useProfile(name?: string) {
-  return useQuery({
+  const q = useQuery({
     enabled: !!name,
     queryKey: name ? qk.profile(name) : ["profile"],
     queryFn: ({ signal }) =>
@@ -16,6 +18,11 @@ export function useProfile(name?: string) {
     staleTime: 60_000,
     refetchOnWindowFocus: false,
   });
+  useQueryErrorToast(
+    q,
+    (e) => `Couldn't load your profile: ${getErrorMessage(e)}`,
+  );
+  return q;
 }
 
 export function useUpdateProfile(name: string) {
@@ -33,7 +40,7 @@ export function useUpdateProfile(name: string) {
 }
 
 export function useUpcomingBookings(name?: string) {
-  return useQuery({
+  const q = useQuery({
     enabled: !!name,
     queryKey: name ? qk.bookingsByProfile(name) : ["bookings", "profile"],
     queryFn: ({ signal }) =>
@@ -52,4 +59,6 @@ export function useUpcomingBookings(name?: string) {
     staleTime: 60_000,
     refetchOnWindowFocus: false,
   });
+  useQueryErrorToast(q, (e) => `Couldn't load bookings: ${getErrorMessage(e)}`);
+  return q;
 }

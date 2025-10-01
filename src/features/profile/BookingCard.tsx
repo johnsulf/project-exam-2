@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatDateRange, nightsBetween } from "@/lib/date";
 
@@ -18,11 +18,15 @@ export function BookingCard({ id, dateFrom, dateTo, guests, venue }: Props) {
   const from = new Date(dateFrom);
   const to = new Date(dateTo);
   const nights = nightsBetween(from, to);
+  const titleId = `booking-${id}-title`;
 
   return (
-    <Card className="overflow-hidden">
+    <article
+      aria-labelledby={titleId}
+      className="rounded-md border overflow-hidden"
+    >
       <div className="grid grid-cols-[140px_1fr]">
-        <div className="bg-muted h-full">
+        <div className="bg-muted h-full" aria-hidden={!img}>
           {img ? (
             <img
               src={img}
@@ -35,9 +39,13 @@ export function BookingCard({ id, dateFrom, dateTo, guests, venue }: Props) {
             </div>
           )}
         </div>
-        <div>
+        <div className="p-2">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">{vName}</CardTitle>
+            <CardTitle>
+              <h3 id={titleId} className="text-base">
+                {vName}
+              </h3>
+            </CardTitle>
           </CardHeader>
           <CardContent className="pt-0 space-y-2">
             <div className="text-sm text-muted-foreground">
@@ -51,13 +59,13 @@ export function BookingCard({ id, dateFrom, dateTo, guests, venue }: Props) {
             {vId && (
               <div className="pt-1">
                 <Link to={`/venues/${vId}`} className="underline text-sm">
-                  View venue
+                  View venue <span className="sr-only">“{vName}”</span>
                 </Link>
               </div>
             )}
           </CardContent>
         </div>
       </div>
-    </Card>
+    </article>
   );
 }
