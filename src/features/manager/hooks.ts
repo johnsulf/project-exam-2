@@ -1,5 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createVenue, getVenuesByProfile, updateVenue } from "@/lib/endpoints";
+import {
+  createVenue,
+  getVenuesByProfile,
+  updateVenue,
+  deleteVenue,
+} from "@/lib/endpoints";
 import { qk } from "@/lib/queryKeys";
 import { toast } from "sonner";
 import type { TVenueCreate, TVenueUpdate } from "@/types/schemas";
@@ -50,6 +55,24 @@ export function useUpdateVenue(id: string) {
     },
     onError: (e: unknown) => {
       toast.error(e instanceof Error ? e.message : "Update failed");
+    },
+  });
+}
+
+export function useDeleteVenue(id: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => deleteVenue(id),
+    onSuccess: () => {
+      toast.success("Venue deleted");
+      qc.invalidateQueries({ queryKey: qk.venues() });
+      qc.invalidateQueries({
+        predicate: (q) =>
+          Array.isArray(q.queryKey) && q.queryKey[0] === "profileVenues",
+      });
+    },
+    onError: (e: unknown) => {
+      toast.error(e instanceof Error ? e.message : "Delete failed");
     },
   });
 }

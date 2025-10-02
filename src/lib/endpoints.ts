@@ -1,4 +1,4 @@
-import { getEnvelope, getJson, postJson, putJson } from "@/lib/api";
+import { getEnvelope, getJson, postJson, putJson, deleteJson } from "@/lib/api";
 import type {
   Booking,
   BookingWithVenue,
@@ -138,4 +138,9 @@ export async function createVenue(body: TVenueCreate) {
 // Update venue
 export async function updateVenue(id: string, patch: TVenueUpdate) {
   return putJson<ApiVenue, TVenueUpdate>(`/venues/${id}`, patch);
+}
+
+// Delete venue
+export async function deleteVenue(id: string) {
+  return deleteJson<{ data: { id: string } }>(`/venues/${id}`);
 }

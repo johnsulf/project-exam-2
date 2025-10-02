@@ -5,7 +5,7 @@ import { PaginationBar } from "@/features/venues/components/PaginationBar";
 import { useAuth } from "@/features/auth/store";
 import { useMyVenues } from "@/features/manager/hooks";
 import { ManageVenuesSkeleton } from "@/features/manager/ManageVenuesSkeleton";
-import { ArrowRight, Edit, Trash2 } from "lucide-react";
+import { ArrowRight, Edit } from "lucide-react";
 import { formatMoney } from "@/lib/money";
 import type { TPageMeta } from "@/types/schemas";
 
@@ -123,9 +123,7 @@ export default function ManageHome() {
                       className="text-destructive"
                       asChild
                     >
-                      <Link to={`/manage/${v.id}/delete`}>
-                        <Trash2 className="h-4 w-4" />
-                      </Link>
+                      <Link to={`/manage/${v.id}/delete`}>Delete</Link>
                     </Button>
                   </div>
                 </li>

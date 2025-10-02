@@ -7,6 +7,7 @@ import { RequireManager } from "@/features/auth/RequireManager";
 import Kitchen from "@/pages/Kitchen";
 import ManageNewVenue from "@/pages/manage/ManageNewVenue";
 import ManageEditVenue from "@/pages/manage/ManageEditVenue";
+import ManageDeleteVenue from "@/pages/manage/ManageDeleteVenue";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Venues = lazy(() => import("@/pages/Venues"));
@@ -42,6 +43,7 @@ export const router = createBrowserRouter(
                 { path: "manage", element: <ManageHome /> },
                 { path: "manage/new", element: <ManageNewVenue /> },
                 { path: "manage/:id/edit", element: <ManageEditVenue /> },
+                { path: "manage/:id/delete", element: <ManageDeleteVenue /> },
               ],
             },
           ],
