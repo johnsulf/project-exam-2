@@ -5,7 +5,11 @@ import type {
   Profile,
   Venue as ApiVenue,
 } from "@/types/api";
-import { Venue as VenueSchema, type TVenue } from "@/types/schemas";
+import {
+  Venue as VenueSchema,
+  type TVenue,
+  type TVenueCreate,
+} from "@/types/schemas";
 
 export interface VenueQueryParams {
   page?: number;
@@ -123,4 +127,10 @@ export async function getVenuesByProfile(
     params,
     signal,
   );
+}
+
+// Create venue
+export async function createVenue(body: TVenueCreate) {
+  // API returns { data, meta }
+  return postJson<ApiVenue, TVenueCreate>("/venues", body);
 }

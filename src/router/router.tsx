@@ -5,6 +5,7 @@ import { lazy } from "react";
 import { RequireAuth } from "@/features/auth/RequireAuth";
 import { RequireManager } from "@/features/auth/RequireManager";
 import Kitchen from "@/pages/Kitchen";
+import ManageNewVenue from "@/pages/manage/ManageNewVenue";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Venues = lazy(() => import("@/pages/Venues"));
@@ -36,7 +37,10 @@ export const router = createBrowserRouter(
             // Manager-only
             {
               element: <RequireManager />,
-              children: [{ path: "manage", element: <ManageHome /> }],
+              children: [
+                { path: "manage", element: <ManageHome /> },
+                { path: "manage/new", element: <ManageNewVenue /> },
+              ],
             },
           ],
         },

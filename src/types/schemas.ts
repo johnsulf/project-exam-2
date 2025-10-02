@@ -79,6 +79,18 @@ export const BookingWithVenue = Booking.extend({
   venue: Venue.optional(),
 });
 
+/* --- Forms / Requests --- */
+export const VenueCreate = z.object({
+  name: z.string().min(2, "Please enter a name"),
+  description: z.string().min(10, "Please add a longer description"),
+  media: z.array(Media).default([]),
+  price: z.number().min(0, "Price must be ≥ 0"),
+  maxGuests: z.number().int().min(1).max(100),
+  rating: z.number().int().min(0).max(5).optional().default(0),
+  meta: VenueMeta.optional(),
+  location: VenueLocation.optional(),
+});
+
 /* --- Meta / Envelope --- */
 export const PageMeta = z.object({
   isFirstPage: z.boolean(),
@@ -98,4 +110,5 @@ export type TBooking = z.infer<typeof Booking>;
 export type TProfile = z.infer<typeof Profile>;
 export type TOwnerProfile = z.infer<typeof OwnerProfile>;
 export type TBookingWithVenue = z.infer<typeof BookingWithVenue>;
+export type TVenueCreate = z.infer<typeof VenueCreate>;
 export type TPageMeta = z.infer<typeof PageMeta>;
