@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { qk } from "@/lib/queryKeys";
 import { getVenueById, listVenues, createBooking } from "@/lib/endpoints";
+import type { TBookingWithCustomer } from "@/types/schemas";
 
 export function useVenues(params: Record<string, unknown> = {}) {
   return useQuery({
@@ -26,6 +27,24 @@ export function useCreateBooking(venueId: string) {
       createBooking({ ...input, venueId }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: qk.venue(venueId) }); // refresh disabled days
+      qc.invalidateQueries({ queryKey: qk.venueBookings(venueId) }); // refresh bookings list
     },
+  });
+}
+
+export function useVenueBookings(venueId?: string) {
+  return useQuery<TBookingWithCustomer[]>({
+    enabled: !!venueId,
+    queryKey: venueId ? qk.venueBookings(venueId) : ["venue", "bookings"],
+    queryFn: async ({ signal }) => {
+      const v = await getVenueById(
+        venueId!,
+        { _bookings: true, _owner: true },
+        signal,
+      );
+      return v.bookings ?? [];
+    },
+    staleTime: 60_000,
+    placeholderData: (prev) => prev,
   });
 }

@@ -57,6 +57,29 @@ export const OwnerProfile = ProfileBase.extend({
   venueManager: z.boolean().optional(),
 });
 
+/* --- Booking with customer --- */
+export const BookingWithCustomer = z.object({
+  id: z.string(),
+  dateFrom: z.string(),
+  dateTo: z.string(),
+  guests: z.number(),
+  created: z.string().optional(),
+  updated: z.string().optional(),
+  customer: z
+    .object({
+      name: z.string(),
+      email: z.string().email(),
+      bio: z.string().nullable().optional(),
+      avatar: z
+        .object({ url: z.string().url(), alt: z.string().optional() })
+        .optional(),
+      banner: z
+        .object({ url: z.string().url(), alt: z.string().optional() })
+        .optional(),
+    })
+    .optional(),
+});
+
 /* --- Venues --- */
 export const Venue = z.object({
   id: z.string(),
@@ -71,10 +94,10 @@ export const Venue = z.object({
   meta: VenueMeta.optional(),
   location: VenueLocation.optional(),
   owner: OwnerProfile.optional(),
-  bookings: z.array(Booking).optional(),
+  bookings: z.array(BookingWithCustomer).optional(), // ⬅️ here
 });
 
-/* --- Bookings --- */
+/* --- Booking with venue --- */
 export const BookingWithVenue = Booking.extend({
   venue: Venue.optional(),
 });
@@ -112,6 +135,7 @@ export type TBooking = z.infer<typeof Booking>;
 export type TProfile = z.infer<typeof Profile>;
 export type TOwnerProfile = z.infer<typeof OwnerProfile>;
 export type TBookingWithVenue = z.infer<typeof BookingWithVenue>;
+export type TBookingWithCustomer = z.infer<typeof BookingWithCustomer>;
 export type TVenueCreate = z.infer<typeof VenueCreate>;
 export type TVenueUpdate = z.infer<typeof VenueUpdate>;
 export type TPageMeta = z.infer<typeof PageMeta>;

@@ -112,6 +112,9 @@ export default function ManageHome() {
                     <Button asChild size="sm" variant="outline">
                       <Link to={`/venues/${v.id}`}>View</Link>
                     </Button>
+                    <Button asChild size="sm" variant="outline">
+                      <Link to={`/manage/${v.id}/bookings`}>Bookings</Link>
+                    </Button>
                     <Button asChild size="sm" variant="ghost">
                       <Link to={`/manage/${v.id}/edit`}>
                         <Edit className="h-4 w-4" />

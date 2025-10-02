@@ -8,6 +8,7 @@ import Kitchen from "@/pages/Kitchen";
 import ManageNewVenue from "@/pages/manage/ManageNewVenue";
 import ManageEditVenue from "@/pages/manage/ManageEditVenue";
 import ManageDeleteVenue from "@/pages/manage/ManageDeleteVenue";
+import ManageVenueBookings from "@/pages/manage/ManageVenueBookings";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Venues = lazy(() => import("@/pages/Venues"));
@@ -44,6 +45,10 @@ export const router = createBrowserRouter(
                 { path: "manage/new", element: <ManageNewVenue /> },
                 { path: "manage/:id/edit", element: <ManageEditVenue /> },
                 { path: "manage/:id/delete", element: <ManageDeleteVenue /> },
+                {
+                  path: "manage/:id/bookings",
+                  element: <ManageVenueBookings />,
+                },
               ],
             },
           ],
