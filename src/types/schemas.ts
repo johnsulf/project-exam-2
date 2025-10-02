@@ -91,6 +91,8 @@ export const VenueCreate = z.object({
   location: VenueLocation.optional(),
 });
 
+export const VenueUpdate = VenueCreate.partial();
+
 /* --- Meta / Envelope --- */
 export const PageMeta = z.object({
   isFirstPage: z.boolean(),
@@ -111,4 +113,5 @@ export type TProfile = z.infer<typeof Profile>;
 export type TOwnerProfile = z.infer<typeof OwnerProfile>;
 export type TBookingWithVenue = z.infer<typeof BookingWithVenue>;
 export type TVenueCreate = z.infer<typeof VenueCreate>;
+export type TVenueUpdate = z.infer<typeof VenueUpdate>;
 export type TPageMeta = z.infer<typeof PageMeta>;

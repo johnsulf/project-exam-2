@@ -9,6 +9,7 @@ import {
   Venue as VenueSchema,
   type TVenue,
   type TVenueCreate,
+  type TVenueUpdate,
 } from "@/types/schemas";
 
 export interface VenueQueryParams {
@@ -131,6 +132,10 @@ export async function getVenuesByProfile(
 
 // Create venue
 export async function createVenue(body: TVenueCreate) {
-  // API returns { data, meta }
   return postJson<ApiVenue, TVenueCreate>("/venues", body);
+}
+
+// Update venue
+export async function updateVenue(id: string, patch: TVenueUpdate) {
+  return putJson<ApiVenue, TVenueUpdate>(`/venues/${id}`, patch);
 }
