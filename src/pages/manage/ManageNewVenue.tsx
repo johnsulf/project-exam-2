@@ -38,6 +38,8 @@ export default function ManageNewVenue() {
     mode: "onBlur",
   });
 
+  const mediaWatch = f.watch("media");
+
   const { fields, append, remove } = useFieldArray({
     control: f.control,
     name: "media",
@@ -152,35 +154,96 @@ export default function ManageNewVenue() {
                   Add at least one image URL.
                 </p>
               )}
-              {fields.map((field, idx) => (
-                <div key={field.id} className="grid grid-cols-[1fr_auto] gap-2">
-                  <div className="space-y-2">
-                    <Input
-                      placeholder="https://example.com/image.jpg"
-                      {...f.register(`media.${idx}.url` as const)}
-                    />
-                    <Input
-                      placeholder="Alt text (optional)"
-                      {...f.register(`media.${idx}.alt` as const)}
-                    />
-                    {f.formState.errors.media?.[idx]?.url && (
-                      <p className="text-sm text-destructive">
-                        {
-                          f.formState.errors.media?.[idx]?.url
-                            ?.message as string
-                        }
-                      </p>
-                    )}
-                  </div>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    onClick={() => remove(idx)}
+              {fields.map((field, idx) => {
+                const url = mediaWatch?.[idx]?.url?.trim();
+                const urlId = `media-${idx}-url`;
+                const altId = `media-${idx}-alt`;
+                const errMsg = f.formState.errors.media?.[idx]?.url?.message as
+                  | string
+                  | undefined;
+
+                return (
+                  <div
+                    key={field.id}
+                    className="grid grid-cols-[1fr_auto] gap-2"
                   >
-                    Remove
-                  </Button>
-                </div>
-              ))}
+                    <div className="space-y-2">
+                      <div className="grid grid-cols-[1fr_96px] gap-2">
+                        <div className="space-y-1.5">
+                          <Label htmlFor={urlId}>Image URL</Label>
+                          <Input
+                            id={urlId}
+                            placeholder="https://example.com/image.jpg"
+                            aria-invalid={!!errMsg}
+                            aria-describedby={
+                              errMsg ? `${urlId}-error` : undefined
+                            }
+                            {...f.register(`media.${idx}.url` as const)}
+                          />
+                          {errMsg && (
+                            <p
+                              id={`${urlId}-error`}
+                              role="alert"
+                              className="text-sm text-destructive"
+                            >
+                              {errMsg}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Tiny live preview box */}
+                        <div className="rounded-md border overflow-hidden grid place-items-center bg-muted">
+                          {url ? (
+                            <img
+                              src={url}
+                              alt=""
+                              className="h-24 w-24 object-cover"
+                              onError={() => {
+                                // mark invalid if it fails to load (optional)
+                                if (!f.formState.errors.media?.[idx]?.url)
+                                  f.setError(`media.${idx}.url`, {
+                                    message: "Image failed to load.",
+                                  });
+                              }}
+                              onLoad={() => {
+                                // clear "failed" error if it becomes valid
+                                if (
+                                  f.formState.errors.media?.[idx]?.url
+                                    ?.message === "Image failed to load."
+                                ) {
+                                  f.clearErrors(`media.${idx}.url`);
+                                }
+                              }}
+                            />
+                          ) : (
+                            <span className="text-xs text-muted-foreground p-1 text-center">
+                              No URL
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <Label htmlFor={altId}>Alt text (optional)</Label>
+                        <Input
+                          id={altId}
+                          placeholder="Describe the image"
+                          {...f.register(`media.${idx}.alt` as const)}
+                        />
+                      </div>
+                    </div>
+
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      onClick={() => remove(idx)}
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                );
+              })}
+
               <Button
                 type="button"
                 variant="outline"
@@ -247,49 +310,44 @@ export default function ManageNewVenue() {
               <CardTitle>Amenities</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="wifi" className="cursor-pointer">
-                  WiFi
-                </Label>
-                <Switch
-                  id="wifi"
-                  checked={!!f.watch("meta.wifi")}
-                  onCheckedChange={(v) => f.setValue("meta.wifi", v)}
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="parking" className="cursor-pointer">
-                  Parking
-                </Label>
-                <Switch
-                  id="parking"
-                  checked={!!f.watch("meta.parking")}
-                  onCheckedChange={(v) => f.setValue("meta.parking", v)}
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="pets" className="cursor-pointer">
-                  Pets
-                </Label>
-                <Switch
-                  id="pets"
-                  checked={!!f.watch("meta.pets")}
-                  onCheckedChange={(v) => f.setValue("meta.pets", v)}
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="breakfast" className="cursor-pointer">
-                  Breakfast
-                </Label>
-                <Switch
-                  id="breakfast"
-                  checked={!!f.watch("meta.breakfast")}
-                  onCheckedChange={(v) => f.setValue("meta.breakfast", v)}
-                />
-              </div>
+              <fieldset>
+                <legend className="text-sm font-medium mb-2">
+                  Included amenities
+                </legend>
+
+                {(
+                  [
+                    ["wifi", "WiFi"],
+                    ["parking", "Parking"],
+                    ["pets", "Pets"],
+                    ["breakfast", "Breakfast"],
+                  ] as const
+                ).map(([key, label]) => (
+                  <div
+                    key={key}
+                    className="flex items-center justify-between my-1"
+                  >
+                    <Label
+                      htmlFor={`amenity-${key}`}
+                      className="cursor-pointer"
+                    >
+                      {label}
+                    </Label>
+                    <Switch
+                      id={`amenity-${key}`}
+                      checked={!!f.watch(`meta.${key}`)}
+                      onCheckedChange={(v) =>
+                        f.setValue(`meta.${key}`, v, { shouldDirty: true })
+                      }
+                      aria-labelledby={`amenity-${key}-label`}
+                    />
+                  </div>
+                ))}
+              </fieldset>
+
               <Separator />
               <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? "Creating…" : "Create venue"}
+                {isPending ? "Creating..." : "Create Venue"}
               </Button>
             </CardContent>
           </Card>
