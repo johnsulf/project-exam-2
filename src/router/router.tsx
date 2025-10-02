@@ -5,10 +5,6 @@ import { lazy } from "react";
 import { RequireAuth } from "@/features/auth/RequireAuth";
 import { RequireManager } from "@/features/auth/RequireManager";
 import Kitchen from "@/pages/Kitchen";
-import ManageNewVenue from "@/pages/manage/ManageNewVenue";
-import ManageEditVenue from "@/pages/manage/ManageEditVenue";
-import ManageDeleteVenue from "@/pages/manage/ManageDeleteVenue";
-import ManageVenueBookings from "@/pages/manage/ManageVenueBookings";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Venues = lazy(() => import("@/pages/Venues"));
@@ -16,6 +12,17 @@ const VenueDetail = lazy(() => import("@/pages/VenueDetail"));
 const Login = lazy(() => import("@/pages/Login"));
 const Profile = lazy(() => import("@/pages/Profile"));
 const ManageHome = lazy(() => import("@/pages/manage/ManageHome"));
+const ManageNewVenue = lazy(() => import("@/pages/manage/ManageNewVenue"));
+const ManageEditVenue = lazy(() => import("@/pages/manage/ManageEditVenue"));
+const ManageDeleteVenue = lazy(
+  () => import("@/pages/manage/ManageDeleteVenue"),
+);
+const ManageVenueBookings = lazy(
+  () => import("@/pages/manage/ManageVenueBookings"),
+);
+const ManageVenueDetail = lazy(
+  () => import("@/pages/manage/ManageVenueDetail"),
+);
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
 export const router = createBrowserRouter(
@@ -49,6 +56,7 @@ export const router = createBrowserRouter(
                   path: "manage/:id/bookings",
                   element: <ManageVenueBookings />,
                 },
+                { path: "manage/:id", element: <ManageVenueDetail /> },
               ],
             },
           ],
