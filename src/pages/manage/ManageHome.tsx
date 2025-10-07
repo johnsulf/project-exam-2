@@ -5,8 +5,17 @@ import { PaginationBar } from "@/features/venues/components/PaginationBar";
 import { useAuth } from "@/features/auth/store";
 import { useMyVenues } from "@/features/manager/hooks";
 import { ManageVenuesSkeleton } from "@/features/manager/ManageVenuesSkeleton";
-import { ArrowRight } from "lucide-react";
+import { Plus } from "lucide-react";
+import { CircleQuestionMark } from "lucide-react";
 import { formatMoney } from "@/lib/money";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 
 export default function ManageHome() {
   const { profile } = useAuth();
@@ -84,7 +93,7 @@ export default function ManageHome() {
         <Button asChild>
           <Link to="/manage/new">
             Create venue
-            <ArrowRight className="ml-2 h-4 w-4" />
+            <Plus />
           </Link>
         </Button>
       </header>
@@ -166,14 +175,24 @@ export default function ManageHome() {
 
 function EmptyState() {
   return (
-    <div className="rounded-xl border p-6 text-center">
-      <h2 className="text-lg font-semibold">You have no venues yet</h2>
-      <p className="text-sm text-muted-foreground mt-1">
-        Create your first venue to start taking bookings.
-      </p>
-      <Button className="mt-4" asChild>
-        <Link to="/manage/new">Create venue</Link>
-      </Button>
-    </div>
+    <Empty>
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <CircleQuestionMark />
+        </EmptyMedia>
+        <EmptyTitle>No Venues Yet</EmptyTitle>
+        <EmptyDescription>
+          You haven&apos;t created any venues yet. Get started by creating your
+          first venue.
+        </EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button asChild>
+          <Link to="/manage/new">
+            Create Venue <Plus />
+          </Link>
+        </Button>
+      </EmptyContent>
+    </Empty>
   );
 }
