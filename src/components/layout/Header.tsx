@@ -1,3 +1,4 @@
+// src/components/layout/Header.tsx
 import { Link, NavLink, useLocation, type Location } from "react-router-dom";
 import Logo from "@/assets/Logo.svg";
 import {
@@ -10,10 +11,11 @@ import { User } from "lucide-react";
 import { useAuth } from "@/features/auth/store";
 import { ProfileMenu } from "@/features/auth/ProfileMenu";
 import { Button } from "@/components/ui/button";
-import { resolveDestination } from "@/features/auth/returnTo";
 
 export function Header() {
-  const { token } = useAuth();
+  const { token, profile } = useAuth();
+  const isManager = !!profile?.venueManager;
+
   const location = useLocation();
   const fromState =
     (location.state as { from?: Location | string } | null | undefined)?.from ??
@@ -46,6 +48,15 @@ export function Header() {
                     <NavLink to="/venues">Venues</NavLink>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
+
+                {isManager && (
+                  <NavigationMenuItem>
+                    <NavigationMenuLink asChild>
+                      <NavLink to="/manage">Manage</NavLink>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                )}
+
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <NavLink to="/_kitchen">Kitchen Sink</NavLink>
@@ -67,7 +78,7 @@ export function Header() {
               aria-label="Sign in or register"
               asChild
             >
-              <Link to="/login" state={{ from: resolveDestination(fromState) }}>
+              <Link to="/login" state={{ from: fromState }}>
                 <User className="mr-2 h-4 w-4" /> Sign in
               </Link>
             </Button>

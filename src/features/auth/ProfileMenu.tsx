@@ -36,7 +36,7 @@ export function ProfileMenu() {
           Profile
         </DropdownMenuItem>
         {profile?.venueManager && (
-          <DropdownMenuItem onClick={() => nav("/manager")}>
+          <DropdownMenuItem onClick={() => nav("/manage")}>
             Manage venues
           </DropdownMenuItem>
         )}

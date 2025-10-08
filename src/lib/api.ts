@@ -129,3 +129,9 @@ export async function putJson<T, B = unknown>(
   const b = res.data;
   return (b && b.data !== undefined ? b.data : b) as T;
 }
+
+export async function deleteJson<T = void>(url: string): Promise<T> {
+  const res = await api.delete(url);
+  const b = res.data;
+  return (b && b.data !== undefined ? b.data : b) as T;
+}

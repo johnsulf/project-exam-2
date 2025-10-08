@@ -8,6 +8,7 @@ import {
 import { useAuth } from "../auth/store";
 import { getErrorMessage } from "@/lib/errors";
 import { useQueryErrorToast } from "@/lib/queryToasts";
+import type { Profile } from "@/types/api";
 
 export function useProfile(name?: string) {
   const q = useQuery({
@@ -27,14 +28,20 @@ export function useProfile(name?: string) {
 
 export function useUpdateProfile(name: string) {
   const qc = useQueryClient();
-  const { setProfile } = useAuth(); // ensure your store exposes this
+  const { setProfile } = useAuth.getState();
 
   return useMutation({
-    mutationFn: (patch: { avatar: { url: string; alt?: string } }) =>
-      updateProfile(name, patch),
-    onSuccess: (next) => {
-      qc.invalidateQueries({ queryKey: qk.profile(name) });
-      setProfile(next); // instantly update header/Profile UI
+    mutationFn: (
+      patch: Partial<Profile> & {
+        bio?: string | null;
+        avatar?: { url: string; alt?: string | null };
+        banner?: { url: string; alt?: string | null };
+        venueManager?: boolean;
+      },
+    ) => updateProfile(name, patch),
+    onSuccess(updated) {
+      qc.setQueryData(qk.profile(name), updated);
+      setProfile(updated);
     },
   });
 }

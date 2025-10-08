@@ -57,6 +57,29 @@ export const OwnerProfile = ProfileBase.extend({
   venueManager: z.boolean().optional(),
 });
 
+/* --- Booking with customer --- */
+export const BookingWithCustomer = z.object({
+  id: z.string(),
+  dateFrom: z.string(),
+  dateTo: z.string(),
+  guests: z.number(),
+  created: z.string().optional(),
+  updated: z.string().optional(),
+  customer: z
+    .object({
+      name: z.string(),
+      email: z.string().email(),
+      bio: z.string().nullable().optional(),
+      avatar: z
+        .object({ url: z.string().url(), alt: z.string().optional() })
+        .optional(),
+      banner: z
+        .object({ url: z.string().url(), alt: z.string().optional() })
+        .optional(),
+    })
+    .optional(),
+});
+
 /* --- Venues --- */
 export const Venue = z.object({
   id: z.string(),
@@ -71,13 +94,27 @@ export const Venue = z.object({
   meta: VenueMeta.optional(),
   location: VenueLocation.optional(),
   owner: OwnerProfile.optional(),
-  bookings: z.array(Booking).optional(),
+  bookings: z.array(BookingWithCustomer).optional(), // ⬅️ here
 });
 
-/* --- Bookings --- */
+/* --- Booking with venue --- */
 export const BookingWithVenue = Booking.extend({
   venue: Venue.optional(),
 });
+
+/* --- Forms / Requests --- */
+export const VenueCreate = z.object({
+  name: z.string().min(2, "Please enter a name"),
+  description: z.string().min(10, "Please add a longer description"),
+  media: z.array(Media).default([]),
+  price: z.number().min(0, "Price must be ≥ 0"),
+  maxGuests: z.number().int().min(1).max(100),
+  rating: z.number().int().min(0).max(5).optional().default(0),
+  meta: VenueMeta.optional(),
+  location: VenueLocation.optional(),
+});
+
+export const VenueUpdate = VenueCreate.partial();
 
 /* --- Meta / Envelope --- */
 export const PageMeta = z.object({
@@ -98,4 +135,7 @@ export type TBooking = z.infer<typeof Booking>;
 export type TProfile = z.infer<typeof Profile>;
 export type TOwnerProfile = z.infer<typeof OwnerProfile>;
 export type TBookingWithVenue = z.infer<typeof BookingWithVenue>;
+export type TBookingWithCustomer = z.infer<typeof BookingWithCustomer>;
+export type TVenueCreate = z.infer<typeof VenueCreate>;
+export type TVenueUpdate = z.infer<typeof VenueUpdate>;
 export type TPageMeta = z.infer<typeof PageMeta>;

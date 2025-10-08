@@ -1,11 +1,16 @@
-import { getEnvelope, getJson, postJson, putJson } from "@/lib/api";
+import { getEnvelope, getJson, postJson, putJson, deleteJson } from "@/lib/api";
 import type {
   Booking,
   BookingWithVenue,
   Profile,
   Venue as ApiVenue,
 } from "@/types/api";
-import { Venue as VenueSchema } from "@/types/schemas";
+import {
+  Venue as VenueSchema,
+  type TVenue,
+  type TVenueCreate,
+  type TVenueUpdate,
+} from "@/types/schemas";
 
 export interface VenueQueryParams {
   page?: number;
@@ -28,6 +33,13 @@ type VenueParams = {
   limit?: number;
   q?: string;
   _owner?: boolean;
+  _bookings?: boolean;
+};
+
+type ProfileVenuesParams = {
+  page?: number;
+  limit?: number;
+  sort?: string;
   _bookings?: boolean;
 };
 
@@ -102,4 +114,33 @@ export async function getBookingsByProfile(
     { _venue: true, ...(opts ?? {}) },
     signal,
   );
+}
+
+// Get venues by profile
+export async function getVenuesByProfile(
+  name: string,
+  params: ProfileVenuesParams = {},
+  signal?: AbortSignal,
+) {
+  // GET /holidaze/profiles/:name/venues
+  return getEnvelope<TVenue[]>(
+    `/profiles/${encodeURIComponent(name)}/venues`,
+    params,
+    signal,
+  );
+}
+
+// Create venue
+export async function createVenue(body: TVenueCreate) {
+  return postJson<ApiVenue, TVenueCreate>("/venues", body);
+}
+
+// Update venue
+export async function updateVenue(id: string, patch: TVenueUpdate) {
+  return putJson<ApiVenue, TVenueUpdate>(`/venues/${id}`, patch);
+}
+
+// Delete venue
+export async function deleteVenue(id: string) {
+  return deleteJson<{ data: { id: string } }>(`/venues/${id}`);
 }
