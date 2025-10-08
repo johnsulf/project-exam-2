@@ -209,71 +209,63 @@ export default function ManageNewVenue() {
                     className="grid grid-cols-[1fr_auto] gap-2"
                   >
                     <FieldGroup>
-                      {fields.map((field, idx) => {
-                        const urlId = `media-${idx}-url`;
-                        const err = f.formState.errors.media?.[idx]?.url
-                          ?.message as string | undefined;
+                      <Field data-invalid={!!err}>
+                        <FieldLabel htmlFor={urlId}>Image URL</FieldLabel>
+                        <InputGroup>
+                          <InputGroupInput
+                            id={urlId}
+                            placeholder="image.jpg"
+                            {...f.register(`media.${idx}.url` as const)}
+                            aria-invalid={!!err}
+                          />
+                          <InputGroupAddon>
+                            <InputGroupText>https://</InputGroupText>
+                            <InputGroupButton
+                              size="xs"
+                              onClick={() => {
+                                // Trigger a simple load check by toggling the same value to run your <img> onLoad/onError
+                                const v = f.getValues(
+                                  `media.${idx}.url` as const,
+                                );
+                                f.setValue(`media.${idx}.url` as const, v, {
+                                  shouldDirty: true,
+                                });
+                              }}
+                            >
+                              Check
+                            </InputGroupButton>
+                          </InputGroupAddon>
+                        </InputGroup>
+                        <FieldError>{err}</FieldError>
 
-                        return (
-                          <Field key={field.id} data-invalid={!!err}>
-                            <FieldLabel htmlFor={urlId}>Image URL</FieldLabel>
-                            <InputGroup>
-                              <InputGroupInput
-                                id={urlId}
-                                placeholder="image.jpg"
-                                {...f.register(`media.${idx}.url` as const)}
-                                aria-invalid={!!err}
-                              />
-                              <InputGroupAddon>
-                                <InputGroupText>https://</InputGroupText>
-                                <InputGroupButton
-                                  size="xs"
-                                  onClick={() => {
-                                    // Trigger a simple load check by toggling the same value to run your <img> onLoad/onError
-                                    const v = f.getValues(
-                                      `media.${idx}.url` as const,
-                                    );
-                                    f.setValue(`media.${idx}.url` as const, v, {
-                                      shouldDirty: true,
-                                    });
-                                  }}
-                                >
-                                  Check
-                                </InputGroupButton>
-                              </InputGroupAddon>
-                            </InputGroup>
-                            <FieldError>{err}</FieldError>
-
-                            {/* your tiny preview stays exactly as you had it */}
-                            <div className="mt-2 rounded-md border overflow-hidden grid place-items-center bg-muted h-24 w-24">
-                              {mediaWatch?.[idx]?.url?.trim() ? (
-                                <img
-                                  src={mediaWatch[idx]!.url!}
-                                  alt=""
-                                  className="h-24 w-24 object-cover"
-                                  onError={() =>
-                                    f.setError(`media.${idx}.url`, {
-                                      message: "Image failed to load.",
-                                    })
-                                  }
-                                  onLoad={() => {
-                                    if (
-                                      f.formState.errors.media?.[idx]?.url
-                                        ?.message === "Image failed to load."
-                                    ) {
-                                      f.clearErrors(`media.${idx}.url`);
-                                    }
-                                  }}
-                                />
-                              ) : (
-                                <span className="text-xs text-muted-foreground p-1 text-center">
-                                  No URL
-                                </span>
-                              )}
-                            </div>
-                          </Field>
-                        );
-                      })}
+                        {/* your tiny preview stays exactly as you had it */}
+                        <div className="mt-2 rounded-md border overflow-hidden grid place-items-center bg-muted h-24 w-24">
+                          {mediaWatch?.[idx]?.url?.trim() ? (
+                            <img
+                              src={mediaWatch[idx]!.url!}
+                              alt=""
+                              className="h-24 w-24 object-cover"
+                              onError={() =>
+                                f.setError(`media.${idx}.url`, {
+                                  message: "Image failed to load.",
+                                })
+                              }
+                              onLoad={() => {
+                                if (
+                                  f.formState.errors.media?.[idx]?.url
+                                    ?.message === "Image failed to load."
+                                ) {
+                                  f.clearErrors(`media.${idx}.url`);
+                                }
+                              }}
+                            />
+                          ) : (
+                            <span className="text-xs text-muted-foreground p-1 text-center">
+                              No URL
+                            </span>
+                          )}
+                        </div>
+                      </Field>
                     </FieldGroup>
 
                     <Button
