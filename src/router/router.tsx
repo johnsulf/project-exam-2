@@ -4,7 +4,6 @@ import RouteError from "@/components/errors/RouteError";
 import { lazy } from "react";
 import { RequireAuth } from "@/features/auth/RequireAuth";
 import { RequireManager } from "@/features/auth/RequireManager";
-import Kitchen from "@/pages/Kitchen";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Venues = lazy(() => import("@/pages/Venues"));
@@ -35,7 +34,6 @@ export const router = createBrowserRouter(
         { index: true, element: <Home /> },
         { path: "venues", element: <Venues /> },
         { path: "venues/:id", element: <VenueDetail /> },
-        { path: "_kitchen", element: <Kitchen /> },
         { path: "login", element: <Login /> },
 
         // Signed-in only

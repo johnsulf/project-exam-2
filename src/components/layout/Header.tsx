@@ -56,12 +56,6 @@ export function Header() {
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                 )}
-
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <NavLink to="/_kitchen">Kitchen Sink</NavLink>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
           </nav>
