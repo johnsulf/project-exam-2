@@ -2,6 +2,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { qk } from "@/lib/queryKeys";
 import { getVenueById, listVenues, createBooking } from "@/lib/endpoints";
 import type { TBookingWithCustomer } from "@/types/schemas";
+import { useQueryErrorToast } from "@/lib/queryToasts";
+import { getErrorMessage } from "@/lib/errors";
 
 export function useVenues(params: Record<string, unknown> = {}) {
   return useQuery({
@@ -33,7 +35,7 @@ export function useCreateBooking(venueId: string) {
 }
 
 export function useVenueBookings(venueId?: string) {
-  return useQuery<TBookingWithCustomer[]>({
+  const q = useQuery<TBookingWithCustomer[]>({
     enabled: !!venueId,
     queryKey: venueId ? qk.venueBookings(venueId) : ["venue", "bookings"],
     queryFn: async ({ signal }) => {
@@ -47,4 +49,6 @@ export function useVenueBookings(venueId?: string) {
     staleTime: 60_000,
     placeholderData: (prev) => prev,
   });
+  useQueryErrorToast(q, (e) => `Couldn't load bookings: ${getErrorMessage(e)}`);
+  return q;
 }

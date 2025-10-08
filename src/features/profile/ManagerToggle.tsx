@@ -3,6 +3,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { useUpdateProfile } from "./hooks";
+import { getErrorMessage } from "@/lib/errors";
 
 type Props = {
   name: string;
@@ -23,7 +24,7 @@ export function ManagerToggle({ name, venueManager }: Props) {
       );
     } catch (e) {
       setChecked(!next);
-      toast.error(e instanceof Error ? e.message : "Update failed");
+      toast.error(getErrorMessage(e));
     }
   }
 
