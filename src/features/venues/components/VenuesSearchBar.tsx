@@ -22,25 +22,6 @@ export function VenuesSearchBar({ redirectTo }: Props) {
   const [datesOpen, setDatesOpen] = React.useState(false);
   const [filtersOpen, setFiltersOpen] = React.useState(false);
 
-  React.useEffect(() => {
-    setQ(urlParams.get("q") ?? "");
-    setGuests(urlParams.get("guests") ?? "");
-    const from = urlParams.get("from");
-    const to = urlParams.get("to");
-    setRange(
-      from || to
-        ? {
-            from: from ? new Date(from) : undefined,
-            to: to ? new Date(to) : undefined,
-          }
-        : undefined,
-    );
-    setWifi(urlParams.get("wifi") === "1");
-    setParking(urlParams.get("parking") === "1");
-    setPets(urlParams.get("pets") === "1");
-    setBreakfast(urlParams.get("breakfast") === "1");
-  }, [urlParams]);
-
   const [q, setQ] = React.useState(urlParams.get("q") ?? "");
   const [guests, setGuests] = React.useState(urlParams.get("guests") ?? "");
   const [range, setRange] = React.useState<DateRange | undefined>(() => {
