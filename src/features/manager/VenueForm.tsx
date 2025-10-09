@@ -23,7 +23,6 @@ import {
 } from "@/components/ui/input-group";
 import { Switch } from "@/components/ui/switch";
 import { VenueCreate, type TVenue, type TVenueCreate } from "@/types/schemas";
-import type { FieldError, FieldErrors } from "react-hook-form";
 
 const BASE_DEFAULTS: TVenueCreate = {
   name: "",

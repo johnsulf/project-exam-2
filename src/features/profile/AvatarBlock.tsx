@@ -19,7 +19,11 @@ export function AvatarBlock({
       .join("") || "U";
   return (
     <Avatar style={{ width: size, height: size }}>
-      <AvatarImage src={url} alt={alt || name} />
+      <AvatarImage
+        src={url}
+        alt={alt || name}
+        className="w-full h-full object-cover"
+      />
       <AvatarFallback className="font-semibold">{initials}</AvatarFallback>
     </Avatar>
   );
