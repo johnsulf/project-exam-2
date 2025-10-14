@@ -11,6 +11,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { Separator } from "@/components/ui/separator";
 import { Calendar as CalendarIcon, Filter, Search, Users } from "lucide-react";
 import type { DateRange } from "react-day-picker";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type Props = {
   redirectTo?: string;
@@ -21,6 +23,8 @@ export function VenuesSearchBar({ redirectTo }: Props) {
   const [urlParams, setUrlParams] = useSearchParams();
   const [datesOpen, setDatesOpen] = React.useState(false);
   const [filtersOpen, setFiltersOpen] = React.useState(false);
+  const queryId = React.useId();
+  const guestId = React.useId();
 
   const [q, setQ] = React.useState(urlParams.get("q") ?? "");
   const [guests, setGuests] = React.useState(urlParams.get("guests") ?? "");
@@ -42,6 +46,17 @@ export function VenuesSearchBar({ redirectTo }: Props) {
   const [breakfast, setBreakfast] = React.useState(
     urlParams.get("breakfast") === "1",
   );
+  const amenityOptions = [
+    { key: "wifi", label: "WiFi", value: wifi, setValue: setWifi },
+    { key: "parking", label: "Parking", value: parking, setValue: setParking },
+    { key: "pets", label: "Pets", value: pets, setValue: setPets },
+    {
+      key: "breakfast",
+      label: "Breakfast",
+      value: breakfast,
+      setValue: setBreakfast,
+    },
+  ];
 
   React.useEffect(() => {
     setQ(urlParams.get("q") ?? "");
@@ -104,25 +119,43 @@ export function VenuesSearchBar({ redirectTo }: Props) {
         className="flex flex-col gap-3 md:flex-row md:items-center"
       >
         <div className="flex-1 flex items-center gap-2">
-          <Search className="size-4 shrink-0 text-muted-foreground" />
-          <Input
-            placeholder="Search by name, city, country…"
-            value={q}
-            onChange={(e) => setQ(e.currentTarget.value)}
+          <Search
+            className="size-4 shrink-0 text-muted-foreground"
+            aria-hidden="true"
           />
+          <div className="flex-1">
+            <Label htmlFor={queryId} className="sr-only">
+              Search venues
+            </Label>
+            <Input
+              id={queryId}
+              placeholder="Search by name, city, country…"
+              value={q}
+              onChange={(e) => setQ(e.currentTarget.value)}
+            />
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
-          <Users className="size-4 shrink-0 text-muted-foreground" />
-          <Input
-            type="number"
-            min={1}
-            inputMode="numeric"
-            placeholder="Guests"
-            value={guests}
-            onChange={(e) => setGuests(e.currentTarget.value)}
-            className="w-28"
+          <Users
+            className="size-4 shrink-0 text-muted-foreground"
+            aria-hidden="true"
           />
+          <div>
+            <Label htmlFor={guestId} className="sr-only">
+              Guests
+            </Label>
+            <Input
+              id={guestId}
+              type="number"
+              min={1}
+              inputMode="numeric"
+              placeholder="Guests"
+              value={guests}
+              onChange={(e) => setGuests(e.currentTarget.value)}
+              className="w-28"
+            />
+          </div>
         </div>
 
         <Popover open={datesOpen} onOpenChange={setDatesOpen}>
@@ -181,38 +214,20 @@ export function VenuesSearchBar({ redirectTo }: Props) {
           </PopoverTrigger>
           <PopoverContent align="end" className="w-56">
             <div className="space-y-2">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={wifi}
-                  onChange={() => setWifi((v) => !v)}
-                />{" "}
-                WiFi
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={parking}
-                  onChange={() => setParking((v) => !v)}
-                />{" "}
-                Parking
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={pets}
-                  onChange={() => setPets((v) => !v)}
-                />{" "}
-                Pets
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={breakfast}
-                  onChange={() => setBreakfast((v) => !v)}
-                />{" "}
-                Breakfast
-              </label>
+              {amenityOptions.map(({ key, label, value, setValue }) => (
+                <Label
+                  key={key}
+                  htmlFor={`filter-${key}`}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <Checkbox
+                    id={`filter-${key}`}
+                    checked={value}
+                    onCheckedChange={(checked) => setValue(checked === true)}
+                  />
+                  {label}
+                </Label>
+              ))}
               <Separator />
               <div className="flex justify-between">
                 <Button

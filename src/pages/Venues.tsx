@@ -21,7 +21,8 @@ export default function Venues() {
   const page = Math.max(1, Number(params.get("page") ?? 1));
 
   const q = params.get("q")?.trim() || "";
-  const city = (params.get("city") ?? "").toLowerCase();
+  const cityParam = params.get("city")?.trim() ?? "";
+  const city = cityParam.toLowerCase();
   const guests = Number(params.get("guests") ?? 0);
   const from = params.get("from") ? new Date(params.get("from")!) : undefined;
   const to = params.get("to") ? new Date(params.get("to")!) : undefined;
@@ -35,6 +36,7 @@ export default function Venues() {
 
   const hasFiltersApplied = !!(
     q ||
+    cityParam ||
     guests > 0 ||
     wantsDates ||
     wantWifi ||

@@ -35,6 +35,23 @@ export function ActiveFilters() {
   const q = params.get("q");
   if (q) entries.push({ key: "q", label: `“${q}”`, remove: removeKey("q") });
 
+  const city = params.get("city");
+  if (city) {
+    const formatted = city
+      .split(/[\s-]+/)
+      .map((part) =>
+        part
+          ? part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
+          : part,
+      )
+      .join(" ");
+    entries.push({
+      key: "city",
+      label: `City: ${formatted}`,
+      remove: removeKey("city"),
+    });
+  }
+
   const guests = params.get("guests");
   if (guests)
     entries.push({
