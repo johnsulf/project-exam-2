@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatDateRange, nightsBetween } from "@/lib/date";
 
@@ -23,10 +22,13 @@ export function BookingCard({ id, dateFrom, dateTo, guests, venue }: Props) {
   return (
     <article
       aria-labelledby={titleId}
-      className="rounded-md border overflow-hidden"
+      className="rounded-lg border overflow-hidden bg-card shadow-sm"
     >
-      <div className="grid grid-cols-[140px_1fr]">
-        <div className="bg-muted h-full" aria-hidden={!img}>
+      <div className="flex flex-col sm:flex-row">
+        <div
+          className="bg-muted h-44 w-full sm:h-auto sm:w-48"
+          aria-hidden={!img}
+        >
           {img ? (
             <img
               src={img}
@@ -39,31 +41,33 @@ export function BookingCard({ id, dateFrom, dateTo, guests, venue }: Props) {
             </div>
           )}
         </div>
-        <div className="p-2">
-          <CardHeader className="pb-2">
-            <CardTitle>
-              <h3 id={titleId} className="text-base">
-                {vName}
-              </h3>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0 space-y-2">
-            <div className="text-sm text-muted-foreground">
-              {formatDateRange(from, to)} • {nights}{" "}
-              {nights === 1 ? "night" : "nights"}
+        <div className="flex flex-1 flex-col gap-3 p-4">
+          <header>
+            <h3
+              id={titleId}
+              className="text-lg font-semibold leading-snug text-balance"
+            >
+              {vName}
+            </h3>
+          </header>
+          <p className="text-sm text-muted-foreground">
+            {formatDateRange(from, to)} • {nights}{" "}
+            {nights === 1 ? "night" : "nights"}
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="secondary">Guests {guests}</Badge>
+            <Badge variant="outline">Booking #{id.slice(0, 8)}</Badge>
+          </div>
+          {vId && (
+            <div className="pt-1">
+              <Link
+                to={`/venues/${vId}`}
+                className="text-sm font-medium text-primary underline-offset-4 hover:underline"
+              >
+                View venue <span className="sr-only">“{vName}”</span>
+              </Link>
             </div>
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary">Guests {guests}</Badge>
-              <Badge variant="outline">Booking #{id.slice(0, 8)}</Badge>
-            </div>
-            {vId && (
-              <div className="pt-1">
-                <Link to={`/venues/${vId}`} className="underline text-sm">
-                  View venue <span className="sr-only">“{vName}”</span>
-                </Link>
-              </div>
-            )}
-          </CardContent>
+          )}
         </div>
       </div>
     </article>

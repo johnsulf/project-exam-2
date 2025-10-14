@@ -1,17 +1,17 @@
 import { useAuth } from "@/features/auth/store";
-import { useProfile, useUpcomingBookings } from "@/features/profile/hooks";
+import { useProfile, useProfileBookings } from "@/features/profile/hooks";
 import { ProfileHeaderSkeleton } from "@/features/profile/ProfileHeaderSkeleton";
 import { AvatarBlock } from "@/features/profile/AvatarBlock";
-import { StatChip } from "@/features/profile/StatChip";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AvatarDialog } from "@/features/profile/AvatarDialog";
 import { BookingCard } from "@/features/profile/BookingCard";
 import { EmptyBookings } from "@/features/profile/EmptyBookings";
 import { BookingListSkeleton } from "@/features/profile/BookingListSkeleton";
 import { useRouteHeadingFocus } from "@/components/a11y/useRouteHeadingFocus";
 import { ManagerToggle } from "@/features/profile/ManagerToggle";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Profile() {
   const { profile: authProfile } = useAuth();
@@ -23,10 +23,18 @@ export default function Profile() {
     isLoading: bLoading,
     isError: bError,
     refetch: refetchBookings,
-  } = useUpcomingBookings(name);
+  } = useProfileBookings(name);
 
-  const bookings = bookingsEnv?.data ?? [];
+  const upcomingBookings = bookingsEnv?.data.upcoming ?? [];
+  const pastBookings = bookingsEnv?.data.past ?? [];
   const [openAvatar, setOpenAvatar] = useState(false);
+  const [bookingTab, setBookingTab] = useState<"upcoming" | "past">("upcoming");
+
+  useEffect(() => {
+    if (upcomingBookings.length === 0 && pastBookings.length > 0) {
+      setBookingTab("past");
+    }
+  }, [upcomingBookings.length, pastBookings.length]);
 
   const h1Ref = useRouteHeadingFocus<HTMLHeadingElement>();
 
@@ -47,9 +55,6 @@ export default function Profile() {
     );
   }
 
-  const countVenues = p._count?.venues ?? p.venues?.length;
-  const countBookings = p._count?.bookings ?? p.bookings?.length;
-
   return (
     <div className="space-y-8" aria-labelledby="profile-title">
       {/* Banner (decorative) */}
@@ -60,47 +65,52 @@ export default function Profile() {
 
       {/* Header section */}
       <section
-        className="flex items-center gap-4"
+        className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
         aria-labelledby="profile-title"
       >
-        <AvatarBlock
-          url={p.avatar?.url}
-          alt={p.avatar?.alt}
-          name={p.name}
-          size={72}
-        />
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
+          <AvatarBlock
+            url={p.avatar?.url}
+            alt={p.avatar?.alt}
+            name={p.name}
+            size={80}
+          />
 
-        <div>
-          <h1
-            id="profile-title"
-            ref={h1Ref}
-            tabIndex={-1}
-            className="text-2xl font-semibold focus:outline-none focus:ring-2 focus:ring-ring rounded"
-          >
-            {p.name}
-          </h1>
-          <p className="text-muted-foreground text-sm">{p.email}</p>
+          <div className="space-y-2">
+            <h1
+              id="profile-title"
+              ref={h1Ref}
+              tabIndex={-1}
+              className="text-3xl font-semibold focus:outline-none focus:ring-2 focus:ring-ring rounded"
+            >
+              {p.name}
+            </h1>
+            <p className="text-muted-foreground text-sm sm:text-base">
+              {p.email}
+            </p>
 
-          <div className="mt-2 flex items-center gap-2">
-            <Badge variant={p.venueManager ? "default" : "secondary"}>
-              {p.venueManager ? "Venue manager" : "Customer"}
-            </Badge>
-            {isFetching && (
-              <span
-                className="text-xs text-muted-foreground"
-                aria-live="polite"
-              >
-                Refreshing…
-              </span>
-            )}
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant={p.venueManager ? "default" : "secondary"}>
+                {p.venueManager ? "Venue manager" : "Customer"}
+              </Badge>
+              {isFetching && (
+                <span
+                  className="text-xs text-muted-foreground"
+                  aria-live="polite"
+                >
+                  Refreshing…
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="ml-auto flex gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
           <Button
             variant="outline"
             onClick={() => setOpenAvatar(true)}
             aria-haspopup="dialog"
+            className="w-full sm:w-auto"
           >
             Edit avatar
           </Button>
@@ -116,17 +126,18 @@ export default function Profile() {
       </section>
 
       {/* Stats */}
-      <section className="flex gap-2" aria-label="Account statistics">
-        <StatChip label="Venues" value={countVenues} />
-        <StatChip label="Bookings" value={countBookings} />
+      <section
+        className="flex flex-wrap items-stretch gap-3"
+        aria-label="Account statistics"
+      >
         <ManagerToggle name={p.name} venueManager={!!p.venueManager} />
       </section>
 
       {/* Upcoming bookings */}
-      <section className="space-y-3" aria-labelledby="upcoming-heading">
-        <div className="flex items-center justify-between">
-          <h2 id="upcoming-heading" className="text-xl font-semibold">
-            Upcoming bookings
+      <section className="space-y-4" aria-labelledby="bookings-heading">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 id="bookings-heading" className="text-xl font-semibold">
+            Your bookings
           </h2>
         </div>
 
@@ -139,23 +150,64 @@ export default function Profile() {
             <p className="text-destructive">Couldn’t load bookings.</p>
             <Button onClick={() => refetchBookings()}>Retry</Button>
           </div>
-        ) : bookings.length === 0 ? (
-          <EmptyBookings />
         ) : (
-          // Use list semantics
-          <ul className="grid gap-3">
-            {bookings.map((b) => (
-              <li key={b.id}>
-                <BookingCard
-                  id={b.id}
-                  dateFrom={b.dateFrom}
-                  dateTo={b.dateTo}
-                  guests={b.guests}
-                  venue={b.venue}
-                />
-              </li>
-            ))}
-          </ul>
+          <Tabs
+            value={bookingTab}
+            onValueChange={(value) =>
+              setBookingTab((value as "upcoming" | "past") ?? "upcoming")
+            }
+            aria-label="Bookings categories"
+            className="space-y-3"
+          >
+            <TabsList>
+              <TabsTrigger value="upcoming">
+                Upcoming ({upcomingBookings.length})
+              </TabsTrigger>
+              <TabsTrigger value="past">
+                Earlier ({pastBookings.length})
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="upcoming" role="region" aria-live="polite">
+              {upcomingBookings.length === 0 ? (
+                <EmptyBookings />
+              ) : (
+                <ul className="grid gap-3">
+                  {upcomingBookings.map((b) => (
+                    <li key={b.id}>
+                      <BookingCard
+                        id={b.id}
+                        dateFrom={b.dateFrom}
+                        dateTo={b.dateTo}
+                        guests={b.guests}
+                        venue={b.venue}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </TabsContent>
+
+            <TabsContent value="past" role="region" aria-live="polite">
+              {pastBookings.length === 0 ? (
+                <EmptyBookings message="No earlier bookings yet." />
+              ) : (
+                <ul className="grid gap-3">
+                  {pastBookings.map((b) => (
+                    <li key={b.id}>
+                      <BookingCard
+                        id={b.id}
+                        dateFrom={b.dateFrom}
+                        dateTo={b.dateTo}
+                        guests={b.guests}
+                        venue={b.venue}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </TabsContent>
+          </Tabs>
         )}
       </section>
     </div>

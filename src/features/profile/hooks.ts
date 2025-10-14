@@ -9,6 +9,7 @@ import { useAuth } from "../auth/store";
 import { getErrorMessage } from "@/lib/errors";
 import { useQueryErrorToast } from "@/lib/queryToasts";
 import type { Profile } from "@/types/api";
+import type { TBookingWithVenue } from "@/types/schemas";
 
 export function useProfile(name?: string) {
   const q = useQuery({
@@ -46,22 +47,53 @@ export function useUpdateProfile(name: string) {
   });
 }
 
-export function useUpcomingBookings(name?: string) {
+type ProfileBookingGroups = {
+  upcoming: TBookingWithVenue[];
+  past: TBookingWithVenue[];
+};
+
+export function useProfileBookings(name?: string) {
   const q = useQuery({
     enabled: !!name,
     queryKey: name ? qk.bookingsByProfile(name) : ["bookings", "profile"],
     queryFn: ({ signal }) =>
       getBookingsByProfile(name!, { _venue: true }, signal),
-    select: (env) => {
+    select: (env): { data: ProfileBookingGroups; meta: typeof env.meta } => {
       const now = Date.now();
-      const upcoming = (env.data ?? []).filter(
-        (b) => new Date(b.dateTo).getTime() >= now,
-      );
+      const source = env.data ?? [];
+
+      const upcoming: TBookingWithVenue[] = [];
+      const past: TBookingWithVenue[] = [];
+
+      for (const booking of source) {
+        // Normalize rating so it is always a number as required by TBookingWithVenue
+        const normalized: TBookingWithVenue = booking.venue
+          ? {
+              ...booking,
+              venue: {
+                ...booking.venue,
+                rating: booking.venue.rating ?? 0,
+              },
+            }
+          : (booking as TBookingWithVenue);
+
+        const dateTo = new Date(normalized.dateTo).getTime();
+        if (dateTo >= now) {
+          upcoming.push(normalized);
+        } else {
+          past.push(normalized);
+        }
+      }
+
       upcoming.sort(
         (a, b) =>
           new Date(a.dateFrom).getTime() - new Date(b.dateFrom).getTime(),
       );
-      return { data: upcoming, meta: env.meta };
+      past.sort(
+        (a, b) => new Date(b.dateTo).getTime() - new Date(a.dateTo).getTime(),
+      );
+
+      return { data: { upcoming, past }, meta: env.meta };
     },
     staleTime: 60_000,
     refetchOnWindowFocus: false,

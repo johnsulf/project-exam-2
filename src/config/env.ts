@@ -1,42 +1,23 @@
-import { z } from "zod";
+const DEFAULT_API_BASE_URL = "https://v2.api.noroff.dev";
 
-/**
- * Raw schema against Vite's injected vars.
- * Only VITE_* are exposed to the client.
- */
-const RawEnv = z.object({
-  VITE_API_BASE_URL: z.string().url({
-    message:
-      "VITE_API_BASE_URL must be a valid URL (f.ex. https://v2.api.noroff.dev)",
-  }),
-  VITE_APP_ENV: z
-    .enum(["development", "test", "production"])
-    .default("development"),
-  VITE_DEBUG: z.coerce.boolean().default(false),
-});
+const rawBaseUrl = import.meta.env.VITE_API_BASE_URL ?? DEFAULT_API_BASE_URL;
+const API_BASE_URL = rawBaseUrl.replace(/\/+$/, "");
 
-/**
- * Parse once at module load. If this throws, the app won't boot.
- */
-const parsed = RawEnv.safeParse(import.meta.env);
-if (!parsed.success) {
-  console.error(
-    "❌ Invalid environment variables:",
-    parsed.error.flatten().fieldErrors,
-  );
-  throw new Error(
-    "Invalid environment variables. Check your .env*. See console for details.",
-  );
-}
+const rawAppEnv =
+  import.meta.env.VITE_APP_ENV ??
+  import.meta.env.MODE ??
+  (import.meta.env.DEV ? "development" : "production");
 
-/**
- * Normalized, app-friendly shape.
- * - Trim trailing slash on base URL
- */
-const _base = parsed.data.VITE_API_BASE_URL.replace(/\/+$/, "");
+const rawDebug = import.meta.env.VITE_DEBUG;
+const DEBUG =
+  rawDebug === true ||
+  rawDebug === "true" ||
+  rawDebug === "1" ||
+  rawDebug === 1 ||
+  (rawDebug === undefined && import.meta.env.DEV);
 
 export const env = {
-  API_BASE_URL: _base, // f.ex. https://v2.api.noroff.dev
-  APP_ENV: parsed.data.VITE_APP_ENV, // "development" | "test" | "production"
-  DEBUG: parsed.data.VITE_DEBUG, // boolean
+  API_BASE_URL,
+  APP_ENV: rawAppEnv,
+  DEBUG,
 } as const;

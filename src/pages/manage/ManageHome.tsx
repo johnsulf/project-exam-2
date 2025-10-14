@@ -9,6 +9,14 @@ import { Plus } from "lucide-react";
 import { CircleQuestionMark } from "lucide-react";
 import { formatMoney } from "@/lib/money";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
   Empty,
   EmptyContent,
   EmptyDescription,
@@ -103,60 +111,64 @@ export default function ManageHome() {
       ) : (
         <>
           <div className="rounded-xl border overflow-hidden">
-            <div className="grid grid-cols-5 gap-0 px-3 py-2 border-b text-sm text-muted-foreground bg-muted/30">
-              <div>Venue</div>
-              <div>City</div>
-              <div>Rating</div>
-              <div>Price / night</div>
-              <div className="text-right">Actions</div>
-            </div>
-
-            <ul className="divide-y">
-              {venues.map((v) => (
-                <li
-                  key={v.id}
-                  className="grid grid-cols-5 items-center gap-0 px-3 py-3"
-                >
-                  <div className="min-w-0">
-                    <div className="truncate font-medium">{v.name}</div>
-                    <div className="text-xs text-muted-foreground truncate">
-                      {v.description}
-                    </div>
-                    <div className="mt-1 flex gap-1 flex-wrap">
-                      {v.meta?.wifi && <Badge variant="secondary">WiFi</Badge>}
-                      {v.meta?.parking && (
-                        <Badge variant="secondary">Parking</Badge>
-                      )}
-                      {v.meta?.pets && <Badge variant="secondary">Pets</Badge>}
-                      {v.meta?.breakfast && (
-                        <Badge variant="secondary">Breakfast</Badge>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="text-sm">{v.location?.city ?? "-"}</div>
-
-                  <div className="text-sm">
-                    {typeof v.rating === "number" && v.rating > 0
-                      ? v.rating.toPrecision(2)
-                      : "—"}
-                  </div>
-
-                  <div className="text-sm">
-                    {formatMoney(v.price, { currency: "USD" })}
-                  </div>
-
-                  <div className="flex gap-2 justify-end">
-                    <Button asChild size="sm" variant="outline">
-                      <Link to={`/manage/${v.id}`}>Manage</Link>
-                    </Button>
-                    <Button asChild size="sm" variant="outline">
-                      <Link to={`/manage/${v.id}/bookings`}>Bookings</Link>
-                    </Button>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <Table>
+              <TableHeader className="bg-muted/30">
+                <TableRow>
+                  <TableHead>Venue</TableHead>
+                  <TableHead>City</TableHead>
+                  <TableHead>Rating</TableHead>
+                  <TableHead>Price / night</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {venues.map((v) => (
+                  <TableRow key={v.id}>
+                    <TableCell className="min-w-0">
+                      <div className="truncate font-medium">{v.name}</div>
+                      <div className="text-xs text-muted-foreground truncate">
+                        {v.description}
+                      </div>
+                      <div className="mt-1 flex gap-1 flex-wrap">
+                        {v.meta?.wifi && (
+                          <Badge variant="secondary">WiFi</Badge>
+                        )}
+                        {v.meta?.parking && (
+                          <Badge variant="secondary">Parking</Badge>
+                        )}
+                        {v.meta?.pets && (
+                          <Badge variant="secondary">Pets</Badge>
+                        )}
+                        {v.meta?.breakfast && (
+                          <Badge variant="secondary">Breakfast</Badge>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-sm">
+                      {v.location?.city ?? "-"}
+                    </TableCell>
+                    <TableCell className="text-sm">
+                      {typeof v.rating === "number" && v.rating > 0
+                        ? v.rating.toPrecision(2)
+                        : "—"}
+                    </TableCell>
+                    <TableCell className="text-sm">
+                      {formatMoney(v.price, { currency: "USD" })}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex gap-2 justify-end">
+                        <Button asChild size="sm" variant="outline">
+                          <Link to={`/manage/${v.id}`}>Manage</Link>
+                        </Button>
+                        <Button asChild size="sm" variant="outline">
+                          <Link to={`/manage/${v.id}/bookings`}>Bookings</Link>
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
 
           <div className="mt-4">

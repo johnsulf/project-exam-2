@@ -35,3 +35,7 @@ export function RequireManager() {
   // 4) Authorized
   return <Outlet />;
 }
+
+export function __resetManagerAccessNotice() {
+  managerAccessNotified.current = false;
+}

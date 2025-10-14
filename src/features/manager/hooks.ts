@@ -8,6 +8,7 @@ import {
 import { qk } from "@/lib/queryKeys";
 import { toast } from "sonner";
 import type { TVenueCreate, TVenueUpdate } from "@/types/schemas";
+import { getErrorMessage } from "@/lib/errors";
 
 export function useMyVenues(
   name?: string,
@@ -34,8 +35,7 @@ export function useCreateVenue() {
       qc.invalidateQueries({ queryKey: ["profileVenues"] });
     },
     onError: (e: unknown) => {
-      const msg = e instanceof Error ? e.message : "Create venue failed";
-      toast.error(msg);
+      toast.error(`Couldn't create venue: ${getErrorMessage(e)}`);
     },
   });
 }
@@ -54,7 +54,7 @@ export function useUpdateVenue(id: string) {
       });
     },
     onError: (e: unknown) => {
-      toast.error(e instanceof Error ? e.message : "Update failed");
+      toast.error(`Couldn't update venue: ${getErrorMessage(e)}`);
     },
   });
 }
@@ -72,7 +72,7 @@ export function useDeleteVenue(id: string) {
       });
     },
     onError: (e: unknown) => {
-      toast.error(e instanceof Error ? e.message : "Delete failed");
+      toast.error(`Couldn't delete venue: ${getErrorMessage(e)}`);
     },
   });
 }
