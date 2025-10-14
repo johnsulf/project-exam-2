@@ -22,7 +22,7 @@ export function Header() {
     location;
 
   return (
-    <header className="w-full border-b border-b-neutral-200 bg-white">
+    <header className="w-full">
       <div className="p-4 flex justify-between items-center max-w-[1280px] mx-auto">
         <section className="flex gap-4">
           {/* Logo */}

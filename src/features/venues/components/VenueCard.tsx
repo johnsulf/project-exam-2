@@ -14,7 +14,7 @@ export function VenueCard({ v }: { v: Venue }) {
   const showStar = r !== null && r >= 1;
 
   return (
-    <div className="rounded-md shadow border p-2 grid gap-2 bg-white">
+    <div className="rounded-md shadow border p-2 grid gap-2 bg-card">
       {imageUrl ? (
         <img
           src={imageUrl}
