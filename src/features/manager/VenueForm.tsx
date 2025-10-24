@@ -394,12 +394,12 @@ export function VenueForm({
                       </InputGroup>
                       <FieldError id={`${urlId}-error`}>{urlError}</FieldError>
 
-                      <div className="mt-2 h-24 w-24 overflow-hidden rounded-md border bg-muted grid place-items-center">
+                      <div className="overflow-hidden rounded-md border bg-muted grid place-items-center">
                         {urlValue?.trim() ? (
                           <img
                             src={urlValue}
                             alt=""
-                            className="h-full w-full object-cover"
+                            className="object-cover "
                             onError={() =>
                               f.setError(`media.${idx}.url`, {
                                 message: "Image failed to load.",
