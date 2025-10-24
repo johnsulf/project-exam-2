@@ -13,6 +13,14 @@ import { Calendar as CalendarIcon, Filter, Search, Users } from "lucide-react";
 import type { DateRange } from "react-day-picker";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 
 type Props = {
   redirectTo?: string;
@@ -23,6 +31,7 @@ export function VenuesSearchBar({ redirectTo }: Props) {
   const [urlParams, setUrlParams] = useSearchParams();
   const [datesOpen, setDatesOpen] = React.useState(false);
   const [filtersOpen, setFiltersOpen] = React.useState(false);
+  const [mobileSheetOpen, setMobileSheetOpen] = React.useState(false);
   const queryId = React.useId();
   const guestId = React.useId();
 
@@ -112,82 +121,157 @@ export function VenuesSearchBar({ redirectTo }: Props) {
     applyToUrl();
   }
 
-  return (
-    <div className="rounded-xl border p-3 md:p-4 mb-4 bg-card">
-      <form
-        onSubmit={onSubmit}
-        className="flex flex-col gap-3 md:flex-row md:items-center"
-      >
-        <div className="flex-1 flex items-center gap-2">
-          <Search
-            className="size-4 shrink-0 text-muted-foreground"
-            aria-hidden="true"
-          />
-          <div className="flex-1">
-            <Label htmlFor={queryId} className="sr-only">
-              Search venues
-            </Label>
-            <Input
-              id={queryId}
-              placeholder="Search by name, city, country…"
-              value={q}
-              onChange={(e) => setQ(e.currentTarget.value)}
-            />
-          </div>
-        </div>
+  const renderSearchField = (
+    wrapperClassName?: string,
+    inputClassName?: string,
+  ) => (
+    <div className={cn("flex items-center gap-2", wrapperClassName)}>
+      <Search
+        className="size-4 shrink-0 text-muted-foreground"
+        aria-hidden="true"
+      />
+      <div className="flex-1">
+        <Label htmlFor={queryId} className="sr-only">
+          Search venues
+        </Label>
+        <Input
+          id={queryId}
+          placeholder="Search by name, city, country…"
+          value={q}
+          onChange={(e) => setQ(e.currentTarget.value)}
+          className={cn("w-full", inputClassName)}
+        />
+      </div>
+    </div>
+  );
 
-        <div className="flex items-center gap-2">
-          <Users
-            className="size-4 shrink-0 text-muted-foreground"
-            aria-hidden="true"
-          />
-          <div>
-            <Label htmlFor={guestId} className="sr-only">
-              Guests
-            </Label>
-            <Input
-              id={guestId}
-              type="number"
-              min={1}
-              inputMode="numeric"
-              placeholder="Guests"
-              value={guests}
-              onChange={(e) => setGuests(e.currentTarget.value)}
-              className="w-28"
-            />
-          </div>
-        </div>
+  const renderGuestField = (
+    wrapperClassName?: string,
+    inputClassName?: string,
+  ) => (
+    <div className={cn("flex items-center gap-2", wrapperClassName)}>
+      <Users
+        className="size-4 shrink-0 text-muted-foreground"
+        aria-hidden="true"
+      />
+      <div className="flex-1">
+        <Label htmlFor={guestId} className="sr-only">
+          Guests
+        </Label>
+        <Input
+          id={guestId}
+          type="number"
+          min={1}
+          inputMode="numeric"
+          placeholder="Guests"
+          value={guests}
+          onChange={(e) => setGuests(e.currentTarget.value)}
+          className={cn("w-full sm:w-28", inputClassName)}
+        />
+      </div>
+    </div>
+  );
 
-        <Popover open={datesOpen} onOpenChange={setDatesOpen}>
-          <PopoverTrigger asChild>
+  const renderDateField = (
+    wrapperClassName?: string,
+    buttonClassName?: string,
+  ) => (
+    <div className={cn(wrapperClassName)}>
+      <Popover open={datesOpen} onOpenChange={setDatesOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className={cn(
+              "justify-start gap-2 w-full lg:w-[240px]",
+              buttonClassName,
+            )}
+          >
+            <CalendarIcon className="size-4" />
+            {range?.from
+              ? range.to
+                ? `${range.from.toLocaleDateString()} – ${range.to.toLocaleDateString()}`
+                : range.from.toLocaleDateString()
+              : "Pick dates"}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="end">
+          <Calendar
+            mode="range"
+            numberOfMonths={2}
+            selected={range}
+            onSelect={setRange}
+          />
+          <Separator />
+          <div className="p-2 flex justify-between">
             <Button
-              variant="outline"
-              className="justify-start gap-2 w-full md:w-[220px]"
+              size="sm"
+              variant="ghost"
+              onClick={() => {
+                setRange(undefined);
+                applyToUrl();
+                setDatesOpen(false);
+              }}
             >
-              <CalendarIcon className="size-4" />
-              {range?.from
-                ? range.to
-                  ? `${range.from.toLocaleDateString()} – ${range.to.toLocaleDateString()}`
-                  : range.from.toLocaleDateString()
-                : "Pick dates"}
+              Clear
             </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="end">
-            <Calendar
-              mode="range"
-              numberOfMonths={2}
-              selected={range}
-              onSelect={setRange}
-            />
+            <Button
+              size="sm"
+              onClick={() => {
+                applyToUrl();
+                setDatesOpen(false);
+              }}
+            >
+              Apply
+            </Button>
+          </div>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+
+  const renderFiltersField = (
+    wrapperClassName?: string,
+    buttonClassName?: string,
+  ) => (
+    <div className={cn(wrapperClassName)}>
+      <Popover open={filtersOpen} onOpenChange={setFiltersOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className={cn("gap-2 w-full lg:w-auto", buttonClassName)}
+          >
+            <Filter className="size-4" />
+            Filters
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent align="end" className="w-56">
+          <div className="space-y-2">
+            {amenityOptions.map(({ key, label, value, setValue }) => (
+              <Label
+                key={key}
+                htmlFor={`filter-${key}`}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <Checkbox
+                  id={`filter-${key}`}
+                  checked={value}
+                  onCheckedChange={(checked) => setValue(checked === true)}
+                />
+                {label}
+              </Label>
+            ))}
             <Separator />
-            <div className="p-2 flex justify-between">
+            <div className="flex justify-between">
               <Button
                 size="sm"
                 variant="ghost"
                 onClick={() => {
-                  setRange(undefined);
+                  setWifi(false);
+                  setParking(false);
+                  setPets(false);
+                  setBreakfast(false);
                   applyToUrl();
-                  setDatesOpen(false);
+                  setFiltersOpen(false);
                 }}
               >
                 Clear
@@ -196,72 +280,61 @@ export function VenuesSearchBar({ redirectTo }: Props) {
                 size="sm"
                 onClick={() => {
                   applyToUrl();
-                  setDatesOpen(false);
+                  setFiltersOpen(false);
                 }}
               >
                 Apply
               </Button>
             </div>
-          </PopoverContent>
-        </Popover>
+          </div>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
 
-        <Popover open={filtersOpen} onOpenChange={setFiltersOpen}>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="gap-2 w-full md:w-auto">
-              <Filter className="size-4" />
-              Filters
+  return (
+    <div className="rounded-xl border p-3 md:p-4 mb-4 bg-card">
+      <div className="md:hidden">
+        <Sheet open={mobileSheetOpen} onOpenChange={setMobileSheetOpen}>
+          <SheetTrigger asChild>
+            <Button variant="outline" className="w-full justify-center gap-2">
+              <Search className="size-4" />
+              Search venues
             </Button>
-          </PopoverTrigger>
-          <PopoverContent align="end" className="w-56">
-            <div className="space-y-2">
-              {amenityOptions.map(({ key, label, value, setValue }) => (
-                <Label
-                  key={key}
-                  htmlFor={`filter-${key}`}
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <Checkbox
-                    id={`filter-${key}`}
-                    checked={value}
-                    onCheckedChange={(checked) => setValue(checked === true)}
-                  />
-                  {label}
-                </Label>
-              ))}
-              <Separator />
-              <div className="flex justify-between">
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => {
-                    setWifi(false);
-                    setParking(false);
-                    setPets(false);
-                    setBreakfast(false);
-                    applyToUrl();
-                    setFiltersOpen(false);
-                  }}
-                >
-                  Clear
+          </SheetTrigger>
+          <SheetContent side="bottom" className="p-0">
+            <SheetHeader className="px-4 pt-4 pb-2">
+              <SheetTitle>Search venues</SheetTitle>
+            </SheetHeader>
+            <div className="px-4 pb-4 space-y-4">
+              <form onSubmit={onSubmit} className="space-y-4">
+                {renderSearchField()}
+                {renderGuestField()}
+                {renderDateField(undefined, "w-full")}
+                {renderFiltersField()}
+                <Button type="submit" className="w-full">
+                  <Search className="size-4 mr-2" />
+                  Apply search
                 </Button>
-                <Button
-                  size="sm"
-                  onClick={() => {
-                    applyToUrl();
-                    setFiltersOpen(false);
-                  }}
-                >
-                  Apply
-                </Button>
-              </div>
+              </form>
             </div>
-          </PopoverContent>
-        </Popover>
-
-        <Button type="submit" className="md:ml-auto">
-          <Search className="size-4 mr-2" />
-          Search
-        </Button>
+          </SheetContent>
+        </Sheet>
+      </div>
+      <form
+        onSubmit={onSubmit}
+        className="hidden gap-3 md:grid md:grid-cols-2 md:items-start lg:flex lg:flex-wrap lg:items-center"
+      >
+        {renderSearchField("md:col-span-2 lg:flex-1", "lg:w-full")}
+        {renderGuestField("md:col-span-1 lg:w-auto lg:flex lg:items-center")}
+        {renderDateField("md:col-span-1 lg:w-auto", "md:w-full lg:w-[240px]")}
+        {renderFiltersField("md:col-span-1 lg:w-auto")}
+        <div className="md:col-span-1 lg:ml-auto lg:w-auto">
+          <Button type="submit" className="w-full md:w-auto">
+            <Search className="size-4 mr-2" />
+            Search
+          </Button>
+        </div>
       </form>
     </div>
   );
