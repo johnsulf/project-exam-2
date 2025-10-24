@@ -30,16 +30,22 @@ export function Header() {
     location;
 
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-      isActive ? "text-primary" : "text-foreground hover:text-primary"
+    `rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+      isActive
+        ? "text-primary"
+        : "text-foreground hover:text-primary focus-visible:text-primary"
     }`;
 
   return (
-    <header className="w-full">
+    <header className="w-full" role="banner">
       <div className="p-4 flex justify-between items-center max-w-[1280px] mx-auto">
         <section className="flex items-center gap-3">
           {/* Logo */}
-          <NavLink to="/" className="flex items-center gap-2">
+          <NavLink
+            to="/"
+            className="flex items-center gap-2 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-primary"
+            aria-label="Holidaze home"
+          >
             <img
               src={Logo}
               alt="Holidaze logo"
@@ -51,9 +57,12 @@ export function Header() {
 
           {/* Nav */}
           <nav
-            aria-label="Primary"
+            aria-labelledby="primary-navigation-label"
             className="hidden md:flex items-center gap-4"
           >
+            <span id="primary-navigation-label" className="sr-only">
+              Primary navigation
+            </span>
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
@@ -93,9 +102,12 @@ export function Header() {
                 <SheetTitle>Menu</SheetTitle>
               </SheetHeader>
               <nav
-                aria-label="Mobile"
+                aria-labelledby="mobile-navigation-label"
                 className="flex flex-col gap-1 px-4 pb-6"
               >
+                <span id="mobile-navigation-label" className="sr-only">
+                  Mobile navigation
+                </span>
                 <SheetClose asChild>
                   <NavLink to="/venues" className={navLinkClass}>
                     Venues
