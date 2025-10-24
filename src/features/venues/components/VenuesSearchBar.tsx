@@ -182,7 +182,7 @@ export function VenuesSearchBar({ redirectTo }: Props) {
           <Button
             variant="outline"
             className={cn(
-              "justify-start gap-2 w-full lg:w-[240px]",
+              "justify-center gap-2 w-full lg:w-[240px] text-center",
               buttonClassName,
             )}
           >
@@ -194,7 +194,7 @@ export function VenuesSearchBar({ redirectTo }: Props) {
               : "Pick dates"}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="end">
+        <PopoverContent className="w-auto p-0 z-[60]" align="end">
           <Calendar
             mode="range"
             numberOfMonths={2}
@@ -238,13 +238,16 @@ export function VenuesSearchBar({ redirectTo }: Props) {
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className={cn("gap-2 w-full lg:w-auto", buttonClassName)}
+            className={cn(
+              "gap-2 w-full lg:w-auto justify-center",
+              buttonClassName,
+            )}
           >
             <Filter className="size-4" />
             Filters
           </Button>
         </PopoverTrigger>
-        <PopoverContent align="end" className="w-56">
+        <PopoverContent align="end" className="w-56 z-[60]">
           <div className="space-y-2">
             {amenityOptions.map(({ key, label, value, setValue }) => (
               <Label
@@ -323,14 +326,17 @@ export function VenuesSearchBar({ redirectTo }: Props) {
       </div>
       <form
         onSubmit={onSubmit}
-        className="hidden gap-3 md:grid md:grid-cols-2 md:items-start lg:flex lg:flex-wrap lg:items-center"
+        className="hidden gap-3 md:grid md:grid-cols-2 md:items-end lg:[grid-template-columns:minmax(0,2fr)_repeat(4,max-content)] lg:items-center"
       >
-        {renderSearchField("md:col-span-2 lg:flex-1", "lg:w-full")}
-        {renderGuestField("md:col-span-1 lg:w-auto lg:flex lg:items-center")}
-        {renderDateField("md:col-span-1 lg:w-auto", "md:w-full lg:w-[240px]")}
-        {renderFiltersField("md:col-span-1 lg:w-auto")}
-        <div className="md:col-span-1 lg:ml-auto lg:w-auto">
-          <Button type="submit" className="w-full md:w-auto">
+        {renderSearchField(
+          "md:col-span-2 lg:col-auto lg:min-w-[280px]",
+          "md:w-full",
+        )}
+        {renderGuestField("md:col-span-1 lg:col-auto", "md:w-full lg:w-28")}
+        {renderDateField("md:col-span-1 lg:col-auto", "md:w-full lg:w-[240px]")}
+        {renderFiltersField("md:col-span-1 lg:col-auto")}
+        <div className="md:col-span-1 lg:col-auto lg:justify-self-end">
+          <Button type="submit" className="w-full md:w-full lg:w-auto">
             <Search className="size-4 mr-2" />
             Search
           </Button>
