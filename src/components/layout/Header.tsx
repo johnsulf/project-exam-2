@@ -7,10 +7,18 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { User } from "lucide-react";
+import { Menu, User } from "lucide-react";
 import { useAuth } from "@/features/auth/store";
 import { ProfileMenu } from "@/features/auth/ProfileMenu";
 import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 export function Header() {
   const { token, profile } = useAuth();
@@ -21,10 +29,15 @@ export function Header() {
     (location.state as { from?: Location | string } | null | undefined)?.from ??
     location;
 
+  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+    `rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+      isActive ? "text-primary" : "text-foreground hover:text-primary"
+    }`;
+
   return (
-    <header className="w-full border-b border-b-neutral-200 bg-white">
+    <header className="w-full">
       <div className="p-4 flex justify-between items-center max-w-[1280px] mx-auto">
-        <section className="flex gap-4">
+        <section className="flex items-center gap-3">
           {/* Logo */}
           <NavLink to="/" className="flex items-center gap-2">
             <img
@@ -62,7 +75,62 @@ export function Header() {
         </section>
 
         {/* Right side */}
-        <section>
+        <section className="flex gap-2 items-center">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                className="md:hidden"
+                aria-label="Open navigation"
+              >
+                <Menu className="h-5 w-5" aria-hidden="true" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-full max-w-xs p-0">
+              <SheetHeader className="p-4 pb-2">
+                <SheetTitle>Menu</SheetTitle>
+              </SheetHeader>
+              <nav
+                aria-label="Mobile"
+                className="flex flex-col gap-1 px-4 pb-6"
+              >
+                <SheetClose asChild>
+                  <NavLink to="/venues" className={navLinkClass}>
+                    Venues
+                  </NavLink>
+                </SheetClose>
+                {isManager && (
+                  <SheetClose asChild>
+                    <NavLink to="/manage" className={navLinkClass}>
+                      Manage
+                    </NavLink>
+                  </SheetClose>
+                )}
+                {token ? (
+                  <SheetClose asChild>
+                    <NavLink to="/profile" className={navLinkClass}>
+                      Profile
+                    </NavLink>
+                  </SheetClose>
+                ) : (
+                  <SheetClose asChild>
+                    <Button
+                      variant="secondary"
+                      className="mt-2 justify-start"
+                      asChild
+                    >
+                      <Link to="/login" state={{ from: fromState }}>
+                        <User className="mr-2 h-4 w-4" aria-hidden="true" />
+                        Sign in
+                      </Link>
+                    </Button>
+                  </SheetClose>
+                )}
+              </nav>
+            </SheetContent>
+          </Sheet>
           {token ? (
             <ProfileMenu />
           ) : (
@@ -73,7 +141,7 @@ export function Header() {
               asChild
             >
               <Link to="/login" state={{ from: fromState }}>
-                <User className="mr-2 h-4 w-4" /> Sign in
+                <User className="mr-2 h-4 w-4" aria-hidden="true" /> Sign in
               </Link>
             </Button>
           )}

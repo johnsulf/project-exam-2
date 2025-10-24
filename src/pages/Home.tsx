@@ -18,13 +18,41 @@ export default function Home() {
     .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
     .slice(0, 6);
 
-  const byCity = (name: string) =>
-    all
-      .filter((v) => (v.location?.city ?? "").toLowerCase() === name)
-      .slice(0, 3);
+  const cityGroups = new Map<
+    string,
+    { slug: string; label: string; venues: typeof all }
+  >();
 
-  const oslo = byCity("oslo");
-  const bergen = byCity("bergen");
+  for (const venue of all) {
+    const rawCity = venue.location?.city?.trim();
+    if (!rawCity) continue;
+    const slug = rawCity.toLowerCase();
+    const label = rawCity
+      .split(/[\s-]+/)
+      .map((part) =>
+        part
+          ? part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
+          : part,
+      )
+      .join(" ");
+    const existing = cityGroups.get(slug);
+    if (existing) {
+      existing.venues.push(venue);
+    } else {
+      cityGroups.set(slug, { slug, label, venues: [venue] });
+    }
+  }
+
+  const citySections = Array.from(cityGroups.values())
+    .filter((group) => group.venues.length > 0)
+    .sort((a, b) => b.venues.length - a.venues.length)
+    .slice(0, 2)
+    .map((group) => ({
+      ...group,
+      venues: [...group.venues]
+        .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
+        .slice(0, 3),
+    }));
 
   return (
     <div className="space-y-8">
@@ -58,19 +86,18 @@ export default function Home() {
             items={featured}
           />
 
-          <FeaturedSection
-            title="Visit Norways capital! 🇳🇴"
-            cta={{ to: "/venues?city=oslo", label: "See all in Oslo" }}
-            items={oslo}
-            emptyText="No highly rated venues in Oslo yet."
-          />
-
-          <FeaturedSection
-            title="Bergen? Raincheck! 🌧️"
-            cta={{ to: "/venues?city=bergen", label: "See all in Bergen" }}
-            items={bergen}
-            emptyText="No highly rated venues in Bergen yet."
-          />
+          {citySections.map(({ slug, label, venues }) => (
+            <FeaturedSection
+              key={slug}
+              title={`Top stays in ${label}`}
+              cta={{
+                to: `/venues?city=${encodeURIComponent(slug)}`,
+                label: `See all in ${label}`,
+              }}
+              items={venues}
+              emptyText={`No popular venues in ${label} yet.`}
+            />
+          ))}
         </>
       )}
     </div>

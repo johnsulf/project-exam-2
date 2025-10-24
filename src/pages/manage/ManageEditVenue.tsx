@@ -15,7 +15,7 @@ export default function ManageEditVenue() {
 
   async function onSubmit(values: TVenueCreate) {
     await mutateAsync(values);
-    navigate(`/venues/${id}`, { replace: true });
+    navigate(`/manage/${id}`, { replace: true });
   }
 
   if (isLoading) {

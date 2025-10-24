@@ -21,7 +21,10 @@ export default function Venues() {
   const page = Math.max(1, Number(params.get("page") ?? 1));
 
   const q = params.get("q")?.trim() || "";
-  const city = (params.get("city") ?? "").toLowerCase();
+  const searchTerm = q.toLowerCase();
+  const useClientSearch = searchTerm.length > 0;
+  const cityParam = params.get("city")?.trim() ?? "";
+  const city = cityParam.toLowerCase();
   const guests = Number(params.get("guests") ?? 0);
   const from = params.get("from") ? new Date(params.get("from")!) : undefined;
   const to = params.get("to") ? new Date(params.get("to")!) : undefined;
@@ -35,6 +38,7 @@ export default function Venues() {
 
   const hasFiltersApplied = !!(
     q ||
+    cityParam ||
     guests > 0 ||
     wantsDates ||
     wantWifi ||
@@ -44,6 +48,7 @@ export default function Venues() {
   );
 
   const hasClientFilters =
+    useClientSearch ||
     !!city ||
     guests > 0 ||
     wantWifi ||
@@ -56,8 +61,9 @@ export default function Venues() {
   const serverParams: Record<string, unknown> = {
     page: hasClientFilters ? 1 : page,
     limit: fetchLimit,
-    q: q || undefined,
   };
+
+  if (!useClientSearch && q) serverParams.q = q;
 
   if (wantsDates) serverParams._bookings = true;
 
@@ -80,9 +86,26 @@ export default function Venues() {
 
   if (hasClientFilters) {
     filtered = fetched.filter((v) => {
+      if (searchTerm) {
+        const location = v.location ?? {};
+        const haystacks = [
+          v.name,
+          v.description,
+          location.address ?? "",
+          location.city ?? "",
+          location.country ?? "",
+          location.continent ?? "",
+        ].map((value) => value.toLowerCase());
+
+        const matchesSearch = haystacks.some((value) =>
+          value.includes(searchTerm),
+        );
+
+        if (!matchesSearch) return false;
+      }
       if (city) {
         const c = (v.location?.city ?? "").toLowerCase();
-        if (c !== city) return false;
+        if (!c.includes(city)) return false;
       }
       if (guests && v.maxGuests < guests) return false;
       if (wantWifi && !v.meta?.wifi) return false;

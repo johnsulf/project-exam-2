@@ -12,6 +12,7 @@ import {
 import { formatMoney } from "@/lib/money";
 import { useAuth } from "@/features/auth/store";
 import { useCreateBooking } from "@/features/venues/hooks";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type Props = {
   venueId: string;
@@ -29,6 +30,8 @@ export function BookingWidget({
   const [range, setRange] = useState<DateRange | undefined>();
   const [guests, setGuests] = useState(1);
   const { token } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const disabledSet = useMemo(() => buildDisabledDates(bookings), [bookings]);
   const today = new Date();
@@ -41,7 +44,7 @@ export function BookingWidget({
 
   async function submit() {
     if (!token) {
-      toast.info("Please sign in to book.");
+      navigate("/login", { state: { from: location } });
       return;
     }
     if (!range?.from || !range?.to) {
@@ -133,7 +136,7 @@ export function BookingWidget({
       <Button
         className="w-full"
         onClick={submit}
-        disabled={!range?.from || !range?.to || isPending || !token}
+        disabled={isPending || (!!token && (!range?.from || !range?.to))}
       >
         {token ? (isPending ? "Booking…" : "Book now") : "Sign in to book"}
       </Button>
