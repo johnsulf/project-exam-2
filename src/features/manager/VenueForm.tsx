@@ -507,10 +507,10 @@ export function VenueForm({
         </Card>
       </div>
 
-      <aside className="space-y-6">
+      <aside className="space-y-6" aria-labelledby="venue-form-amenities">
         <Card>
           <CardHeader>
-            <CardTitle>Amenities</CardTitle>
+            <CardTitle id="venue-form-amenities">Amenities</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <FieldSet>
