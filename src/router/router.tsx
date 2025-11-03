@@ -9,6 +9,8 @@ const Home = lazy(() => import("@/pages/Home"));
 const Venues = lazy(() => import("@/pages/Venues"));
 const VenueDetail = lazy(() => import("@/pages/VenueDetail"));
 const Login = lazy(() => import("@/pages/Login"));
+const RegisterCustomer = lazy(() => import("@/pages/auth/RegisterCustomer"));
+const RegisterManager = lazy(() => import("@/pages/auth/RegisterManager"));
 const Profile = lazy(() => import("@/pages/Profile"));
 const ManageHome = lazy(() => import("@/pages/manage/ManageHome"));
 const ManageNewVenue = lazy(() => import("@/pages/manage/ManageNewVenue"));
@@ -35,6 +37,8 @@ export const router = createBrowserRouter(
         { path: "venues", element: <Venues /> },
         { path: "venues/:id", element: <VenueDetail /> },
         { path: "login", element: <Login /> },
+        { path: "auth/register", element: <RegisterCustomer /> },
+        { path: "auth/register/manager", element: <RegisterManager /> },
 
         // Signed-in only
         {
