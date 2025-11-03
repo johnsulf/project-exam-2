@@ -326,16 +326,16 @@ export function VenuesSearchBar({ redirectTo }: Props) {
       </div>
       <form
         onSubmit={onSubmit}
-        className="hidden gap-3 md:grid md:grid-cols-2 md:items-end lg:[grid-template-columns:minmax(0,2fr)_repeat(4,max-content)] lg:items-center"
+        className="hidden gap-3 md:grid md:[grid-template-columns:minmax(0,2fr)_max-content] md:items-end lg:[grid-template-columns:minmax(0,2fr)_repeat(4,max-content)] lg:items-center"
       >
         {renderSearchField(
-          "md:col-span-2 lg:col-auto lg:min-w-[280px]",
+          "md:col-span-1 lg:col-auto lg:min-w-[280px]",
           "md:w-full",
         )}
         {renderGuestField("md:col-span-1 lg:col-auto", "md:w-full lg:w-28")}
         {renderDateField("md:col-span-1 lg:col-auto", "md:w-full lg:w-[240px]")}
         {renderFiltersField("md:col-span-1 lg:col-auto")}
-        <div className="md:col-span-1 lg:col-auto lg:justify-self-end">
+        <div className="md:col-span-2 lg:col-auto lg:justify-self-end">
           <Button type="submit" className="w-full md:w-full lg:w-auto">
             <Search className="size-4 mr-2" />
             Search

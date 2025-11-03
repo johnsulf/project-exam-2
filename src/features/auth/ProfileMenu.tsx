@@ -14,6 +14,7 @@ export function ProfileMenu() {
   const { profile, signOut } = useAuth();
   const nav = useNavigate();
   const initials = profile?.name?.[0]?.toUpperCase() ?? "U";
+  const accountLabel = profile?.name || profile?.email || "your account";
 
   return (
     <DropdownMenu>
@@ -22,28 +23,33 @@ export function ProfileMenu() {
           variant="outline"
           size="icon"
           className="rounded-xl"
-          aria-label="Open profile menu"
+          aria-label={`Open profile menu for ${accountLabel}`}
+          aria-haspopup="menu"
         >
           <span className="font-semibold">{initials}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
+      <DropdownMenuContent
+        align="end"
+        className="w-56"
+        aria-label="Profile options"
+      >
         <DropdownMenuLabel className="truncate">
           {profile?.email}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => nav("/profile")}>
+        <DropdownMenuItem onSelect={() => nav("/profile")}>
           Profile
         </DropdownMenuItem>
         {profile?.venueManager && (
-          <DropdownMenuItem onClick={() => nav("/manage")}>
+          <DropdownMenuItem onSelect={() => nav("/manage")}>
             Manage venues
           </DropdownMenuItem>
         )}
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="text-destructive focus:text-destructive"
-          onClick={() => {
+          onSelect={() => {
             signOut();
             nav("/");
           }}

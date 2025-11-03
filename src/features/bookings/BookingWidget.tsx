@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useId, useState, useMemo } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -72,13 +72,25 @@ export function BookingWidget({
   const disabledFn = (day: Date) =>
     disabledSet.has(toISODate(day)) || day < new Date(today.toDateString());
 
+  const headingId = useId();
+  const summaryId = useId();
+
   return (
-    <aside className="rounded-xl border p-4 space-y-4 w-full md:w-[360px]">
-      <div>
-        <div className="text-xl font-semibold">
+    <section
+      aria-labelledby={headingId}
+      aria-describedby={summaryId}
+      className="rounded-xl border p-4 space-y-4 w-full md:w-[360px]"
+    >
+      <div className="space-y-1">
+        <h2 id={headingId} className="text-xl font-semibold">
+          Book this venue
+        </h2>
+        <p className="text-base">
           {formatMoney(price, { currency: "USD" })}{" "}
-          <span className="text-sm font-normal">/ night</span>
-        </div>
+          <span className="text-sm font-normal text-muted-foreground">
+            per night
+          </span>
+        </p>
       </div>
 
       <Calendar
@@ -115,7 +127,7 @@ export function BookingWidget({
         </div>
       </div>
 
-      <div className="rounded-md bg-muted p-3 text-sm">
+      <div className="rounded-md bg-muted p-3 text-sm" id={summaryId}>
         {range?.from && range?.to ? (
           <>
             <div>{formatDateRange(range.from, range.to)}</div>
@@ -142,6 +154,6 @@ export function BookingWidget({
       </Button>
 
       <p className="text-xs text-muted-foreground">Max guests: {maxGuests}</p>
-    </aside>
+    </section>
   );
 }
