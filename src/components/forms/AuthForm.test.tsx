@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { AuthForm } from "../AuthForm";
+import { AuthForm } from "./AuthForm";
 
 describe("AuthForm", () => {
   it("submits register data when the email is within the stud.noroff.no domain", async () => {

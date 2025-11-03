@@ -93,6 +93,16 @@ export function AuthForm(props: AuthFormProps) {
     formState: { errors, isSubmitting },
   } = form;
 
+  // Narrow error types to avoid union property access issues
+  const loginErrors =
+    props.mode === "login"
+      ? (errors as import("react-hook-form").FieldErrors<LoginFormValues>)
+      : null;
+  const registerErrors =
+    props.mode === "register"
+      ? (errors as import("react-hook-form").FieldErrors<RegisterFormValues>)
+      : null;
+
   useEffect(() => {
     reset(defaults);
   }, [defaults, reset]);
@@ -155,17 +165,19 @@ export function AuthForm(props: AuthFormProps) {
           <Input
             id="auth-name"
             autoComplete="name"
-            aria-invalid={errors.name ? "true" : "false"}
-            aria-describedby={errors.name ? "auth-name-error" : undefined}
+            aria-invalid={registerErrors?.name ? "true" : "false"}
+            aria-describedby={
+              registerErrors?.name ? "auth-name-error" : undefined
+            }
             {...register("name" as const)}
           />
-          {errors.name ? (
+          {registerErrors?.name ? (
             <p
               id="auth-name-error"
               className="text-sm text-destructive"
               role="alert"
             >
-              {errors.name.message as string}
+              {registerErrors.name.message as string}
             </p>
           ) : null}
         </div>
@@ -178,7 +190,9 @@ export function AuthForm(props: AuthFormProps) {
           type="email"
           autoComplete="email"
           placeholder={props.mode === "register" ? "you@stud.noroff.no" : ""}
-          aria-invalid={errors.email ? "true" : "false"}
+          aria-invalid={
+            (registerErrors ?? loginErrors)?.email ? "true" : "false"
+          }
           aria-describedby={emailAriaDescribedBy}
           {...register("email" as const)}
         />
@@ -206,8 +220,14 @@ export function AuthForm(props: AuthFormProps) {
           autoComplete={
             props.mode === "login" ? "current-password" : "new-password"
           }
-          aria-invalid={errors.password ? "true" : "false"}
-          aria-describedby={errors.password ? "auth-password-error" : undefined}
+          aria-invalid={
+            (registerErrors ?? loginErrors)?.password ? "true" : "false"
+          }
+          aria-describedby={
+            (registerErrors ?? loginErrors)?.password
+              ? "auth-password-error"
+              : undefined
+          }
           {...register("password" as const)}
         />
         {errors.password ? (
@@ -228,6 +248,7 @@ export function AuthForm(props: AuthFormProps) {
           render={({ field }) => {
             const checkboxId = "auth-venueManager";
             const value = lockVenueManager ? true : (field.value ?? false);
+            const venueManagerError = registerErrors?.venueManager;
             return (
               <div className="flex items-center space-x-2">
                 <Checkbox
@@ -238,7 +259,7 @@ export function AuthForm(props: AuthFormProps) {
                   }
                   onBlur={field.onBlur}
                   aria-labelledby="auth-venueManager-label"
-                  aria-invalid={errors.venueManager ? "true" : "false"}
+                  aria-invalid={venueManagerError ? "true" : "false"}
                   disabled={lockVenueManager}
                 />
                 <Label id="auth-venueManager-label" htmlFor={checkboxId}>
