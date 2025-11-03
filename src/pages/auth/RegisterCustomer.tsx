@@ -1,0 +1,69 @@
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { AuthForm, type RegisterFormValues } from "@/components/forms/AuthForm";
+import { useAuth } from "@/features/auth/store";
+import { getErrorMessage } from "@/helpers/errorMessageHelper";
+
+export default function RegisterCustomer() {
+  const navigate = useNavigate();
+  const { register: registerUser, loading } = useAuth();
+
+  async function handleRegister(values: RegisterFormValues) {
+    try {
+      await registerUser({ ...values, venueManager: false });
+      toast.success("Account created. Please log in.");
+      navigate("/login", { replace: true });
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+      throw err;
+    }
+  }
+
+  return (
+    <main className="mx-auto flex w-full max-w-xl flex-col gap-6 px-4 py-10">
+      <Card>
+        <CardHeader>
+          <CardTitle>Create your Holidaze account</CardTitle>
+          <CardDescription>
+            Sign up with your stud.noroff.no email to book venues and manage
+            your trips.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <AuthForm
+            mode="register"
+            submitLabel="Create customer account"
+            loading={loading}
+            showVenueManagerToggle={false}
+            defaultValues={{ venueManager: false }}
+            onSubmit={handleRegister}
+          />
+          <p className="text-sm text-muted-foreground">
+            Ready to manage venues?{" "}
+            <Link
+              className="text-primary underline"
+              to="/auth/register/manager"
+            >
+              Register as a venue manager
+            </Link>
+            .
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Already have an account?{" "}
+            <Link className="text-primary underline" to="/login">
+              Sign in
+            </Link>
+            .
+          </p>
+        </CardContent>
+      </Card>
+    </main>
+  );
+}
