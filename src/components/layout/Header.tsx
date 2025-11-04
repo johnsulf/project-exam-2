@@ -116,7 +116,7 @@ export function Header() {
                 {isManager && (
                   <SheetClose asChild>
                     <NavLink to={routes.manage} className={navLinkClass}>
-                      Manage
+                      Manage Venues
                     </NavLink>
                   </SheetClose>
                 )}
