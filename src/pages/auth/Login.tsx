@@ -3,6 +3,7 @@ import { useLocation, useNavigate, type Location } from "react-router-dom";
 import { AuthDialog } from "@/features/auth/AuthDialog";
 import { useAuth } from "@/features/auth/store";
 import { resolveDestination } from "@/features/auth/returnTo";
+import { routes } from "@/router/routes";
 
 type LocationState = {
   from?:
@@ -22,7 +23,10 @@ export default function Login() {
     [location.state],
   );
 
-  const destination = useMemo(() => resolveDestination(from) ?? "/", [from]);
+  const destination = useMemo(
+    () => resolveDestination(from) ?? routes.home,
+    [from],
+  );
 
   useEffect(() => {
     if (token) {
@@ -35,7 +39,7 @@ export default function Login() {
       if (token) {
         navigate(destination, { replace: true });
       } else {
-        navigate("/", { replace: true });
+        navigate(routes.home, { replace: true });
       }
     }
   }, [open, token, destination, navigate]);

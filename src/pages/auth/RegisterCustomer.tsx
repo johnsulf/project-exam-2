@@ -10,6 +10,7 @@ import {
 import { AuthForm, type RegisterFormValues } from "@/components/forms/AuthForm";
 import { useAuth } from "@/features/auth/store";
 import { getErrorMessage } from "@/helpers/errorMessageHelper";
+import { routes } from "@/router/routes";
 
 export default function RegisterCustomer() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ export default function RegisterCustomer() {
     try {
       await registerUser({ ...values, venueManager: false });
       toast.success("Account created. Please log in.");
-      navigate("/login", { replace: true });
+      navigate(routes.auth.login, { replace: true });
     } catch (err) {
       toast.error(getErrorMessage(err));
       throw err;
@@ -49,7 +50,7 @@ export default function RegisterCustomer() {
             Ready to manage venues?{" "}
             <Link
               className="text-primary underline"
-              to="/auth/register/manager"
+              to={routes.auth.registerManager}
             >
               Register as a venue manager
             </Link>
@@ -57,7 +58,7 @@ export default function RegisterCustomer() {
           </p>
           <p className="text-sm text-muted-foreground">
             Already have an account?{" "}
-            <Link className="text-primary underline" to="/login">
+            <Link className="text-primary underline" to={routes.auth.login}>
               Sign in
             </Link>
             .

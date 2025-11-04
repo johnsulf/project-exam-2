@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { routes } from "@/router/routes";
 
 export function ProfileMenu() {
   const { profile, signOut } = useAuth();
@@ -38,11 +39,11 @@ export function ProfileMenu() {
           {profile?.email}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onSelect={() => nav("/profile")}>
+        <DropdownMenuItem onSelect={() => nav(routes.profile)}>
           Profile
         </DropdownMenuItem>
         {profile?.venueManager && (
-          <DropdownMenuItem onSelect={() => nav("/manage")}>
+          <DropdownMenuItem onSelect={() => nav(routes.manage)}>
             Manage venues
           </DropdownMenuItem>
         )}
@@ -51,7 +52,7 @@ export function ProfileMenu() {
           className="text-destructive focus:text-destructive"
           onSelect={() => {
             signOut();
-            nav("/");
+            nav(routes.home);
           }}
         >
           Sign out

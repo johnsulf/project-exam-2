@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, type PropsWithChildren } from "react";
 import { useAuth } from "@/features/auth/store";
 import { router } from "@/router/router";
 import { getErrorMessage } from "@/helpers/errorMessageHelper";
+import { routes } from "@/router/routes";
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const { token, refreshProfile, signOut, loading, error } = useAuth();
@@ -37,7 +38,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
         const message = getErrorMessage(err);
         setStatusError(message);
         signOut();
-        router.navigate("/login");
+        router.navigate(routes.auth.login);
       } finally {
         if (!cancelled) {
           setInitializing(false);

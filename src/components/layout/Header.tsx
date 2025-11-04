@@ -1,4 +1,3 @@
-// src/components/layout/Header.tsx
 import { Link, NavLink, useLocation, type Location } from "react-router-dom";
 import Logo from "@/assets/Logo.svg";
 import {
@@ -19,6 +18,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { routes } from "@/router/routes";
 
 export function Header() {
   const { token, profile } = useAuth();
@@ -42,7 +42,7 @@ export function Header() {
         <section className="flex items-center gap-3">
           {/* Logo */}
           <NavLink
-            to="/"
+            to={routes.home}
             className="flex items-center gap-2 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-primary"
             aria-label="Holidaze home"
           >
@@ -67,14 +67,14 @@ export function Header() {
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
-                    <NavLink to="/venues">Venues</NavLink>
+                    <NavLink to={routes.venues}>Venues</NavLink>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
                 {isManager && (
                   <NavigationMenuItem>
                     <NavigationMenuLink asChild>
-                      <NavLink to="/manage">Manage</NavLink>
+                      <NavLink to={routes.manage}>Manage</NavLink>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                 )}
@@ -109,20 +109,20 @@ export function Header() {
                   Mobile navigation
                 </span>
                 <SheetClose asChild>
-                  <NavLink to="/venues" className={navLinkClass}>
+                  <NavLink to={routes.venues} className={navLinkClass}>
                     Venues
                   </NavLink>
                 </SheetClose>
                 {isManager && (
                   <SheetClose asChild>
-                    <NavLink to="/manage" className={navLinkClass}>
+                    <NavLink to={routes.manage} className={navLinkClass}>
                       Manage
                     </NavLink>
                   </SheetClose>
                 )}
                 {token ? (
                   <SheetClose asChild>
-                    <NavLink to="/profile" className={navLinkClass}>
+                    <NavLink to={routes.profile} className={navLinkClass}>
                       Profile
                     </NavLink>
                   </SheetClose>
@@ -133,7 +133,7 @@ export function Header() {
                       className="mt-2 justify-start"
                       asChild
                     >
-                      <Link to="/login" state={{ from: fromState }}>
+                      <Link to={routes.auth.login} state={{ from: fromState }}>
                         <User className="mr-2 h-4 w-4" aria-hidden="true" />
                         Sign in
                       </Link>
@@ -152,7 +152,7 @@ export function Header() {
               aria-label="Sign in or register"
               asChild
             >
-              <Link to="/login" state={{ from: fromState }}>
+              <Link to={routes.auth.login} state={{ from: fromState }}>
                 <User className="mr-2 h-4 w-4" aria-hidden="true" /> Sign in
               </Link>
             </Button>

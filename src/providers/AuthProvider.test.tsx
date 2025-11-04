@@ -2,6 +2,7 @@ import { describe, expect, it, vi, beforeEach } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { AuthProvider } from "./AuthProvider";
+import { routes } from "@/router/routes";
 
 const mockNavigate = vi.fn();
 
@@ -68,7 +69,7 @@ describe("AuthProvider", () => {
     await waitFor(() => {
       expect(signOut).toHaveBeenCalledTimes(1);
     });
-    expect(mockNavigate).toHaveBeenCalledWith("/login");
+    expect(mockNavigate).toHaveBeenCalledWith(routes.auth.login);
     expect(screen.getByTestId("auth-error")).toHaveTextContent(/bad token/i);
   });
 });

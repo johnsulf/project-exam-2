@@ -1,6 +1,7 @@
 import { Navigate, Outlet, useLocation, type Location } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "./store";
+import { routes } from "@/router/routes";
 
 const managerAccessNotified = { current: false };
 
@@ -13,7 +14,7 @@ export function RequireManager() {
     const from =
       (loc.state as { from?: Location | string } | null | undefined)?.from ??
       loc;
-    return <Navigate to="/login" replace state={{ from }} />;
+    return <Navigate to={routes.auth.login} replace state={{ from }} />;
   }
 
   // 2) While the store is figuring itself out (e.g., after refresh)
@@ -29,7 +30,7 @@ export function RequireManager() {
       toast.error("Manager access required");
       managerAccessNotified.current = true;
     }
-    return <Navigate to="/profile" replace />;
+    return <Navigate to={routes.profile} replace />;
   }
 
   // 4) Authorized

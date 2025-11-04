@@ -4,11 +4,12 @@ import RouteError from "@/components/errors/RouteError";
 import { lazy } from "react";
 import { RequireAuth } from "@/features/auth/RequireAuth";
 import { RequireManager } from "@/features/auth/RequireManager";
+import { routes } from "./routes";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Venues = lazy(() => import("@/pages/Venues"));
 const VenueDetail = lazy(() => import("@/pages/VenueDetail"));
-const Login = lazy(() => import("@/pages/Login"));
+const Login = lazy(() => import("@/pages/auth/Login"));
 const RegisterCustomer = lazy(() => import("@/pages/auth/RegisterCustomer"));
 const RegisterManager = lazy(() => import("@/pages/auth/RegisterManager"));
 const Profile = lazy(() => import("@/pages/Profile"));
@@ -26,6 +27,8 @@ const ManageVenueDetail = lazy(
 );
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
+const toRelative = (path: string) => path.replace(/^\//, "");
+
 export const router = createBrowserRouter(
   [
     {
@@ -34,17 +37,23 @@ export const router = createBrowserRouter(
       errorElement: <RouteError />,
       children: [
         { index: true, element: <Home /> },
-        { path: "venues", element: <Venues /> },
-        { path: "venues/:id", element: <VenueDetail /> },
-        { path: "login", element: <Login /> },
-        { path: "auth/register", element: <RegisterCustomer /> },
-        { path: "auth/register/manager", element: <RegisterManager /> },
+        { path: toRelative(routes.venues), element: <Venues /> },
+        { path: toRelative(routes.venue()), element: <VenueDetail /> },
+        { path: toRelative(routes.auth.login), element: <Login /> },
+        {
+          path: toRelative(routes.auth.register),
+          element: <RegisterCustomer />,
+        },
+        {
+          path: toRelative(routes.auth.registerManager),
+          element: <RegisterManager />,
+        },
 
         // Signed-in only
         {
           element: <RequireAuth />,
           children: [
-            { path: "profile", element: <Profile /> },
+            { path: toRelative(routes.profile), element: <Profile /> },
 
             // Manager-only
             {
