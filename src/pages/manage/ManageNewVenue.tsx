@@ -2,7 +2,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { type TVenueCreate } from "@/types/schemas";
 import { useCreateVenue } from "@/features/manager/hooks";
 import { Button } from "@/components/ui/button";
-import { VenueForm } from "@/features/manager/VenueForm";
+import { VenueForm } from "@/components/forms/VenueForm";
 
 export default function ManageNewVenue() {
   const navigate = useNavigate();

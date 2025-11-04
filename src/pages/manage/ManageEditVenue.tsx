@@ -4,7 +4,7 @@ import { type TVenueCreate } from "@/types/schemas";
 import { useUpdateVenue } from "@/features/manager/hooks";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { VenueForm, venueToFormValues } from "@/features/manager/VenueForm";
+import { VenueForm, venueToFormValues } from "@/components/forms/VenueForm";
 
 export default function ManageEditVenue() {
   const { id } = useParams<{ id: string }>();

@@ -1,6 +1,12 @@
 import { useEffect, useMemo, useRef } from "react";
 import type { ReactNode } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import {
+  useFieldArray,
+  useForm,
+  type FieldErrors,
+  type FieldError as RHFFieldError,
+  type Resolver,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -102,7 +108,7 @@ function sanitizeVenueValues(values: TVenueCreate): TVenueCreate {
   };
 }
 
-function isFieldError(value: unknown): value is FieldError {
+function isFieldError(value: unknown): value is RHFFieldError {
   return (
     !!value &&
     typeof value === "object" &&
@@ -183,9 +189,8 @@ export function VenueForm({
     () => resolveVenueDefaults(defaultValues),
     [defaultValues],
   );
-
   const f = useForm<TVenueCreate>({
-    resolver: zodResolver(VenueCreate),
+    resolver: zodResolver(VenueCreate) as Resolver<TVenueCreate>,
     defaultValues: resolvedDefaults,
     mode: "onBlur",
   });
@@ -287,47 +292,17 @@ export function VenueForm({
 
               <Field data-invalid={!!errors.maxGuests}>
                 <FieldLabel htmlFor="maxGuests">Max guests</FieldLabel>
-                <InputGroup>
-                  <InputGroupInput
-                    id="maxGuests"
-                    type="number"
-                    min={1}
-                    max={100}
-                    {...f.register("maxGuests", { valueAsNumber: true })}
-                    aria-invalid={!!errors.maxGuests}
-                    aria-describedby={
-                      errors.maxGuests ? "maxGuests-error" : undefined
-                    }
-                  />
-                  <InputGroupAddon>
-                    <InputGroupButton
-                      size="icon-xs"
-                      onClick={() =>
-                        f.setValue(
-                          "maxGuests",
-                          Math.max(1, (f.getValues().maxGuests ?? 1) - 1),
-                          { shouldDirty: true },
-                        )
-                      }
-                      aria-label="Decrease guests"
-                    >
-                      –
-                    </InputGroupButton>
-                    <InputGroupButton
-                      size="icon-xs"
-                      onClick={() =>
-                        f.setValue(
-                          "maxGuests",
-                          Math.min(100, (f.getValues().maxGuests ?? 1) + 1),
-                          { shouldDirty: true },
-                        )
-                      }
-                      aria-label="Increase guests"
-                    >
-                      +
-                    </InputGroupButton>
-                  </InputGroupAddon>
-                </InputGroup>
+                <Input
+                  id="maxGuests"
+                  type="number"
+                  min={1}
+                  max={100}
+                  {...f.register("maxGuests", { valueAsNumber: true })}
+                  aria-invalid={!!errors.maxGuests}
+                  aria-describedby={
+                    errors.maxGuests ? "maxGuests-error" : undefined
+                  }
+                />
                 <FieldDescription>
                   Maximum number of guests allowed.
                 </FieldDescription>
