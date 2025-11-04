@@ -10,12 +10,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { routes } from "@/router/routes";
+import { User } from "lucide-react";
 
 export function ProfileMenu() {
   const { profile, signOut } = useAuth();
   const nav = useNavigate();
-  const initials = profile?.name?.[0]?.toUpperCase() ?? "U";
-  const accountLabel = profile?.name || profile?.email || "your account";
 
   return (
     <DropdownMenu>
@@ -24,10 +23,10 @@ export function ProfileMenu() {
           variant="outline"
           size="icon"
           className="rounded-xl"
-          aria-label={`Open profile menu for ${accountLabel}`}
+          aria-label="Open profile menu"
           aria-haspopup="menu"
         >
-          <span className="font-semibold">{initials}</span>
+          <User />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -36,7 +35,7 @@ export function ProfileMenu() {
         aria-label="Profile options"
       >
         <DropdownMenuLabel className="truncate">
-          {profile?.email}
+          {profile?.name}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={() => nav(routes.profile)}>
