@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { AuthProvider } from "./AuthProvider";
 import { routes } from "@/router/routes";
 
-const mockNavigate = vi.fn();
+const mockNavigate = vi.hoisted(() => vi.fn());
 
 vi.mock("@/router/router", () => ({
   router: {

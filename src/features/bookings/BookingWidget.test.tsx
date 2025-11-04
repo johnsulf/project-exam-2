@@ -3,8 +3,9 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import type { DateRange } from "react-day-picker";
 import { routes } from "@/router/routes";
 import { BookingWidget } from "./BookingWidget";
+import { toast } from "sonner";
 
-const mockNavigate = vi.fn();
+const mockNavigate = vi.hoisted(() => vi.fn());
 const mockLocation = {
   pathname: "/venues/1",
   search: "",
@@ -16,13 +17,13 @@ const mutateAsync = vi.fn();
 
 const authState = { token: "token" as string | null };
 
-const toast = {
-  error: vi.fn(),
-  success: vi.fn(),
-};
-
 vi.mock("sonner", () => ({
-  toast,
+  toast: {
+    error: vi.fn(),
+    success: vi.fn(),
+    message: vi.fn(),
+    dismiss: vi.fn(),
+  },
 }));
 
 vi.mock("@/components/ui/calendar", () => ({
@@ -61,10 +62,7 @@ vi.mock("react-router-dom", async () => {
 
 describe("BookingWidget", () => {
   beforeEach(() => {
-    mutateAsync.mockReset();
-    toast.error.mockReset();
-    toast.success.mockReset();
-    mockNavigate.mockReset();
+    vi.clearAllMocks();
     authState.token = "token";
   });
 
