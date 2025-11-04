@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build && cp dist/index.html dist/404.html",
     "test": "vitest",
-    "test:e2e": "node ./scripts/run-e2e.mjs",
+    "test:e2e": "npx playwright test",
     "lint": "eslint .",
     "format": "prettier -w .",
     "preview": "vite preview",
