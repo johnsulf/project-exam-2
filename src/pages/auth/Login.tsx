@@ -1,8 +1,22 @@
-import { useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate, type Location } from "react-router-dom";
-import { AuthDialog } from "@/features/auth/AuthDialog";
+import { useEffect, useMemo } from "react";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  type Location,
+} from "react-router-dom";
+import { toast } from "sonner";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { AuthForm, type LoginFormValues } from "@/components/forms/AuthForm";
 import { useAuth } from "@/features/auth/store";
 import { resolveDestination } from "@/features/auth/returnTo";
+import { getErrorMessage } from "@/helpers/errorMessageHelper";
 import { routes } from "@/router/routes";
 
 type LocationState = {
@@ -13,8 +27,7 @@ type LocationState = {
 };
 
 export default function Login() {
-  const [open, setOpen] = useState(true);
-  const { token } = useAuth();
+  const { signIn, loading, token } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -34,15 +47,52 @@ export default function Login() {
     }
   }, [token, destination, navigate]);
 
-  useEffect(() => {
-    if (!open) {
-      if (token) {
-        navigate(destination, { replace: true });
-      } else {
-        navigate(routes.home, { replace: true });
-      }
+  async function handleLogin(values: LoginFormValues) {
+    try {
+      await signIn(values.email, values.password);
+      toast.success("Logged in");
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+      throw err;
     }
-  }, [open, token, destination, navigate]);
+  }
 
-  return <AuthDialog open={open} onOpenChange={setOpen} />;
+  return (
+    <main className="mx-auto flex w-full max-w-xl flex-col gap-6 px-4 py-10">
+      <Card>
+        <CardHeader>
+          <CardTitle>Welcome back</CardTitle>
+          <CardDescription>
+            Sign in to manage bookings, keep track of your trips, and discover
+            new venues.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <AuthForm
+            mode="login"
+            submitLabel="Sign in"
+            loading={loading}
+            onSubmit={handleLogin}
+          />
+          <p className="text-sm text-muted-foreground">
+            Don&apos;t have an account?{" "}
+            <Link className="text-primary underline" to={routes.auth.register}>
+              Register now
+            </Link>
+            .
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Ready to manage venues?{" "}
+            <Link
+              className="text-primary underline"
+              to={routes.auth.registerManager}
+            >
+              Register as a venue manager
+            </Link>
+            .
+          </p>
+        </CardContent>
+      </Card>
+    </main>
+  );
 }
