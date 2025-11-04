@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "./store";
+import { routes } from "@/router/routes";
 
 export function RequireAuth() {
   const { token } = useAuth();
@@ -7,6 +8,6 @@ export function RequireAuth() {
   return token ? (
     <Outlet />
   ) : (
-    <Navigate to="/login" replace state={{ from: loc }} />
+    <Navigate to={routes.auth.login} replace state={{ from: loc }} />
   );
 }

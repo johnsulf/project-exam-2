@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { renderToString } from "react-dom/server";
 import { toast } from "sonner";
+import { routes } from "@/router/routes";
 
 const mockNavigate = vi.fn();
 
@@ -60,7 +61,7 @@ describe("RequireManager", () => {
 
     expect(mockNavigate).toHaveBeenCalled();
     const props = mockNavigate.mock.calls[0][0] as { to: string };
-    expect(props.to).toBe("/profile");
+    expect(props.to).toBe(routes.profile);
     expect(toast.error).toHaveBeenCalledWith("Manager access required");
   });
 });

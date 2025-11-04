@@ -13,6 +13,7 @@ import { formatMoney } from "@/lib/money";
 import { useAuth } from "@/features/auth/store";
 import { useCreateBooking } from "@/features/venues/hooks";
 import { useLocation, useNavigate } from "react-router-dom";
+import { routes } from "@/router/routes";
 
 type Props = {
   venueId: string;
@@ -44,7 +45,7 @@ export function BookingWidget({
 
   async function submit() {
     if (!token) {
-      navigate("/login", { state: { from: location } });
+      navigate(routes.auth.login, { state: { from: location } });
       return;
     }
     if (!range?.from || !range?.to) {
