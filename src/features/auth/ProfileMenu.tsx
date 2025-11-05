@@ -20,26 +20,35 @@ export function ProfileMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="outline"
-          size="icon"
+          variant="secondary"
+          size="lg"
           className="rounded-xl"
           aria-label="Open profile menu"
           aria-haspopup="menu"
         >
           <User />
+          Profile
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="w-56"
+        className="px-4 py-2"
         aria-label="Profile options"
       >
         <DropdownMenuLabel className="truncate">
-          {profile?.name}
+          <div className="flex my-2">
+            <p>{profile?.name}</p>
+            {profile?.venueManager && (
+              <span className="ml-2 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                Venue Manager
+              </span>
+            )}
+          </div>
+          <p className="text-xs text-muted-foreground">{profile?.email}</p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={() => nav(routes.profile)}>
-          Profile
+          Go to Profile
         </DropdownMenuItem>
         {profile?.venueManager && (
           <DropdownMenuItem onSelect={() => nav(routes.manage)}>

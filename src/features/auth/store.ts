@@ -97,6 +97,7 @@ export const useAuth = create<AuthState>()(
             password,
             venueManager: !!venueManager,
           });
+          await get().signIn(email, password);
         } catch (e: unknown) {
           set({
             error: e instanceof Error ? e.message : "Registration failed",

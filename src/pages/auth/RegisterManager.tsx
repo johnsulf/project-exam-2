@@ -19,8 +19,8 @@ export default function RegisterManager() {
   async function handleRegister(values: RegisterFormValues) {
     try {
       await registerUser({ ...values, venueManager: true });
-      toast.success("Manager account created. Please log in.");
-      navigate(routes.auth.login, { replace: true });
+      toast.success("Manager account created — you're all set!");
+      navigate(routes.home, { replace: true });
     } catch (err) {
       toast.error(getErrorMessage(err));
       throw err;
