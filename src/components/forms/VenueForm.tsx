@@ -22,6 +22,7 @@ import {
   FieldLegend,
 } from "@/components/ui/field";
 import { Switch } from "@/components/ui/switch";
+import { Spinner } from "@/components/ui/spinner";
 import { VenueCreate, type TVenue, type TVenueCreate } from "@/types/schemas";
 
 const BASE_DEFAULTS: TVenueCreate = {
@@ -583,7 +584,13 @@ export function VenueForm({
           </CardHeader>
           <CardContent className="space-y-2">
             {secondaryAction}
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isSubmitting}
+              aria-busy={isSubmitting}
+            >
+              {isSubmitting && <Spinner className="mr-2" aria-hidden="true" />}
               {isSubmitting ? (pendingLabel ?? submitLabel) : submitLabel}
             </Button>
           </CardContent>
@@ -595,7 +602,9 @@ export function VenueForm({
           type="submit"
           className="w-full sm:w-auto"
           disabled={isSubmitting}
+          aria-busy={isSubmitting}
         >
+          {isSubmitting && <Spinner className="mr-2" aria-hidden="true" />}
           {isSubmitting ? (pendingLabel ?? submitLabel) : submitLabel}
         </Button>
       </div>

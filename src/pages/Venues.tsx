@@ -161,7 +161,7 @@ export default function Venues() {
 
   return (
     <>
-      <VenuesSearchBar />
+      <VenuesSearchBar loading={isFetching} />
       <ActiveFilters />
 
       {/* Result header */}

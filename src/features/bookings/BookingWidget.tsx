@@ -14,6 +14,7 @@ import { useAuth } from "@/features/auth/store";
 import { useCreateBooking } from "@/features/venues/hooks";
 import { useLocation, useNavigate } from "react-router-dom";
 import { routes } from "@/router/routes";
+import { Spinner } from "@/components/ui/spinner";
 
 type Props = {
   venueId: string;
@@ -156,7 +157,9 @@ export function BookingWidget({
         className="w-full"
         onClick={submit}
         disabled={isPending || (!!token && (!range?.from || !range?.to))}
+        aria-busy={isPending}
       >
+        {token && isPending && <Spinner className="mr-2" aria-hidden="true" />}
         {token ? (isPending ? "Booking…" : "Book now") : "Sign in to book"}
       </Button>
     </section>

@@ -10,6 +10,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function ManageDeleteVenue() {
   const { id } = useParams<{ id: string }>();
@@ -56,7 +57,13 @@ export default function ManageDeleteVenue() {
           <Button variant="outline" asChild>
             <Link to="/manage">Cancel</Link>
           </Button>
-          <Button variant="destructive" onClick={onDelete} disabled={isPending}>
+          <Button
+            variant="destructive"
+            onClick={onDelete}
+            disabled={isPending}
+            aria-busy={isPending}
+          >
+            {isPending && <Spinner className="mr-2" aria-hidden="true" />}
             {isPending ? "Deleting…" : "Delete"}
           </Button>
         </CardFooter>

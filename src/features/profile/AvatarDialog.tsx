@@ -17,6 +17,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useUpdateProfile } from "./hooks";
 import { getErrorMessage } from "@/lib/errors";
+import { Spinner } from "@/components/ui/spinner";
 
 const schema = z.object({
   url: z.string().url("Enter a valid image URL (https://...)"),
@@ -126,7 +127,12 @@ export function AvatarDialog({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isPending || !f.formState.isValid}>
+            <Button
+              type="submit"
+              disabled={isPending || !f.formState.isValid}
+              aria-busy={isPending}
+            >
+              {isPending && <Spinner className="mr-2" aria-hidden="true" />}
               {isPending ? "Saving…" : "Save"}
             </Button>
           </DialogFooter>

@@ -21,12 +21,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { Spinner } from "@/components/ui/spinner";
 
 type Props = {
   redirectTo?: string;
+  loading?: boolean;
 };
 
-export function VenuesSearchBar({ redirectTo }: Props) {
+export function VenuesSearchBar({ redirectTo, loading = false }: Props) {
   const navigate = useNavigate();
   const [urlParams, setUrlParams] = useSearchParams();
   const [datesOpen, setDatesOpen] = React.useState(false);
@@ -315,8 +317,17 @@ export function VenuesSearchBar({ redirectTo }: Props) {
                 {renderGuestField()}
                 {renderDateField(undefined, "w-full")}
                 {renderFiltersField()}
-                <Button type="submit" className="w-full">
-                  <Search className="size-4 mr-2" />
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={loading}
+                  aria-busy={loading}
+                >
+                  {loading ? (
+                    <Spinner className="mr-2" />
+                  ) : (
+                    <Search className="size-4 mr-2" />
+                  )}
                   Apply search
                 </Button>
               </form>
@@ -336,8 +347,17 @@ export function VenuesSearchBar({ redirectTo }: Props) {
         {renderDateField("md:col-span-1 lg:col-auto", "md:w-full lg:w-[240px]")}
         {renderFiltersField("md:col-span-1 lg:col-auto")}
         <div className="md:col-span-2 lg:col-auto lg:justify-self-end">
-          <Button type="submit" className="w-full md:w-full lg:w-auto">
-            <Search className="size-4 mr-2" />
+          <Button
+            type="submit"
+            className="w-full md:w-full lg:w-auto"
+            disabled={loading}
+            aria-busy={loading}
+          >
+            {loading ? (
+              <Spinner className="mr-2" />
+            ) : (
+              <Search className="size-4 mr-2" />
+            )}
             Search
           </Button>
         </div>
