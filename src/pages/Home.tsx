@@ -66,7 +66,7 @@ export default function Home() {
             Search thousands of venues world wide
           </p>
         </div>
-        <div className="mx-auto mt-4 max-w-4xl">
+        <div className="mt-4">
           <VenuesSearchBar redirectTo="/venues" />
         </div>
       </section>
