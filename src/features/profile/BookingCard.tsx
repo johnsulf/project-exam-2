@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { formatDateRange, nightsBetween } from "@/lib/date";
@@ -8,9 +9,17 @@ type Props = {
   dateTo: string;
   guests: number;
   venue?: { id: string; name: string; media?: { url: string; alt?: string }[] };
+  children?: ReactNode;
 };
 
-export function BookingCard({ id, dateFrom, dateTo, guests, venue }: Props) {
+export function BookingCard({
+  id,
+  dateFrom,
+  dateTo,
+  guests,
+  venue,
+  children,
+}: Props) {
   const vId = venue?.id;
   const vName = venue?.name ?? "Venue";
   const img = venue?.media?.[0]?.url;
@@ -68,6 +77,9 @@ export function BookingCard({ id, dateFrom, dateTo, guests, venue }: Props) {
               </Link>
             </div>
           )}
+          {children ? (
+            <div className="pt-3 border-t border-border/70">{children}</div>
+          ) : null}
         </div>
       </div>
     </article>

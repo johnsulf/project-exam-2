@@ -1,5 +1,9 @@
 import { useAuth } from "@/features/auth/store";
-import { useProfile, useProfileBookings } from "@/features/profile/hooks";
+import {
+  useProfile,
+  useProfileBookings,
+  useRateVenue,
+} from "@/features/profile/hooks";
 import { ProfileHeaderSkeleton } from "@/features/profile/ProfileHeaderSkeleton";
 import { AvatarBlock } from "@/features/profile/AvatarBlock";
 import { Badge } from "@/components/ui/badge";
@@ -12,6 +16,10 @@ import { BookingListSkeleton } from "@/features/profile/BookingListSkeleton";
 import { useRouteHeadingFocus } from "@/components/a11y/useRouteHeadingFocus";
 import { ManagerToggle } from "@/features/profile/ManagerToggle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "sonner";
+import { Star } from "lucide-react";
+import { getErrorMessage } from "@/helpers/errorMessageHelper";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function Profile() {
   const { profile: authProfile } = useAuth();
@@ -29,6 +37,11 @@ export default function Profile() {
   const pastBookings = bookingsEnv?.data.past ?? [];
   const [openAvatar, setOpenAvatar] = useState(false);
   const [bookingTab, setBookingTab] = useState<"upcoming" | "past">("upcoming");
+  const [ratedBookings, setRatedBookings] = useState<Record<string, number>>(
+    {},
+  );
+  const [pendingRatingId, setPendingRatingId] = useState<string | null>(null);
+  const rateVenue = useRateVenue(name);
 
   useEffect(() => {
     if (upcomingBookings.length === 0 && pastBookings.length > 0) {
@@ -37,6 +50,38 @@ export default function Profile() {
   }, [upcomingBookings.length, pastBookings.length]);
 
   const h1Ref = useRouteHeadingFocus<HTMLHeadingElement>();
+
+  function handleRate(
+    bookingId: string,
+    venueId: string | undefined,
+    value: number,
+    isOwner: boolean,
+  ) {
+    if (!value || !venueId) return;
+    if (!isOwner) {
+      toast.info("Only venue owners can update the official rating.");
+      return;
+    }
+    setPendingRatingId(bookingId);
+    rateVenue.mutate(
+      { venueId, rating: value },
+      {
+        onSuccess: () => {
+          setRatedBookings((prev) => {
+            const next = { ...prev, [bookingId]: value };
+            return next;
+          });
+          toast.success("Thanks for rating your stay!");
+        },
+        onError: (err) => {
+          toast.error(getErrorMessage(err));
+        },
+        onSettled: () => {
+          setPendingRatingId((prev) => (prev === bookingId ? null : prev));
+        },
+      },
+    );
+  }
 
   if (isLoading) {
     return (
@@ -193,23 +238,112 @@ export default function Profile() {
                 <EmptyBookings message="No earlier bookings yet." />
               ) : (
                 <ul className="grid gap-3">
-                  {pastBookings.map((b) => (
-                    <li key={b.id}>
-                      <BookingCard
-                        id={b.id}
-                        dateFrom={b.dateFrom}
-                        dateTo={b.dateTo}
-                        guests={b.guests}
-                        venue={b.venue}
-                      />
-                    </li>
-                  ))}
+                  {pastBookings.map((b) => {
+                    const venueId = b.venue?.id;
+                    const isOwner = venueId
+                      ? b.venue?.owner?.name === p.name
+                      : false;
+                    const serverRating =
+                      typeof b.venue?.rating === "number" ? b.venue.rating : 0;
+                    const currentRating = ratedBookings[b.id] ?? serverRating;
+                    const displayValue = Math.round(currentRating);
+
+                    let message: string;
+                    if (!venueId) {
+                      message = "Venue no longer available for rating.";
+                    } else if (!isOwner) {
+                      message = "Only the venue owner can update the rating.";
+                    } else if (currentRating) {
+                      message = `Current rating: ${currentRating}/5`;
+                    } else {
+                      message = "Tell guests how this stay went.";
+                    }
+
+                    const disabled =
+                      !venueId ||
+                      !isOwner ||
+                      pendingRatingId === b.id ||
+                      rateVenue.isPending;
+
+                    return (
+                      <li key={b.id}>
+                        <BookingCard
+                          id={b.id}
+                          dateFrom={b.dateFrom}
+                          dateTo={b.dateTo}
+                          guests={b.guests}
+                          venue={b.venue}
+                        >
+                          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                            <div className="text-sm text-muted-foreground">
+                              {message}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <RatingStars
+                                value={displayValue}
+                                onSelect={(value) =>
+                                  handleRate(b.id, venueId, value, isOwner)
+                                }
+                                disabled={disabled}
+                              />
+                              {pendingRatingId === b.id && (
+                                <Spinner
+                                  className="size-4"
+                                  aria-hidden="true"
+                                />
+                              )}
+                            </div>
+                          </div>
+                        </BookingCard>
+                      </li>
+                    );
+                  })}
                 </ul>
               )}
             </TabsContent>
           </Tabs>
         )}
       </section>
+    </div>
+  );
+}
+
+type RatingStarsProps = {
+  value: number;
+  onSelect: (value: number) => void;
+  disabled?: boolean;
+};
+
+function RatingStars({ value, onSelect, disabled }: RatingStarsProps) {
+  const stars = [1, 2, 3, 4, 5];
+
+  return (
+    <div
+      className="flex items-center gap-1"
+      role="radiogroup"
+      aria-label="Rate this venue"
+    >
+      {stars.map((star) => {
+        const selected = value >= star;
+        return (
+          <button
+            key={star}
+            type="button"
+            role="radio"
+            aria-checked={selected}
+            className="rounded-full p-1 text-muted-foreground transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
+            onClick={() => onSelect(star)}
+            disabled={disabled}
+          >
+            <Star
+              className={selected ? "size-5 text-yellow-500" : "size-5"}
+              fill={selected ? "currentColor" : "none"}
+              strokeWidth={selected ? 1.5 : 1.8}
+            />
+            <span className="sr-only">{`Rate ${star} star${star === 1 ? "" : "s"}`}</span>
+          </button>
+        );
+      })}
     </div>
   );
 }

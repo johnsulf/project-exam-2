@@ -4,6 +4,7 @@ import {
   getBookingsByProfile,
   getProfile,
   updateProfile,
+  updateVenue,
 } from "@/lib/endpoints";
 import { useAuth } from "../auth/store";
 import { getErrorMessage } from "@/lib/errors";
@@ -100,4 +101,19 @@ export function useProfileBookings(name?: string) {
   });
   useQueryErrorToast(q, (e) => `Couldn't load bookings: ${getErrorMessage(e)}`);
   return q;
+}
+
+export function useRateVenue(profileName?: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ venueId, rating }: { venueId: string; rating: number }) =>
+      updateVenue(venueId, { rating }),
+    onSuccess: (_, { venueId }) => {
+      if (profileName) {
+        qc.invalidateQueries({ queryKey: qk.bookingsByProfile(profileName) });
+      }
+      qc.invalidateQueries({ queryKey: qk.venue(venueId) });
+      qc.invalidateQueries({ queryKey: qk.venues() });
+    },
+  });
 }
