@@ -10,6 +10,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { Spinner } from "@/components/ui/spinner";
 
 export default function ManageDeleteVenue() {
@@ -19,12 +20,24 @@ export default function ManageDeleteVenue() {
   const { data: venue, isLoading, isError } = useVenue(id);
   const { mutateAsync, isPending } = useDeleteVenue(id!);
 
+  const baseBreadcrumbs = [
+    { label: "Home", to: "/" },
+    { label: "Manage", to: "/manage" },
+    { label: "Delete venue" },
+  ];
+
   if (isLoading) {
-    return <Skeleton className="h-48 w-full rounded-xl" />;
+    return (
+      <div className="space-y-3">
+        <PageBreadcrumbs items={baseBreadcrumbs} />
+        <Skeleton className="h-48 w-full rounded-xl" />
+      </div>
+    );
   }
   if (isError || !venue) {
     return (
       <div className="space-y-3">
+        <PageBreadcrumbs items={baseBreadcrumbs} />
         <h1 className="text-2xl font-semibold">Delete venue</h1>
         <p className="text-destructive">Couldn’t load venue.</p>
         <Button asChild variant="outline">
@@ -41,6 +54,14 @@ export default function ManageDeleteVenue() {
 
   return (
     <div className="max-w-2xl">
+      <PageBreadcrumbs
+        items={[
+          { label: "Home", to: "/" },
+          { label: "Manage", to: "/manage" },
+          { label: venue.name, to: `/manage/${id ?? ""}` },
+          { label: "Delete" },
+        ]}
+      />
       <h1 className="text-2xl font-semibold mb-4">Delete venue</h1>
       <Card>
         <CardHeader>

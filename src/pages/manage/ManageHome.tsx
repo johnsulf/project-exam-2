@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PaginationBar } from "@/features/venues/components/PaginationBar";
 import { useAuth } from "@/features/auth/store";
+import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { useMyVenues } from "@/features/manager/hooks";
 import { ManageVenuesSkeleton } from "@/features/manager/ManageVenuesSkeleton";
 import { Plus } from "lucide-react";
@@ -38,12 +39,21 @@ export default function ManageHome() {
     limit,
   });
 
-  if (isLoading) return <ManageVenuesSkeleton rows={limit} />;
+  const breadcrumbs = [{ label: "Home", to: "/" }, { label: "Manage" }];
+
+  if (isLoading)
+    return (
+      <div className="space-y-4">
+        <PageBreadcrumbs items={breadcrumbs} />
+        <ManageVenuesSkeleton rows={limit} />
+      </div>
+    );
 
   // if query is disabled (no name) or errored
   if (!name || isError || !data) {
     return (
       <div className="space-y-3">
+        <PageBreadcrumbs items={breadcrumbs} />
         <h1 className="text-2xl font-semibold">Manage venues</h1>
         <p className="text-destructive">
           {name ? "Couldn’t load your venues." : "You must be signed in."}
@@ -96,6 +106,7 @@ export default function ManageHome() {
 
   return (
     <div className="space-y-4">
+      <PageBreadcrumbs items={breadcrumbs} />
       <header className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Manage venues</h1>
         <Button asChild>
