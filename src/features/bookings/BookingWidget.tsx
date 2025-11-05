@@ -100,11 +100,17 @@ export function BookingWidget({
         onSelect={setRange}
         numberOfMonths={1}
         disabled={disabledFn}
-        initialFocus
+        className="self-center"
       />
 
       <div className="flex items-center justify-between">
-        <span className="text-sm">Guests</span>
+        <div>
+          <p>Guests</p>
+
+          <p className="text-xs text-muted-foreground">
+            Max guests: {maxGuests}
+          </p>
+        </div>
         <div className="flex items-center gap-2">
           <Button
             type="button"
@@ -153,8 +159,6 @@ export function BookingWidget({
       >
         {token ? (isPending ? "Booking…" : "Book now") : "Sign in to book"}
       </Button>
-
-      <p className="text-xs text-muted-foreground">Max guests: {maxGuests}</p>
     </section>
   );
 }
