@@ -19,7 +19,7 @@ describe("extractErrorMessages", () => {
     };
 
     expect(extractErrorMessages(payload)).toEqual([
-      "name: Name can only use a-Z, 0-9, and _",
+      "Name can only use a-Z, 0-9, and _",
       "email: Email must be valid",
     ]);
   });

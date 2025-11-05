@@ -47,9 +47,10 @@ export function VenueGallery({ media, venueName, className }: Props) {
       {/* Main */}
       <div className="overflow-hidden rounded-xl border">
         <img
+          key={main.url}
           src={main.url}
           alt={main.alt || venueName}
-          className="w-full aspect-[4/3] object-cover"
+          className="w-full aspect-[4/3] object-cover animate-zoom-fade"
         />
       </div>
 
