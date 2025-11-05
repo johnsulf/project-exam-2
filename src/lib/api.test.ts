@@ -19,7 +19,7 @@ describe("extractErrorMessages", () => {
     };
 
     expect(extractErrorMessages(payload)).toEqual([
-      "Name can only use a-Z, 0-9, and _",
+      "name: Name can only use a-Z, 0-9, and _",
       "email: Email must be valid",
     ]);
   });
@@ -55,7 +55,7 @@ describe("getErrorMessage", () => {
     );
 
     expect(getErrorMessage(err)).toBe(
-      "name: Name can only use a-Z, 0-9, and _",
+      "Request failed with status code 400\nname: Name can only use a-Z, 0-9, and _",
     );
   });
 });
