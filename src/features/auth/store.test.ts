@@ -99,6 +99,16 @@ describe("auth store", () => {
 
   it("registers valid users via the API", async () => {
     mockRegisterRequest.mockResolvedValueOnce({ data: { name: "Eve" } });
+    mockLoginRequest.mockResolvedValueOnce({
+      data: { accessToken: "token", name: "Eve" },
+    });
+    mockCreateApiKey.mockResolvedValueOnce({ data: { key: "api-key" } });
+    mockFetchProfile.mockResolvedValueOnce({
+      name: "Eve",
+      email: "eve@stud.noroff.no",
+      venueManager: true,
+    });
+
     const useAuth = await loadStore();
 
     await expect(
@@ -116,6 +126,14 @@ describe("auth store", () => {
       password: "password123",
       venueManager: true,
     });
+    expect(mockLoginRequest).toHaveBeenCalledWith(
+      "eve@stud.noroff.no",
+      "password123",
+    );
+    expect(mockCreateApiKey).toHaveBeenCalledWith("token", "Holidaze Web");
+    expect(mockFetchProfile).toHaveBeenCalledWith("Eve");
+    expect(useAuth.getState().token).toBe("token");
+    expect(useAuth.getState().profile?.email).toBe("eve@stud.noroff.no");
   });
 
   it("exposes sign-out and refresh helpers", async () => {

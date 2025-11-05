@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { getErrorMessage } from "@/helpers/errorMessageHelper";
 import { cn } from "@/lib/utils";
+import { Spinner } from "@/components/ui/spinner";
 
 type BaseProps<T> = {
   className?: string;
@@ -281,7 +282,8 @@ export function AuthForm(props: AuthFormProps) {
         </div>
       ) : null}
 
-      <Button type="submit" className="w-full" disabled={busy}>
+      <Button type="submit" className="w-full" disabled={busy} aria-busy={busy}>
+        {busy && <Spinner className="mr-2" aria-hidden="true" />}
         {busy ? "Please wait…" : (props.submitLabel ?? "Continue")}
       </Button>
     </form>

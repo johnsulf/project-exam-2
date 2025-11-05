@@ -11,9 +11,9 @@ export function ManageVenuesSkeleton({ rows = 5 }: { rows?: number }) {
         <Skeleton className="h-5 w-16" />
       </div>
       <div className="divide-y">
-        {Array.from({ length: rows }).map((_, i) => (
+        {Array.from({ length: rows }).map((_, index) => (
           <div
-            key={i}
+            key={`manage-venue-skeleton-${index}`}
             className="grid grid-cols-[1fr_120px_90px_120px_100px] gap-0 p-3"
           >
             <Skeleton className="h-5 w-64" />

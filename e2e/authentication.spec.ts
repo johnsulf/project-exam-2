@@ -25,8 +25,8 @@ test("Authentication", async ({ page }) => {
   // sign in with valid credentials
   await page
     .getByRole("textbox", { name: "Email" })
-    .fill("erlend.johnsen@stud.noroff.no");
-  await page.getByRole("textbox", { name: "Password" }).fill("Erlend89");
+    .fill("holidaze_customer@stud.noroff.no");
+  await page.getByRole("textbox", { name: "Password" }).fill("XPCmpvt3TYZj6HW");
   await signInButton.click();
 
   // wait a bit for navigation to complete

@@ -1,14 +1,26 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { qk } from "@/lib/queryKeys";
-import { getVenueById, listVenues, createBooking } from "@/lib/endpoints";
+import {
+  getVenueById,
+  listAllVenues,
+  listVenues,
+  createBooking,
+} from "@/lib/endpoints";
 import type { TBookingWithCustomer } from "@/types/schemas";
 import { useQueryErrorToast } from "@/lib/queryToasts";
 import { getErrorMessage } from "@/lib/errors";
 
-export function useVenues(params: Record<string, unknown> = {}) {
+export function useVenues(
+  params: Record<string, unknown> = {},
+  opts: { fetchAllPages?: boolean } = {},
+) {
+  const { fetchAllPages = false } = opts;
   return useQuery({
-    queryKey: qk.venuesPage(params),
-    queryFn: ({ signal }) => listVenues(params, signal),
+    queryKey: qk.venuesPage({ ...params, __fetchAll: fetchAllPages }),
+    queryFn: ({ signal }) =>
+      fetchAllPages
+        ? listAllVenues(params, signal)
+        : listVenues(params, signal),
     placeholderData: (prev) => prev,
   });
 }

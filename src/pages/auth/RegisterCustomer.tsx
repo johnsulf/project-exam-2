@@ -19,8 +19,8 @@ export default function RegisterCustomer() {
   async function handleRegister(values: RegisterFormValues) {
     try {
       await registerUser({ ...values, venueManager: false });
-      toast.success("Account created. Please log in.");
-      navigate(routes.auth.login, { replace: true });
+      toast.success("Account created — welcome to Holidaze!");
+      navigate(routes.home, { replace: true });
     } catch (err) {
       toast.error(getErrorMessage(err));
       throw err;
@@ -28,7 +28,7 @@ export default function RegisterCustomer() {
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-xl flex-col gap-6 px-4 py-10">
+    <main className="mx-auto flex w-full max-w-xl flex-col gap-6 px-4 py-10 animate-fade-in-up">
       <Card>
         <CardHeader>
           <CardTitle>Create your Holidaze account</CardTitle>

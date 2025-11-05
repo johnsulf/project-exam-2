@@ -21,12 +21,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { Spinner } from "@/components/ui/spinner";
 
 type Props = {
   redirectTo?: string;
+  loading?: boolean;
 };
 
-export function VenuesSearchBar({ redirectTo }: Props) {
+export function VenuesSearchBar({ redirectTo, loading = false }: Props) {
   const navigate = useNavigate();
   const [urlParams, setUrlParams] = useSearchParams();
   const [datesOpen, setDatesOpen] = React.useState(false);
@@ -119,6 +121,9 @@ export function VenuesSearchBar({ redirectTo }: Props) {
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     applyToUrl();
+    setMobileSheetOpen(false);
+    setDatesOpen(false);
+    setFiltersOpen(false);
   }
 
   const renderSearchField = (
@@ -295,6 +300,65 @@ export function VenuesSearchBar({ redirectTo }: Props) {
     </div>
   );
 
+  const renderDateInline = () => (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <div className="text-sm font-medium">Dates</div>
+        <Button
+          size="sm"
+          variant="ghost"
+          type="button"
+          onClick={() => setRange(undefined)}
+        >
+          Clear
+        </Button>
+      </div>
+      <Calendar
+        mode="range"
+        numberOfMonths={1}
+        selected={range}
+        onSelect={setRange}
+      />
+    </div>
+  );
+
+  const renderFiltersInline = () => (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <div className="text-sm font-medium">Filters</div>
+        <Button
+          size="sm"
+          variant="ghost"
+          type="button"
+          onClick={() => {
+            setWifi(false);
+            setParking(false);
+            setPets(false);
+            setBreakfast(false);
+          }}
+        >
+          Clear
+        </Button>
+      </div>
+      <div className="space-y-2">
+        {amenityOptions.map(({ key, label, value, setValue }) => (
+          <Label
+            key={key}
+            htmlFor={`filter-${key}`}
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            <Checkbox
+              id={`filter-${key}`}
+              checked={value}
+              onCheckedChange={(checked) => setValue(checked === true)}
+            />
+            {label}
+          </Label>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <div className="rounded-xl border p-3 md:p-4 mb-4 bg-card">
       <div className="md:hidden">
@@ -313,10 +377,19 @@ export function VenuesSearchBar({ redirectTo }: Props) {
               <form onSubmit={onSubmit} className="space-y-4">
                 {renderSearchField()}
                 {renderGuestField()}
-                {renderDateField(undefined, "w-full")}
-                {renderFiltersField()}
-                <Button type="submit" className="w-full">
-                  <Search className="size-4 mr-2" />
+                {renderDateInline()}
+                {renderFiltersInline()}
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={loading}
+                  aria-busy={loading}
+                >
+                  {loading ? (
+                    <Spinner className="mr-2" />
+                  ) : (
+                    <Search className="size-4 mr-2" />
+                  )}
                   Apply search
                 </Button>
               </form>
@@ -336,8 +409,17 @@ export function VenuesSearchBar({ redirectTo }: Props) {
         {renderDateField("md:col-span-1 lg:col-auto", "md:w-full lg:w-[240px]")}
         {renderFiltersField("md:col-span-1 lg:col-auto")}
         <div className="md:col-span-2 lg:col-auto lg:justify-self-end">
-          <Button type="submit" className="w-full md:w-full lg:w-auto">
-            <Search className="size-4 mr-2" />
+          <Button
+            type="submit"
+            className="w-full md:w-full lg:w-auto"
+            disabled={loading}
+            aria-busy={loading}
+          >
+            {loading ? (
+              <Spinner className="mr-2" />
+            ) : (
+              <Search className="size-4 mr-2" />
+            )}
             Search
           </Button>
         </div>

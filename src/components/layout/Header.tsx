@@ -21,8 +21,7 @@ import {
 import { routes } from "@/router/routes";
 
 export function Header() {
-  const { token, profile } = useAuth();
-  const isManager = !!profile?.venueManager;
+  const { token } = useAuth();
 
   const location = useLocation();
   const fromState =
@@ -67,17 +66,14 @@ export function Header() {
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
+                    <NavLink to={routes.home}>Home</NavLink>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
                     <NavLink to={routes.venues}>Venues</NavLink>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
-
-                {isManager && (
-                  <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                      <NavLink to={routes.manage}>Manage</NavLink>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                )}
               </NavigationMenuList>
             </NavigationMenu>
           </nav>
@@ -109,37 +105,15 @@ export function Header() {
                   Mobile navigation
                 </span>
                 <SheetClose asChild>
+                  <NavLink to={routes.home} className={navLinkClass}>
+                    Home
+                  </NavLink>
+                </SheetClose>
+                <SheetClose asChild>
                   <NavLink to={routes.venues} className={navLinkClass}>
                     Venues
                   </NavLink>
                 </SheetClose>
-                {isManager && (
-                  <SheetClose asChild>
-                    <NavLink to={routes.manage} className={navLinkClass}>
-                      Manage Venues
-                    </NavLink>
-                  </SheetClose>
-                )}
-                {token ? (
-                  <SheetClose asChild>
-                    <NavLink to={routes.profile} className={navLinkClass}>
-                      Profile
-                    </NavLink>
-                  </SheetClose>
-                ) : (
-                  <SheetClose asChild>
-                    <Button
-                      variant="secondary"
-                      className="mt-2 justify-start"
-                      asChild
-                    >
-                      <Link to={routes.auth.login} state={{ from: fromState }}>
-                        <User className="mr-2 h-4 w-4" aria-hidden="true" />
-                        Sign in
-                      </Link>
-                    </Button>
-                  </SheetClose>
-                )}
               </nav>
             </SheetContent>
           </Sheet>

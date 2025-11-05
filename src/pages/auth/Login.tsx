@@ -58,7 +58,7 @@ export default function Login() {
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-xl flex-col gap-6 px-4 py-10">
+    <main className="mx-auto flex w-full max-w-xl flex-col gap-6 px-4 py-10 animate-fade-in-up">
       <Card>
         <CardHeader>
           <CardTitle>Welcome back</CardTitle>

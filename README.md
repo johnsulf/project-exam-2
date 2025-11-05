@@ -3,14 +3,17 @@
 [![CI](https://github.com/johnsulf/project-exam-2/actions/workflows/ci.yml/badge.svg)](https://github.com/johnsulf/project-exam-2/actions/workflows/ci.yml)
 [![Pages Deploy](https://github.com/johnsulf/project-exam-2/actions/workflows/pages.yml/badge.svg)](https://github.com/johnsulf/project-exam-2/actions/workflows/pages.yml)
 
-Modern front‑end application scaffold using:
+Holidaze web app – browse venues, manage listings, and handle bookings with an improved search experience, inline availability filtering, and post-stay owner ratings.
 
-- React (with TypeScript)
-- Vite (fast dev + build)
-- Tailwind CSS v4 (utility-first styling)
-- shadcn/ui (accessible component primitives on top of Tailwind)
+Built with:
 
-The goal: a production‑ready, strongly typed, testable app with minimal startup friction. A newcomer should be able to clone, install, and run locally in under 5 minutes.
+- React 19 + TypeScript
+- Vite 5 (fast dev & bundling)
+- Tailwind CSS v4 + shadcn/ui component primitives
+- TanStack Query for data fetching & cache
+- Zustand for client auth/session state
+
+The project is production-leaning: strongly typed, componentised, and ready for CI/CD. Clone, install, and run in under five minutes.
 
 ---
 
@@ -32,8 +35,6 @@ pnpm dev
 
 Then open the printed local URL (usually http://localhost:5173).
 
-If Tailwind or shadcn/ui not yet initialized, follow the notes below.
-
 ---
 
 ## Scripts
@@ -51,54 +52,15 @@ Optional additions you can add later: `pnpm format` (Prettier), `pnpm preview` (
 
 ---
 
-## Stack Details
+## Features
 
-### React + TypeScript
-
-Strong typing, hooks, and modern JSX runtime.
-
-### Vite
-
-Ultra fast dev server, optimized production build, first‑class TS + JSX support.
-
-### Tailwind CSS v4
-
-Utility classes for rapid UI building. v4 introduces simplified config & layering.
-
-Initialization (if not already done):
-
-```bash
-pnpm dlx tailwindcss init -p
-```
-
-Add Tailwind directives in your global stylesheet and ensure the `content` array includes `src/**/*.{ts,tsx,html}`.
-
-### shadcn/ui
-
-Composable, accessible components (Radix + Tailwind). Initialize:
-
-```bash
-pnpm dlx shadcn-ui@latest init
-```
-
-Add components as needed:
-
-```bash
-pnpm dlx shadcn-ui@latest add button card dialog
-```
-
----
-
-## Testing
-
-Vitest + @testing-library/react + jsdom for DOM-centric unit tests.
-Example smoke test lives in `src/` (expand with component tests + hooks tests).
-
-Run tests:
-
-```bash
-pnpm test
-```
+- Venue search with client-side filtering (name, description, and location fields) plus amenity/date filters
+- Mobile bottom-sheet search UI, including inline popovers for dates & filters
+- Venue detail gallery with smooth image transitions
+- Auth flows (sign in, register customer, register manager) with subtle entry animations and spinner feedback
+- Owner dashboard for creating, editing, deleting venues, and managing bookings; responsive cards on mobile
+- Profile view with past/upcoming bookings, avatar editing, and owner-only rating updates
+- Shared UI based on shadcn/ui + Tailwind utility classes
 
 ---
 
@@ -119,6 +81,8 @@ Basic steps (once build + gh-pages workflow configured):
 
 ## Required Project Links (Placeholders)
 
+- Figma overview: <ADD FIGMA LINK>
+- Figma component specs: <ADD FIGMA LINK>
 - Figma: <ADD FIGMA LINK>
 - Style Guide: <ADD STYLE GUIDE LINK>
 - Gantt Chart: <ADD GANTT LINK>
@@ -134,12 +98,13 @@ Keep these updated for examiner & collaborators.
 
 ```
 src/
-  components/        # Reusable UI pieces (may include shadcn/ui wrappers)
-  modules/           # Feature / domain modules
-  hooks/             # Shared React hooks
-  lib/               # Utilities, API clients, config
-  styles/            # Global & design tokens
-  tests/ (optional)  # Additional test organization
+  components/        # Reusable UI (incl. auth forms, layout)
+  features/          # Domain features (venues, bookings, profile, manager)
+  lib/               # API helpers, query keys, utilities
+  pages/             # Route-level React components
+  providers/         # Global context (auth, theme, router)
+  config/            # Runtime configuration
+  index.css          # Tailwind layers + motion utilities
 ```
 
 ---
@@ -173,6 +138,12 @@ If any box fails, open an issue titled "Onboarding friction: <short description>
 - Commits: `feat:`, `fix:`, `chore:`, `refactor:`, `test:`, `docs:`
 - Branches: `feature/<name>`, `fix/<issue-id>`, `chore/<task>`
 - PRs: concise description + screenshots (UI) + test notes
+
+---
+
+## Known Issues
+
+- `pnpm test` currently fails due to an upstream `jsdom`/`parse5` ESM interop bug (`ERR_REQUIRE_ESM`). Pinning jsdom < 27 or waiting for a patched release resolves the problem – keep an eye on the jsdom changelog.
 
 ---
 

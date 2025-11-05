@@ -4,6 +4,7 @@ import {
   getBookingsByProfile,
   getProfile,
   updateProfile,
+  updateVenue,
 } from "@/lib/endpoints";
 import { useAuth } from "../auth/store";
 import { getErrorMessage } from "@/lib/errors";
@@ -11,6 +12,10 @@ import { useQueryErrorToast } from "@/lib/queryToasts";
 import type { Profile } from "@/types/api";
 import type { TBookingWithVenue } from "@/types/schemas";
 
+/**
+ * Fetches and subscribes to profile data for the provided user name.
+ * @param name - Profile name (Noroff username/email prefix). Query is skipped when falsy.
+ */
 export function useProfile(name?: string) {
   const q = useQuery({
     enabled: !!name,
@@ -27,6 +32,10 @@ export function useProfile(name?: string) {
   return q;
 }
 
+/**
+ * Returns a mutation that updates the specified profile and keeps the cache in sync.
+ * @param name - Profile name that should be updated.
+ */
 export function useUpdateProfile(name: string) {
   const qc = useQueryClient();
   const { setProfile } = useAuth.getState();
@@ -52,6 +61,10 @@ type ProfileBookingGroups = {
   past: TBookingWithVenue[];
 };
 
+/**
+ * Fetches bookings grouped into upcoming and past arrays for a profile.
+ * @param name - Profile name whose bookings should be retrieved.
+ */
 export function useProfileBookings(name?: string) {
   const q = useQuery({
     enabled: !!name,
@@ -66,7 +79,6 @@ export function useProfileBookings(name?: string) {
       const past: TBookingWithVenue[] = [];
 
       for (const booking of source) {
-        // Normalize rating so it is always a number as required by TBookingWithVenue
         const normalized: TBookingWithVenue = booking.venue
           ? {
               ...booking,
@@ -100,4 +112,23 @@ export function useProfileBookings(name?: string) {
   });
   useQueryErrorToast(q, (e) => `Couldn't load bookings: ${getErrorMessage(e)}`);
   return q;
+}
+
+/**
+ * Returns a mutation for updating a venue rating. Designed for venue owners.
+ * @param profileName - Optional profile name used to invalidate owner-specific caches.
+ */
+export function useRateVenue(profileName?: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ venueId, rating }: { venueId: string; rating: number }) =>
+      updateVenue(venueId, { rating }),
+    onSuccess: (_, { venueId }) => {
+      if (profileName) {
+        qc.invalidateQueries({ queryKey: qk.bookingsByProfile(profileName) });
+      }
+      qc.invalidateQueries({ queryKey: qk.venue(venueId) });
+      qc.invalidateQueries({ queryKey: qk.venues() });
+    },
+  });
 }

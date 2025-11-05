@@ -4,7 +4,8 @@ import { type TVenueCreate } from "@/types/schemas";
 import { useUpdateVenue } from "@/features/manager/hooks";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { VenueForm, venueToFormValues } from "@/features/manager/VenueForm";
+import { VenueForm, venueToFormValues } from "@/components/forms/VenueForm";
+import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 
 export default function ManageEditVenue() {
   const { id } = useParams<{ id: string }>();
@@ -12,6 +13,12 @@ export default function ManageEditVenue() {
 
   const { data: venue, isLoading, isError } = useVenue(id);
   const { mutateAsync, isPending } = useUpdateVenue(id!);
+
+  const baseBreadcrumbs = [
+    { label: "Home", to: "/" },
+    { label: "Manage", to: "/manage" },
+    { label: "Edit venue" },
+  ];
 
   async function onSubmit(values: TVenueCreate) {
     await mutateAsync(values);
@@ -21,6 +28,7 @@ export default function ManageEditVenue() {
   if (isLoading) {
     return (
       <div className="space-y-6">
+        <PageBreadcrumbs items={baseBreadcrumbs} />
         <Skeleton className="h-8 w-56" />
         <Skeleton className="h-[420px] w-full" />
       </div>
@@ -30,6 +38,7 @@ export default function ManageEditVenue() {
   if (isError || !venue) {
     return (
       <div className="space-y-3">
+        <PageBreadcrumbs items={baseBreadcrumbs} />
         <h1 className="text-2xl font-semibold">Edit venue</h1>
         <p className="text-destructive">Couldn’t load venue.</p>
         <Button asChild variant="outline">
@@ -41,6 +50,14 @@ export default function ManageEditVenue() {
 
   return (
     <div className="space-y-6">
+      <PageBreadcrumbs
+        items={[
+          { label: "Home", to: "/" },
+          { label: "Manage", to: "/manage" },
+          { label: venue.name, to: `/manage/${id ?? ""}` },
+          { label: "Edit" },
+        ]}
+      />
       <header className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Edit venue</h1>
         <Button variant="outline" asChild>

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PaginationBar } from "@/features/venues/components/PaginationBar";
 import { useAuth } from "@/features/auth/store";
+import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { useMyVenues } from "@/features/manager/hooks";
 import { ManageVenuesSkeleton } from "@/features/manager/ManageVenuesSkeleton";
 import { Plus } from "lucide-react";
@@ -38,12 +39,21 @@ export default function ManageHome() {
     limit,
   });
 
-  if (isLoading) return <ManageVenuesSkeleton rows={limit} />;
+  const breadcrumbs = [{ label: "Home", to: "/" }, { label: "Manage" }];
+
+  if (isLoading)
+    return (
+      <div className="space-y-4">
+        <PageBreadcrumbs items={breadcrumbs} />
+        <ManageVenuesSkeleton rows={limit} />
+      </div>
+    );
 
   // if query is disabled (no name) or errored
   if (!name || isError || !data) {
     return (
       <div className="space-y-3">
+        <PageBreadcrumbs items={breadcrumbs} />
         <h1 className="text-2xl font-semibold">Manage venues</h1>
         <p className="text-destructive">
           {name ? "Couldn’t load your venues." : "You must be signed in."}
@@ -96,6 +106,7 @@ export default function ManageHome() {
 
   return (
     <div className="space-y-4">
+      <PageBreadcrumbs items={breadcrumbs} />
       <header className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Manage venues</h1>
         <Button asChild>
@@ -110,7 +121,7 @@ export default function ManageHome() {
         <EmptyState />
       ) : (
         <>
-          <div className="rounded-xl border overflow-hidden">
+          <div className="hidden md:block rounded-xl border overflow-hidden">
             <Table>
               <TableHeader className="bg-muted/30">
                 <TableRow>
@@ -169,6 +180,73 @@ export default function ManageHome() {
                 ))}
               </TableBody>
             </Table>
+          </div>
+
+          <div className="space-y-3 md:hidden">
+            {venues.map((v) => (
+              <article
+                key={v.id}
+                className="rounded-xl border p-4 space-y-3 bg-card/50"
+              >
+                <div>
+                  <h2 className="text-lg font-semibold leading-tight">
+                    {v.name}
+                  </h2>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {v.description}
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5">
+                  {v.meta?.wifi && <Badge variant="secondary">WiFi</Badge>}
+                  {v.meta?.parking && (
+                    <Badge variant="secondary">Parking</Badge>
+                  )}
+                  {v.meta?.pets && <Badge variant="secondary">Pets</Badge>}
+                  {v.meta?.breakfast && (
+                    <Badge variant="secondary">Breakfast</Badge>
+                  )}
+                </div>
+
+                <div className="grid gap-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">City</span>
+                    <span>{v.location?.city ?? "—"}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Rating</span>
+                    <span>
+                      {typeof v.rating === "number" && v.rating > 0
+                        ? v.rating.toPrecision(2)
+                        : "—"}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Price / night</span>
+                    <span>{formatMoney(v.price, { currency: "USD" })}</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    className="w-full sm:flex-1"
+                  >
+                    <Link to={`/manage/${v.id}`}>Manage</Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    className="w-full sm:flex-1"
+                  >
+                    <Link to={`/manage/${v.id}/bookings`}>Bookings</Link>
+                  </Button>
+                </div>
+              </article>
+            ))}
           </div>
 
           <div className="mt-4">

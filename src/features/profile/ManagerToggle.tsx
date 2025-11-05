@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { useUpdateProfile } from "./hooks";
 import { getErrorMessage } from "@/lib/errors";
+import { Spinner } from "@/components/ui/spinner";
 
 type Props = {
   name: string;
@@ -54,7 +55,11 @@ export function ManagerToggle({ name, venueManager }: Props) {
           disabled={isPending}
         />
         {isPending && (
-          <span id={`${id}-help`} className="text-xs text-muted-foreground">
+          <span
+            id={`${id}-help`}
+            className="flex items-center gap-1.5 text-xs text-muted-foreground"
+          >
+            <Spinner className="size-3" aria-hidden="true" />
             Saving…
           </span>
         )}

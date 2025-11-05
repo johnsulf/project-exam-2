@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar } from "@/components/ui/calendar";
 import { formatDateRange } from "@/lib/date";
+import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 
 function computeStatus(bookings?: { dateFrom: string; dateTo: string }[]) {
   const now = Date.now();
@@ -20,10 +21,23 @@ export default function ManageVenueDetail() {
   const { id } = useParams<{ id: string }>();
   const { data: v, isLoading, isError } = useVenue(id);
 
-  if (isLoading) return <DetailSkeleton />;
+  const baseBreadcrumbs = [
+    { label: "Home", to: "/" },
+    { label: "Manage", to: "/manage" },
+    { label: "Venue" },
+  ];
+
+  if (isLoading)
+    return (
+      <div className="space-y-6">
+        <PageBreadcrumbs items={baseBreadcrumbs} />
+        <DetailSkeleton />
+      </div>
+    );
   if (isError || !v) {
     return (
       <div className="space-y-3">
+        <PageBreadcrumbs items={baseBreadcrumbs} />
         <h1 className="text-2xl font-semibold">Venue</h1>
         <p className="text-destructive">Couldn’t load venue.</p>
         <Button asChild variant="outline">
@@ -48,6 +62,13 @@ export default function ManageVenueDetail() {
 
   return (
     <div className="space-y-6">
+      <PageBreadcrumbs
+        items={[
+          { label: "Home", to: "/" },
+          { label: "Manage", to: "/manage" },
+          { label: v.name },
+        ]}
+      />
       {/* Header */}
       <header className="flex flex-col gap-4 sm:flex-row sm:items-start">
         <div className="flex-1">

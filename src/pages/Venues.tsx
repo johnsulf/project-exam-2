@@ -67,8 +67,10 @@ export default function Venues() {
 
   if (wantsDates) serverParams._bookings = true;
 
-  const { data, isLoading, isError, refetch, isFetching } =
-    useVenues(serverParams);
+  const { data, isLoading, isError, refetch, isFetching } = useVenues(
+    serverParams,
+    { fetchAllPages: hasClientFilters },
+  );
 
   if (isLoading) return <VenueListSkeleton count={limit} />;
 
@@ -95,7 +97,9 @@ export default function Venues() {
           location.city ?? "",
           location.country ?? "",
           location.continent ?? "",
-        ].map((value) => value.toLowerCase());
+        ].map((value) =>
+          typeof value === "string" ? value.toLowerCase() : "",
+        );
 
         const matchesSearch = haystacks.some((value) =>
           value.includes(searchTerm),
@@ -157,7 +161,7 @@ export default function Venues() {
 
   return (
     <>
-      <VenuesSearchBar />
+      <VenuesSearchBar loading={isFetching} />
       <ActiveFilters />
 
       {/* Result header */}

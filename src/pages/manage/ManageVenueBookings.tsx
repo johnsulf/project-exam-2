@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDateRange, nightsBetween } from "@/lib/date";
+import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 
 export default function ManageVenueBookings() {
   const { id } = useParams<{ id: string }>();
@@ -13,9 +14,16 @@ export default function ManageVenueBookings() {
 
   const { data: bookings, isLoading, isError } = useVenueBookings(id);
 
+  const baseBreadcrumbs = [
+    { label: "Home", to: "/" },
+    { label: "Manage", to: "/manage" },
+    { label: "Bookings" },
+  ];
+
   if (isLoading || vLoading) {
     return (
       <div className="space-y-3">
+        <PageBreadcrumbs items={baseBreadcrumbs} />
         <Skeleton className="h-8 w-56" />
         <Skeleton className="h-40 w-full" />
       </div>
@@ -25,6 +33,7 @@ export default function ManageVenueBookings() {
   if (isError || !bookings) {
     return (
       <div className="space-y-3">
+        <PageBreadcrumbs items={baseBreadcrumbs} />
         <h1 className="text-2xl font-semibold">Venue bookings</h1>
         <p className="text-destructive">Couldn’t load bookings.</p>
         <Button asChild variant="outline">
@@ -45,6 +54,16 @@ export default function ManageVenueBookings() {
 
   return (
     <div className="space-y-4">
+      <PageBreadcrumbs
+        items={[
+          { label: "Home", to: "/" },
+          { label: "Manage", to: "/manage" },
+          venue?.id
+            ? { label: venue.name ?? "Venue", to: `/manage/${venue.id}` }
+            : { label: venue?.name ?? "Venue" },
+          { label: "Bookings" },
+        ]}
+      />
       <header className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Bookings — {name}</h1>
         {venue?.id && (

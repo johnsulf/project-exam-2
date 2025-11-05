@@ -2,7 +2,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { type TVenueCreate } from "@/types/schemas";
 import { useCreateVenue } from "@/features/manager/hooks";
 import { Button } from "@/components/ui/button";
-import { VenueForm } from "@/features/manager/VenueForm";
+import { VenueForm } from "@/components/forms/VenueForm";
+import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 
 export default function ManageNewVenue() {
   const navigate = useNavigate();
@@ -19,6 +20,13 @@ export default function ManageNewVenue() {
 
   return (
     <div className="space-y-6">
+      <PageBreadcrumbs
+        items={[
+          { label: "Home", to: "/" },
+          { label: "Manage", to: "/manage" },
+          { label: "Create venue" },
+        ]}
+      />
       <header className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Create venue</h1>
         <Button variant="outline" asChild>

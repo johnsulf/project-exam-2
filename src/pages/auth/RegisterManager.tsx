@@ -19,8 +19,8 @@ export default function RegisterManager() {
   async function handleRegister(values: RegisterFormValues) {
     try {
       await registerUser({ ...values, venueManager: true });
-      toast.success("Manager account created. Please log in.");
-      navigate(routes.auth.login, { replace: true });
+      toast.success("Manager account created — you're all set!");
+      navigate(routes.home, { replace: true });
     } catch (err) {
       toast.error(getErrorMessage(err));
       throw err;
@@ -28,7 +28,7 @@ export default function RegisterManager() {
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-xl flex-col gap-6 px-4 py-10">
+    <main className="mx-auto flex w-full max-w-xl flex-col gap-6 px-4 py-10 animate-fade-in-up">
       <Card>
         <CardHeader>
           <CardTitle>Register as a venue manager</CardTitle>
