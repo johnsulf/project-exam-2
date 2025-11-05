@@ -121,6 +121,9 @@ export function VenuesSearchBar({ redirectTo, loading = false }: Props) {
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     applyToUrl();
+    setMobileSheetOpen(false);
+    setDatesOpen(false);
+    setFiltersOpen(false);
   }
 
   const renderSearchField = (
@@ -297,6 +300,65 @@ export function VenuesSearchBar({ redirectTo, loading = false }: Props) {
     </div>
   );
 
+  const renderDateInline = () => (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <div className="text-sm font-medium">Dates</div>
+        <Button
+          size="sm"
+          variant="ghost"
+          type="button"
+          onClick={() => setRange(undefined)}
+        >
+          Clear
+        </Button>
+      </div>
+      <Calendar
+        mode="range"
+        numberOfMonths={1}
+        selected={range}
+        onSelect={setRange}
+      />
+    </div>
+  );
+
+  const renderFiltersInline = () => (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <div className="text-sm font-medium">Filters</div>
+        <Button
+          size="sm"
+          variant="ghost"
+          type="button"
+          onClick={() => {
+            setWifi(false);
+            setParking(false);
+            setPets(false);
+            setBreakfast(false);
+          }}
+        >
+          Clear
+        </Button>
+      </div>
+      <div className="space-y-2">
+        {amenityOptions.map(({ key, label, value, setValue }) => (
+          <Label
+            key={key}
+            htmlFor={`filter-${key}`}
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            <Checkbox
+              id={`filter-${key}`}
+              checked={value}
+              onCheckedChange={(checked) => setValue(checked === true)}
+            />
+            {label}
+          </Label>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <div className="rounded-xl border p-3 md:p-4 mb-4 bg-card">
       <div className="md:hidden">
@@ -315,8 +377,8 @@ export function VenuesSearchBar({ redirectTo, loading = false }: Props) {
               <form onSubmit={onSubmit} className="space-y-4">
                 {renderSearchField()}
                 {renderGuestField()}
-                {renderDateField(undefined, "w-full")}
-                {renderFiltersField()}
+                {renderDateInline()}
+                {renderFiltersInline()}
                 <Button
                   type="submit"
                   className="w-full"
