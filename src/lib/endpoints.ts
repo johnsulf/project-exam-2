@@ -2,6 +2,7 @@ import { getEnvelope, getJson, postJson, putJson, deleteJson } from "@/lib/api";
 import type {
   Booking,
   BookingWithVenue,
+  PageMeta,
   Profile,
   Venue as ApiVenue,
 } from "@/types/api";
@@ -58,6 +59,38 @@ export async function listVenues(
 
   const path = q && q.trim() ? "/venues/search" : "/venues";
   return getEnvelope<ApiVenue[]>(path, query, signal);
+}
+
+export async function listAllVenues(
+  params: VenueParams = {},
+  signal?: AbortSignal,
+) {
+  const firstPage = await listVenues(params, signal);
+  const meta = (firstPage.meta ?? {}) as Partial<PageMeta>;
+  const startPage = meta.currentPage ?? params.page ?? 1;
+
+  const combined = [...firstPage.data];
+  const visitedPages = new Set<number>([startPage]);
+
+  let nextPage =
+    meta.nextPage ??
+    (meta.pageCount && startPage < meta.pageCount ? startPage + 1 : null);
+
+  while (nextPage && !visitedPages.has(nextPage) && !signal?.aborted) {
+    visitedPages.add(nextPage);
+
+    const next = await listVenues({ ...params, page: nextPage }, signal);
+    combined.push(...next.data);
+
+    const nextMeta = (next.meta ?? {}) as Partial<PageMeta>;
+    nextPage =
+      nextMeta.nextPage ??
+      (nextMeta.pageCount && nextPage < nextMeta.pageCount
+        ? nextPage + 1
+        : null);
+  }
+
+  return { ...firstPage, data: combined };
 }
 
 // Single venue by id
