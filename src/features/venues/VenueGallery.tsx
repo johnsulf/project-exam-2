@@ -64,7 +64,7 @@ export function VenueGallery({ media, venueName, className }: Props) {
         >
           {images.map((m, i) => (
             <button
-              key={m.url + i}
+              key={m.url}
               role="option"
               aria-selected={i === index}
               data-idx={i}

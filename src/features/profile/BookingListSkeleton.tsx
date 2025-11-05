@@ -2,9 +2,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 export function BookingListSkeleton({ count = 3 }: { count?: number }) {
   return (
     <div className="grid gap-3" aria-hidden="true">
-      {Array.from({ length: count }).map((_, i) => (
+      {Array.from({ length: count }).map((_, index) => (
         <div
-          key={i}
+          key={`booking-card-skeleton-${index}`}
           className="grid grid-cols-[140px_1fr] gap-0 rounded-md border overflow-hidden"
         >
           <Skeleton className="h-24 w-full" />

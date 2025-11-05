@@ -11,6 +11,7 @@ import {
 import { cn } from "@/lib/utils";
 
 type Item = {
+  key?: string;
   label: string;
   to?: string;
   icon?: ReactNode;
@@ -21,6 +22,11 @@ type Props = {
   className?: string;
 };
 
+/**
+ * Renders a responsive breadcrumb trail using shadcn primitives.
+ * @param items - Ordered breadcrumb items describing the current navigation path.
+ * @param className - Optional wrapper class name.
+ */
 export function PageBreadcrumbs({ items, className }: Props) {
   if (!items.length) return null;
 
@@ -29,8 +35,9 @@ export function PageBreadcrumbs({ items, className }: Props) {
       <BreadcrumbList>
         {items.map((item, idx) => {
           const isLast = idx === items.length - 1;
+          const itemKey = item.key ?? item.to ?? item.label;
           return (
-            <Fragment key={`${item.label}-${idx}`}>
+            <Fragment key={itemKey}>
               <BreadcrumbItem>
                 {item.to && !isLast ? (
                   <BreadcrumbLink asChild>

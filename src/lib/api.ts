@@ -84,6 +84,11 @@ interface ApiErrorData {
   [key: string]: unknown;
 }
 
+/**
+ * Attempts to extract readable validation/issue messages from various API error payload shapes.
+ * @param payload - The raw error payload returned by the API.
+ * @returns Deduplicated list of human-readable error messages.
+ */
 export function extractErrorMessages(payload: unknown): string[] {
   const messages: string[] = [];
   const push = (raw?: unknown, prefix?: string) => {
@@ -174,6 +179,11 @@ export function extractErrorMessages(payload: unknown): string[] {
   return messages;
 }
 
+/**
+ * Normalizes unknown errors (primarily Axios errors) into the shared ApiError shape.
+ * @param err - Unknown error thrown from API client.
+ * @returns ApiError with message, status, code and raw details when available.
+ */
 function normalizeApiError(err: unknown): ApiError {
   if (axios.isAxiosError(err)) {
     const status = err.response?.status;
@@ -196,6 +206,12 @@ function normalizeApiError(err: unknown): ApiError {
 }
 
 // ---- Helpers ----
+/**
+ * Performs a GET request and unwraps the JSON response body.
+ * @param url - API path relative to the configured base URL.
+ * @param params - Optional query parameters.
+ * @param signal - Optional abort signal for cancellation.
+ */
 export async function getJson<T>(
   url: string,
   params?: unknown,
@@ -206,6 +222,12 @@ export async function getJson<T>(
   return (body && body.data !== undefined ? body.data : body) as T;
 }
 
+/**
+ * Performs a GET request expecting an envelope with `data` and optional `meta`.
+ * @param url - API path relative to the configured base URL.
+ * @param params - Optional query parameters.
+ * @param signal - Optional abort signal for cancellation.
+ */
 export async function getEnvelope<T>(
   url: string,
   params?: unknown,
@@ -215,6 +237,11 @@ export async function getEnvelope<T>(
   return res.data as { data: T; meta?: unknown };
 }
 
+/**
+ * Issues a POST request and returns the unwrapped response body.
+ * @param url - API endpoint path.
+ * @param body - Optional JSON payload.
+ */
 export async function postJson<T, B = unknown>(
   url: string,
   body?: B,
@@ -224,6 +251,11 @@ export async function postJson<T, B = unknown>(
   return (b && b.data !== undefined ? b.data : b) as T;
 }
 
+/**
+ * Issues a PUT request and returns the unwrapped response body.
+ * @param url - API endpoint path.
+ * @param body - Optional JSON payload.
+ */
 export async function putJson<T, B = unknown>(
   url: string,
   body?: B,
@@ -233,6 +265,10 @@ export async function putJson<T, B = unknown>(
   return (b && b.data !== undefined ? b.data : b) as T;
 }
 
+/**
+ * Issues a DELETE request and returns the unwrapped response body, if present.
+ * @param url - API endpoint path.
+ */
 export async function deleteJson<T = void>(url: string): Promise<T> {
   const res = await api.delete(url);
   const b = res.data;
