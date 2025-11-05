@@ -78,16 +78,119 @@ interface ApiErrorData {
   error?: string;
   code?: string;
   errorCode?: string;
+  detail?: string;
+  error_description?: string;
+  errors?: unknown;
   [key: string]: unknown;
+}
+
+export function extractErrorMessages(payload: unknown): string[] {
+  const messages: string[] = [];
+  const push = (raw?: unknown, prefix?: string) => {
+    if (typeof raw !== "string") return;
+    const trimmed = raw.trim();
+    if (!trimmed) return;
+    const full = prefix ? `${prefix}: ${trimmed}` : trimmed;
+    if (!messages.includes(full)) messages.push(full);
+  };
+
+  const handleEntry = (entry: unknown, prefix?: string) => {
+    if (!entry) return;
+    if (typeof entry === "string") {
+      push(entry, prefix);
+      return;
+    }
+    if (typeof entry === "number" || typeof entry === "boolean") {
+      push(String(entry), prefix);
+      return;
+    }
+    if (Array.isArray(entry)) {
+      for (const item of entry) handleEntry(item, prefix);
+      return;
+    }
+    if (typeof entry === "object") {
+      const obj = entry as Record<string, unknown>;
+      const path =
+        Array.isArray(obj.path) && obj.path.length > 0
+          ? obj.path
+              .filter(
+                (segment) =>
+                  typeof segment === "string" || typeof segment === "number",
+              )
+              .map(String)
+              .join(".")
+          : typeof obj.field === "string"
+            ? obj.field
+            : typeof obj.property === "string"
+              ? obj.property
+              : undefined;
+
+      if (typeof obj.message === "string") {
+        push(obj.message, path ?? prefix);
+      }
+      if (typeof obj.detail === "string") {
+        push(obj.detail, path ?? prefix);
+      }
+      if (typeof obj.description === "string") {
+        push(obj.description, path ?? prefix);
+      }
+
+      for (const [key, value] of Object.entries(obj)) {
+        if (
+          key === "message" ||
+          key === "detail" ||
+          key === "description" ||
+          key === "path" ||
+          key === "field" ||
+          key === "property"
+        ) {
+          continue;
+        }
+        const nextPrefix =
+          path ??
+          prefix ??
+          (typeof key === "string" && !/^(errors?|issues?|details?)$/i.test(key)
+            ? key
+            : undefined);
+        handleEntry(value, nextPrefix);
+      }
+    }
+  };
+
+  if (payload && typeof payload === "object") {
+    const data = payload as Record<string, unknown>;
+    push(data.message);
+    push(data.error);
+    push(data.error_description);
+    push(data.detail);
+    handleEntry(data.errors);
+    handleEntry(data.issues);
+    handleEntry(data.details);
+    handleEntry(data.errorDetails);
+  } else if (typeof payload === "string") {
+    push(payload);
+  }
+
+  return messages;
 }
 
 function normalizeApiError(err: unknown): ApiError {
   if (axios.isAxiosError(err)) {
     const status = err.response?.status;
     const data = err.response?.data as ApiErrorData | undefined;
-    const msg = data?.message || data?.error || err.message || "Request failed";
+    const extracted = extractErrorMessages(data);
+    const msg =
+      extracted[0] ||
+      data?.message ||
+      data?.error ||
+      err.message ||
+      "Request failed";
     const code = (data && (data.code || data.errorCode)) || undefined;
-    return new ApiError(msg, status, code, data);
+    const details =
+      data && typeof data === "object"
+        ? { ...data, messages: extracted.length > 0 ? extracted : undefined }
+        : data;
+    return new ApiError(msg, status, code, details);
   }
   return new ApiError("Unknown error");
 }
