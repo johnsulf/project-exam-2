@@ -479,7 +479,7 @@ function MobileSearchSheet({
     <div className="md:hidden">
       <Sheet open={open} onOpenChange={onOpenChange}>
         <SheetTrigger asChild>
-          <Button variant="outline" className="w-full justify-center gap-2">
+          <Button variant="default" className="w-full justify-center gap-2">
             <Search className="size-4" />
             Search venues
           </Button>
