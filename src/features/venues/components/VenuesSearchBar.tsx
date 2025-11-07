@@ -9,12 +9,19 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Separator } from "@/components/ui/separator";
-import { Calendar as CalendarIcon, Filter, Search, Users } from "lucide-react";
+import {
+  Calendar as CalendarIcon,
+  Filter,
+  Search,
+  Users,
+  X,
+} from "lucide-react";
 import type { DateRange } from "react-day-picker";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -485,8 +492,14 @@ function MobileSearchSheet({
           </Button>
         </SheetTrigger>
         <SheetContent side="bottom" className="p-0">
-          <SheetHeader className="px-4 pt-4 pb-2">
+          <SheetHeader className="px-4 pt-4 pb-2 flex items-center justify-between space-y-0">
             <SheetTitle>Search venues</SheetTitle>
+            <SheetClose asChild>
+              <Button variant="outline" aria-label="Close search panel">
+                <X className="size-5" aria-hidden="true" />
+                Cancel
+              </Button>
+            </SheetClose>
           </SheetHeader>
           <div className="px-4 pb-4 space-y-4">
             <form onSubmit={onSubmit} className="space-y-4">

@@ -29,38 +29,39 @@ type Props = {
  */
 export function PageBreadcrumbs({ items, className }: Props) {
   if (!items.length) return null;
-
   return (
-    <Breadcrumb className={cn("hidden sm:block", className)}>
-      <BreadcrumbList>
-        {items.map((item, idx) => {
-          const isLast = idx === items.length - 1;
-          const itemKey = item.key ?? item.to ?? item.label;
-          return (
-            <Fragment key={itemKey}>
-              <BreadcrumbItem>
-                {item.to && !isLast ? (
-                  <BreadcrumbLink asChild>
-                    <Link
-                      to={item.to}
-                      className="inline-flex items-center gap-1 text-sm"
-                    >
+    <div className={cn("space-y-1", className)}>
+      <Breadcrumb className="text-sm text-muted-foreground overflow-x-auto whitespace-nowrap">
+        <BreadcrumbList>
+          {items.map((item, idx) => {
+            const isLast = idx === items.length - 1;
+            const itemKey = item.key ?? item.to ?? item.label;
+            return (
+              <Fragment key={itemKey}>
+                <BreadcrumbItem>
+                  {item.to && !isLast ? (
+                    <BreadcrumbLink asChild>
+                      <Link
+                        to={item.to}
+                        className="inline-flex items-center gap-1"
+                      >
+                        {item.icon}
+                        <span>{item.label}</span>
+                      </Link>
+                    </BreadcrumbLink>
+                  ) : (
+                    <BreadcrumbPage className="inline-flex items-center gap-1 font-medium text-foreground">
                       {item.icon}
                       <span>{item.label}</span>
-                    </Link>
-                  </BreadcrumbLink>
-                ) : (
-                  <BreadcrumbPage className="inline-flex items-center gap-1 text-sm">
-                    {item.icon}
-                    <span>{item.label}</span>
-                  </BreadcrumbPage>
-                )}
-              </BreadcrumbItem>
-              {!isLast && <BreadcrumbSeparator />}
-            </Fragment>
-          );
-        })}
-      </BreadcrumbList>
-    </Breadcrumb>
+                    </BreadcrumbPage>
+                  )}
+                </BreadcrumbItem>
+                {!isLast && <BreadcrumbSeparator />}
+              </Fragment>
+            );
+          })}
+        </BreadcrumbList>
+      </Breadcrumb>
+    </div>
   );
 }

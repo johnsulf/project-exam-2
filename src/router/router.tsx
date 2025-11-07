@@ -8,6 +8,7 @@ import { routes } from "./routes";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Venues = lazy(() => import("@/pages/Venues"));
+const About = lazy(() => import("@/pages/About"));
 const VenueDetail = lazy(() => import("@/pages/VenueDetail"));
 const Login = lazy(() => import("@/pages/auth/Login"));
 const RegisterCustomer = lazy(() => import("@/pages/auth/RegisterCustomer"));
@@ -38,6 +39,7 @@ export const router = createBrowserRouter(
       children: [
         { index: true, element: <Home /> },
         { path: toRelative(routes.venues), element: <Venues /> },
+        { path: toRelative(routes.about), element: <About /> },
         { path: toRelative(routes.venue()), element: <VenueDetail /> },
         { path: toRelative(routes.auth.login), element: <Login /> },
         {

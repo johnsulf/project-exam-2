@@ -70,6 +70,11 @@ export function Header() {
                     <NavLink to={routes.venues}>Venues</NavLink>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <NavLink to={routes.about}>About</NavLink>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
           </nav>
@@ -108,6 +113,11 @@ export function Header() {
                 <SheetClose asChild>
                   <NavLink to={routes.venues} className={navLinkClass}>
                     Venues
+                  </NavLink>
+                </SheetClose>
+                <SheetClose asChild>
+                  <NavLink to={routes.about} className={navLinkClass}>
+                    About
                   </NavLink>
                 </SheetClose>
               </nav>

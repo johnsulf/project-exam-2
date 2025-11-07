@@ -8,6 +8,8 @@ import type { TPageMeta } from "@/types/schemas";
 import { isVenueAvailable } from "@/features/venues/utils/availability";
 import { ActiveFilters } from "@/features/venues/components/ActiveFilters";
 import { VenueCard } from "@/features/venues/components/VenueCard";
+import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
+import { routes } from "@/router/routes";
 
 function bool(v: string | null) {
   return v === "1" || v?.toLowerCase() === "true";
@@ -158,9 +160,11 @@ export default function Venues() {
 
   const showingStart = meta.totalCount ? startIdx + 1 : 0;
   const showingEnd = Math.min(meta.totalCount, endIdx);
+  const breadcrumbs = [{ label: "Home", to: routes.home }, { label: "Venues" }];
 
   return (
     <>
+      <PageBreadcrumbs items={breadcrumbs} className="mb-4" />
       <VenuesSearchBar loading={isFetching} />
       <ActiveFilters />
 

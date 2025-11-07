@@ -1,16 +1,19 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { VenuesSearchBar } from "@/features/venues/components/VenuesSearchBar";
 import { useVenues } from "@/features/venues/hooks";
 import { VenueListSkeleton } from "@/components/skeletons/VenueListSkeleton";
 import { FeaturedSection } from "@/features/home/components/FeaturedSection";
+import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import {
   ArrowRight,
   CalendarCheck,
+  Heart,
   MapPin,
   ShieldCheck,
-  Sparkles,
   Star,
 } from "lucide-react";
+import { routes } from "@/router/routes";
 
 export default function Home() {
   // one fetch, then derive sections
@@ -64,121 +67,129 @@ export default function Home() {
 
   const heroHighlight = featured.slice(0, 3);
 
+  const breadcrumbs = [{ label: "Home" }];
+
   return (
-    <div className="space-y-16 pb-12">
-      {/* Hero */}
-      <section className="overflow-hidden rounded-[32px] border bg-white shadow-xl">
-        <div className="px-6 py-12 sm:px-10 md:px-16 lg:px-20 space-y-12">
-          <div className="max-w-3xl space-y-6 ">
-            <span className="inline-flex items-center gap-2 rounded-full bg-indigo-100 px-4 py-1 text-sm font-medium backdrop-blur-sm">
-              <Sparkles className="size-4" aria-hidden="true" />
-              Handpicked stays, just for you
-            </span>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight">
-              Escape the ordinary. Discover inspiring places to stay with
-              Holidaze.
-            </h1>
-            <p className="text-base sm:text-lg /80 max-w-2xl">
-              Browse design-led apartments, eco-friendly cabins, and beachfront
-              getaways curated from hosts across the globe. Search by city,
-              filter by amenities, and book with confidence in seconds.
-            </p>
-          </div>
-          <div className="space-y-6">
-            <div className="rounded-2xl bg-white/95 p-4 sm:p-5 shadow-2xl backdrop-blur">
-              <VenuesSearchBar redirectTo="/venues" />
-              <div className="grid gap-3 sm:grid-cols-3 text-sm text-slate-600">
-                <StatPill
-                  icon={<MapPin className="size-4" aria-hidden="true" />}
-                  label="Featured stays"
-                  value={featured.length}
-                />
-                <StatPill
-                  icon={<CalendarCheck className="size-4" aria-hidden="true" />}
-                  label="Available now"
-                  value={Math.max(all.length - featured.length, 12)}
-                />
-                <StatPill
-                  icon={<ShieldCheck className="size-4" aria-hidden="true" />}
-                  label="Host guarantee"
-                  value="24/7"
-                />
-              </div>
+    <div className="space-y-8 pb-12">
+      <PageBreadcrumbs items={breadcrumbs} />
+      <div className="space-y-16">
+        {/* Hero */}
+        <section className="overflow-hidden rounded-[32px] border bg-white shadow-xl">
+          <div className="px-6 py-12 sm:px-10 md:px-16 lg:px-20 space-y-12">
+            <div className="max-w-3xl space-y-6 ">
+              <span className="inline-flex items-center gap-2 rounded-full text-teal-950 bg-teal-100 px-4 py-1 text-sm font-medium backdrop-blur-sm">
+                <Heart className="size-4" aria-hidden="true" />
+                Handpicked stays, just for you
+              </span>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight">
+                Escape the ordinary. Discover inspiring places to stay with
+                Holidaze.
+              </h1>
+              <p className="text-base sm:text-lg /80 max-w-2xl">
+                Browse design-led apartments, eco-friendly cabins, and
+                beachfront getaways curated from hosts across the globe. Search
+                by city, filter by amenities, and book with confidence in
+                seconds.
+              </p>
             </div>
+            <div className="space-y-6">
+              <div className="rounded-2xl bg-white/95 p-4 sm:p-5 shadow-2xl backdrop-blur">
+                <VenuesSearchBar redirectTo="/venues" />
+                <div className="grid gap-3 sm:grid-cols-3 text-sm text-slate-600">
+                  <StatPill
+                    icon={<MapPin className="size-4" aria-hidden="true" />}
+                    label="Featured stays"
+                    value={featured.length}
+                  />
+                  <StatPill
+                    icon={
+                      <CalendarCheck className="size-4" aria-hidden="true" />
+                    }
+                    label="Available now"
+                    value={Math.max(all.length - featured.length, 12)}
+                  />
+                  <StatPill
+                    icon={<ShieldCheck className="size-4" aria-hidden="true" />}
+                    label="Host guarantee"
+                    value="24/7"
+                  />
+                </div>
+              </div>
 
-            {heroHighlight.length > 0 && (
-              <TrendingStrip venues={heroHighlight} />
-            )}
+              {heroHighlight.length > 0 && (
+                <TrendingStrip venues={heroHighlight} />
+              )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Highlights */}
-      <section className="grid gap-6 md:grid-cols-3">
-        <HighlightCard
-          title="Curated for inspiration"
-          description="Every venue on Holidaze is handpicked for its stories, architecture, or location—so every trip feels special."
-        />
-        <HighlightCard
-          title="Always in the know"
-          description="Realtime availability and smart filters help you find the perfect stay faster than ever."
-        />
-        <HighlightCard
-          title="Secure bookings"
-          description="Instant confirmations, transparent pricing, and host support the moment you arrive."
-        />
-      </section>
-
-      {isLoading ? (
-        <VenueListSkeleton count={6} />
-      ) : isError ? (
-        <div className="space-y-2">
-          <p className="text-destructive">Couldn’t load venues.</p>
-          <Button onClick={() => refetch()}>Retry</Button>
-        </div>
-      ) : (
-        <>
-          <FeaturedSection
-            title="Featured Venues"
-            cta={{ to: "/venues", label: "See all Venues" }}
-            items={featured}
+        {/* Highlights */}
+        <section className="grid gap-6 md:grid-cols-3">
+          <HighlightCard
+            title="Curated for inspiration"
+            description="Every venue on Holidaze is handpicked for its stories, architecture, or location—so every trip feels special."
           />
+          <HighlightCard
+            title="Always in the know"
+            description="Realtime availability and smart filters help you find the perfect stay faster than ever."
+          />
+          <HighlightCard
+            title="Secure bookings"
+            description="Instant confirmations, transparent pricing, and host support the moment you arrive."
+          />
+        </section>
 
-          <section className="rounded-3xl bg-white border p-8 md:p-10 space-y-6">
-            <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h2 className="text-2xl font-semibold">
-                  Plan your next escape
-                </h2>
-                <p className="text-sm text-muted-foreground max-w-2xl">
-                  From dreaming to confirming, Holidaze keeps every step simple.
-                  Create a wishlist, share it with friends, and book the moment
-                  you’re ready.
-                </p>
-              </div>
-              <Button asChild>
-                <a href="/venues">
-                  Start exploring
-                  <ArrowRight className="ml-2 size-4" aria-hidden="true" />
-                </a>
-              </Button>
-            </div>
-          </section>
-
-          {citySections.map(({ slug, label, venues }) => (
+        {isLoading ? (
+          <VenueListSkeleton count={6} />
+        ) : isError ? (
+          <div className="space-y-2">
+            <p className="text-destructive">Couldn’t load venues.</p>
+            <Button onClick={() => refetch()}>Retry</Button>
+          </div>
+        ) : (
+          <>
             <FeaturedSection
-              key={slug}
-              title={`Top stays in ${label}`}
-              cta={{
-                to: `/venues?city=${encodeURIComponent(slug)}`,
-                label: `See all in ${label}`,
-              }}
-              items={venues}
-              emptyText={`No popular venues in ${label} yet.`}
+              title="Featured Venues"
+              cta={{ to: "/venues", label: "See all Venues" }}
+              items={featured}
             />
-          ))}
-        </>
-      )}
+
+            <section className="rounded-3xl bg-white border p-8 md:p-10 space-y-6">
+              <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <h2 className="text-2xl font-semibold">
+                    Plan your next escape
+                  </h2>
+                  <p className="text-sm text-muted-foreground max-w-2xl">
+                    From dreaming to confirming, Holidaze keeps every step
+                    simple. Create a wishlist, share it with friends, and book
+                    the moment you’re ready.
+                  </p>
+                </div>
+                <Button asChild>
+                  <Link to={routes.venues}>
+                    Start exploring
+                    <ArrowRight className="ml-2 size-4" aria-hidden="true" />
+                  </Link>
+                </Button>
+              </div>
+            </section>
+
+            {citySections.map(({ slug, label, venues }) => (
+              <FeaturedSection
+                key={slug}
+                title={`Top stays in ${label}`}
+                cta={{
+                  to: `/venues?city=${encodeURIComponent(slug)}`,
+                  label: `See all in ${label}`,
+                }}
+                items={venues}
+                emptyText={`No popular venues in ${label} yet.`}
+              />
+            ))}
+          </>
+        )}
+      </div>
     </div>
   );
 }
@@ -209,13 +220,13 @@ function TrendingStrip({ venues }: TrendingStripProps) {
           </p>
         </div>
         <Button variant="outline" size="sm" asChild>
-          <a href="/venues">
+          <Link to={routes.venues}>
             View all
             <ArrowRight className="ml-2 size-4" aria-hidden="true" />
-          </a>
+          </Link>
         </Button>
       </div>
-      <div className="grid gap-3 md:grid-cols-3">
+      <div className="flex flex-col gap-3 lg:flex-row lg:gap-4 lg:overflow-x-auto lg:pb-2 xl:grid xl:grid-cols-3 xl:overflow-visible">
         {venues.map((venue) => {
           const cover = venue.media?.[0];
           const locationLabel =
@@ -230,10 +241,10 @@ function TrendingStrip({ venues }: TrendingStripProps) {
               : "No ratings";
 
           return (
-            <a
+            <Link
               key={venue.id}
-              href={`/venues/${venue.id}`}
-              className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-indigo-50 p-3 transition hover:bg-indigo-100 hover:shadow-lg"
+              to={routes.venue(venue.id)}
+              className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-indigo-50 p-3 transition hover:bg-indigo-100 hover:shadow-lg lg:min-w-[320px] xl:min-w-0"
             >
               <div className="relative h-20 w-24 overflow-hidden rounded-xl">
                 {cover?.url ? (
@@ -254,7 +265,7 @@ function TrendingStrip({ venues }: TrendingStripProps) {
               </div>
               <div className="flex-1 space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center rounded-full text-white  bg-indigo-600 px-2 py-0.5 text-[10px] uppercase tracking-wide">
+                  <span className="inline-flex items-center rounded-full text-teal-950  bg-teal-100 px-2 py-0.5 text-[10px] uppercase tracking-wide">
                     Limited
                   </span>
                   <span className="inline-flex items-center rounded-full bg-white px-2 py-0.5 text-[10px] uppercase tracking-wide">
@@ -268,7 +279,7 @@ function TrendingStrip({ venues }: TrendingStripProps) {
                 className="size-4 shrink-0 opacity-60 transition group-hover:translate-x-1 group-hover:opacity-100"
                 aria-hidden="true"
               />
-            </a>
+            </Link>
           );
         })}
       </div>
