@@ -15,6 +15,14 @@ import { useCreateBooking } from "@/features/venues/hooks";
 import { useLocation, useNavigate } from "react-router-dom";
 import { routes } from "@/router/routes";
 import { Spinner } from "@/components/ui/spinner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 type Props = {
   venueId: string;
@@ -31,6 +39,7 @@ export function BookingWidget({
 }: Props) {
   const [range, setRange] = useState<DateRange | undefined>();
   const [guests, setGuests] = useState(1);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const { token } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -44,7 +53,7 @@ export function BookingWidget({
 
   const { mutateAsync, isPending } = useCreateBooking(venueId);
 
-  async function submit() {
+  function handlePrimaryAction() {
     if (!token) {
       navigate(routes.auth.login, { state: { from: location } });
       return;
@@ -57,15 +66,21 @@ export function BookingWidget({
       toast.error(`Guests must be between 1 and ${maxGuests}.`);
       return;
     }
+    setConfirmOpen(true);
+  }
+
+  async function confirmBooking() {
+    if (!range?.from || !range?.to) return;
     try {
       await mutateAsync({
         dateFrom: toISODate(range.from),
-        dateTo: toISODate(range.to), // checkout day
+        dateTo: toISODate(range.to),
         guests,
       });
       toast.success("Booking confirmed!");
       setRange(undefined);
       setGuests(1);
+      setConfirmOpen(false);
     } catch (e: unknown) {
       toast.error(e instanceof Error ? e.message : "Booking failed");
     }
@@ -155,13 +170,70 @@ export function BookingWidget({
 
       <Button
         className="w-full"
-        onClick={submit}
+        onClick={handlePrimaryAction}
         disabled={isPending || (!!token && (!range?.from || !range?.to))}
         aria-busy={isPending}
       >
         {token && isPending && <Spinner className="mr-2" aria-hidden="true" />}
         {token ? (isPending ? "Booking…" : "Book now") : "Sign in to book"}
       </Button>
+
+      <Dialog
+        open={confirmOpen}
+        onOpenChange={(open) => {
+          if (!isPending) setConfirmOpen(open);
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm booking</DialogTitle>
+            <DialogDescription>
+              Review your stay details before confirming.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-2 text-sm">
+            <div className="flex justify-between">
+              <span>Dates</span>
+              <span className="font-medium">
+                {range?.from && range?.to
+                  ? formatDateRange(range.from, range.to)
+                  : "Select dates"}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span>Guests</span>
+              <span className="font-medium">{guests}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>
+                {nights} {nights === 1 ? "night" : "nights"}
+              </span>
+              <span className="font-semibold">
+                {formatMoney(total, { currency: "USD" })}
+              </span>
+            </div>
+          </div>
+          <DialogFooter className="flex flex-col gap-2 sm:flex-row sm:justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setConfirmOpen(false)}
+              disabled={isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              onClick={confirmBooking}
+              disabled={isPending}
+              aria-busy={isPending}
+            >
+              {isPending && <Spinner className="mr-2" aria-hidden="true" />}
+              Confirm booking
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }

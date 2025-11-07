@@ -11,6 +11,7 @@ import { AuthForm, type RegisterFormValues } from "@/components/forms/AuthForm";
 import { useAuth } from "@/features/auth/store";
 import { getErrorMessage } from "@/helpers/errorMessageHelper";
 import { routes } from "@/router/routes";
+import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 
 export default function RegisterManager() {
   const navigate = useNavigate();
@@ -27,8 +28,14 @@ export default function RegisterManager() {
     }
   }
 
+  const breadcrumbs = [
+    { label: "Home", to: routes.home },
+    { label: "Register as manager" },
+  ];
+
   return (
     <main className="mx-auto flex w-full max-w-xl flex-col gap-6 px-4 py-10 animate-fade-in-up">
+      <PageBreadcrumbs items={breadcrumbs} />
       <Card>
         <CardHeader>
           <CardTitle>Register as a venue manager</CardTitle>

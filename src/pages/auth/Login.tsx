@@ -18,6 +18,7 @@ import { useAuth } from "@/features/auth/store";
 import { resolveDestination } from "@/features/auth/returnTo";
 import { getErrorMessage } from "@/helpers/errorMessageHelper";
 import { routes } from "@/router/routes";
+import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 
 type LocationState = {
   from?:
@@ -57,8 +58,14 @@ export default function Login() {
     }
   }
 
+  const breadcrumbs = [
+    { label: "Home", to: routes.home },
+    { label: "Sign in" },
+  ];
+
   return (
     <main className="mx-auto flex w-full max-w-xl flex-col gap-6 px-4 py-10 animate-fade-in-up">
+      <PageBreadcrumbs items={breadcrumbs} />
       <Card>
         <CardHeader>
           <CardTitle>Welcome back</CardTitle>

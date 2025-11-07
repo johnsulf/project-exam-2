@@ -20,6 +20,11 @@ import { toast } from "sonner";
 import { Star } from "lucide-react";
 import { getErrorMessage } from "@/helpers/errorMessageHelper";
 import { Spinner } from "@/components/ui/spinner";
+import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
+import { routes } from "@/router/routes";
+
+const LOCAL_RATINGS_KEY = "holidaze:mockRatings";
+type LocalRatingStore = Record<string, Record<string, number>>;
 
 export default function Profile() {
   const { profile: authProfile } = useAuth();
@@ -40,6 +45,7 @@ export default function Profile() {
   const [ratedBookings, setRatedBookings] = useState<Record<string, number>>(
     {},
   );
+  const [mockRatings, setMockRatings] = useState<Record<string, number>>({});
   const [pendingRatingId, setPendingRatingId] = useState<string | null>(null);
   const rateVenue = useRateVenue(name);
 
@@ -49,7 +55,16 @@ export default function Profile() {
     }
   }, [upcomingBookings.length, pastBookings.length]);
 
+  useEffect(() => {
+    if (!name) return;
+    setMockRatings(readStoredMockRatings(name));
+  }, [name]);
+
   const h1Ref = useRouteHeadingFocus<HTMLHeadingElement>();
+  const breadcrumbs = [
+    { label: "Home", to: routes.home },
+    { label: "Profile" },
+  ];
 
   function handleRate(
     bookingId: string,
@@ -59,7 +74,14 @@ export default function Profile() {
   ) {
     if (!value || !venueId) return;
     if (!isOwner) {
-      toast.info("Only venue owners can update the official rating.");
+      setMockRatings((prev) => {
+        const next = { ...prev, [bookingId]: value };
+        if (name) {
+          persistMockRating(name, next);
+        }
+        return next;
+      });
+      toast.success("Thanks for your rating!");
       return;
     }
     setPendingRatingId(bookingId);
@@ -101,171 +123,126 @@ export default function Profile() {
   }
 
   return (
-    <div className="space-y-8" aria-labelledby="profile-title">
-      {/* Banner (decorative) */}
-      <div
-        className="rounded-xl border bg-muted h-24 w-full"
-        aria-hidden="true"
-      />
+    <div className="space-y-6" aria-labelledby="profile-title">
+      <PageBreadcrumbs items={breadcrumbs} />
+      <div className="space-y-8">
+        {/* Banner (decorative) */}
+        <div
+          className="rounded-xl border bg-muted h-24 w-full"
+          aria-hidden="true"
+        />
 
-      {/* Header section */}
-      <section
-        className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
-        aria-labelledby="profile-title"
-      >
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
-          <AvatarBlock
-            url={p.avatar?.url}
-            alt={p.avatar?.alt}
-            name={p.name}
-            size={80}
-          />
+        {/* Header section */}
+        <section
+          className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+          aria-labelledby="profile-title"
+        >
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
+            <AvatarBlock
+              url={p.avatar?.url}
+              alt={p.avatar?.alt}
+              name={p.name}
+              size={80}
+            />
 
-          <div className="space-y-2">
-            <h1
-              id="profile-title"
-              ref={h1Ref}
-              tabIndex={-1}
-              className="text-3xl font-semibold focus:outline-none focus:ring-2 focus:ring-ring rounded"
-            >
-              {p.name}
-            </h1>
-            <p className="text-muted-foreground text-sm sm:text-base">
-              {p.email}
-            </p>
+            <div className="space-y-2">
+              <h1
+                id="profile-title"
+                ref={h1Ref}
+                tabIndex={-1}
+                className="text-3xl font-semibold focus:outline-none focus:ring-2 focus:ring-ring rounded"
+              >
+                {p.name}
+              </h1>
+              <p className="text-muted-foreground text-sm sm:text-base">
+                {p.email}
+              </p>
 
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge variant={p.venueManager ? "default" : "secondary"}>
-                {p.venueManager ? "Venue manager" : "Customer"}
-              </Badge>
-              {isFetching && (
-                <span
-                  className="text-xs text-muted-foreground"
-                  aria-live="polite"
-                >
-                  Refreshing…
-                </span>
-              )}
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant="secondary">
+                  {p.venueManager ? "Venue manager" : "Customer"}
+                </Badge>
+                {isFetching && (
+                  <span
+                    className="text-xs text-muted-foreground"
+                    aria-live="polite"
+                  >
+                    Refreshing…
+                  </span>
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
-          <Button
-            variant="outline"
-            onClick={() => setOpenAvatar(true)}
-            aria-haspopup="dialog"
-            className="w-full sm:w-auto"
-          >
-            Edit avatar
-          </Button>
-        </div>
-
-        <AvatarDialog
-          open={openAvatar}
-          onOpenChange={setOpenAvatar}
-          name={p.name}
-          currentUrl={p.avatar?.url}
-          currentAlt={p.avatar?.alt}
-        />
-      </section>
-
-      {/* Stats */}
-      <section
-        className="flex flex-wrap items-stretch gap-3"
-        aria-label="Account statistics"
-      >
-        <ManagerToggle name={p.name} venueManager={!!p.venueManager} />
-      </section>
-
-      {/* Upcoming bookings */}
-      <section className="space-y-4" aria-labelledby="bookings-heading">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 id="bookings-heading" className="text-xl font-semibold">
-            Your bookings
-          </h2>
-        </div>
-
-        {bLoading ? (
-          <div role="status" aria-live="polite">
-            <BookingListSkeleton count={3} />
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+            <Button
+              variant="outline"
+              onClick={() => setOpenAvatar(true)}
+              aria-haspopup="dialog"
+              className="w-full sm:w-auto"
+            >
+              Edit avatar
+            </Button>
           </div>
-        ) : bError ? (
-          <div className="space-y-2" role="alert">
-            <p className="text-destructive">Couldn’t load bookings.</p>
-            <Button onClick={() => refetchBookings()}>Retry</Button>
+
+          <AvatarDialog
+            open={openAvatar}
+            onOpenChange={setOpenAvatar}
+            name={p.name}
+            currentUrl={p.avatar?.url}
+            currentAlt={p.avatar?.alt}
+          />
+        </section>
+
+        {/* Stats */}
+        <section
+          className="flex flex-wrap items-stretch gap-3"
+          aria-label="Account statistics"
+        >
+          <ManagerToggle name={p.name} venueManager={!!p.venueManager} />
+        </section>
+
+        {/* Upcoming bookings */}
+        <section className="space-y-4" aria-labelledby="bookings-heading">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 id="bookings-heading" className="text-xl font-semibold">
+              Your bookings
+            </h2>
           </div>
-        ) : (
-          <Tabs
-            value={bookingTab}
-            onValueChange={(value) =>
-              setBookingTab((value as "upcoming" | "past") ?? "upcoming")
-            }
-            aria-label="Bookings categories"
-            className="space-y-3"
-          >
-            <TabsList>
-              <TabsTrigger value="upcoming">
-                Upcoming ({upcomingBookings.length})
-              </TabsTrigger>
-              <TabsTrigger value="past">
-                Earlier ({pastBookings.length})
-              </TabsTrigger>
-            </TabsList>
 
-            <TabsContent value="upcoming" role="region" aria-live="polite">
-              {upcomingBookings.length === 0 ? (
-                <EmptyBookings />
-              ) : (
-                <ul className="grid gap-3">
-                  {upcomingBookings.map((b) => (
-                    <li key={b.id}>
-                      <BookingCard
-                        id={b.id}
-                        dateFrom={b.dateFrom}
-                        dateTo={b.dateTo}
-                        guests={b.guests}
-                        venue={b.venue}
-                      />
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </TabsContent>
+          {bLoading ? (
+            <div role="status" aria-live="polite">
+              <BookingListSkeleton count={3} />
+            </div>
+          ) : bError ? (
+            <div className="space-y-2" role="alert">
+              <p className="text-destructive">Couldn’t load bookings.</p>
+              <Button onClick={() => refetchBookings()}>Retry</Button>
+            </div>
+          ) : (
+            <Tabs
+              value={bookingTab}
+              onValueChange={(value) =>
+                setBookingTab((value as "upcoming" | "past") ?? "upcoming")
+              }
+              aria-label="Bookings categories"
+              className="space-y-3"
+            >
+              <TabsList>
+                <TabsTrigger value="upcoming">
+                  Upcoming ({upcomingBookings.length})
+                </TabsTrigger>
+                <TabsTrigger value="past">
+                  Earlier ({pastBookings.length})
+                </TabsTrigger>
+              </TabsList>
 
-            <TabsContent value="past" role="region" aria-live="polite">
-              {pastBookings.length === 0 ? (
-                <EmptyBookings message="No earlier bookings yet." />
-              ) : (
-                <ul className="grid gap-3">
-                  {pastBookings.map((b) => {
-                    const venueId = b.venue?.id;
-                    const isOwner = venueId
-                      ? b.venue?.owner?.name === p.name
-                      : false;
-                    const serverRating =
-                      typeof b.venue?.rating === "number" ? b.venue.rating : 0;
-                    const currentRating = ratedBookings[b.id] ?? serverRating;
-                    const displayValue = Math.round(currentRating);
-
-                    let message: string;
-                    if (!venueId) {
-                      message = "Venue no longer available for rating.";
-                    } else if (!isOwner) {
-                      message = "Only the venue owner can update the rating.";
-                    } else if (currentRating) {
-                      message = `Current rating: ${currentRating}/5`;
-                    } else {
-                      message = "Tell guests how this stay went.";
-                    }
-
-                    const disabled =
-                      !venueId ||
-                      !isOwner ||
-                      pendingRatingId === b.id ||
-                      rateVenue.isPending;
-
-                    return (
+              <TabsContent value="upcoming" role="region" aria-live="polite">
+                {upcomingBookings.length === 0 ? (
+                  <EmptyBookings />
+                ) : (
+                  <ul className="grid gap-3">
+                    {upcomingBookings.map((b) => (
                       <li key={b.id}>
                         <BookingCard
                           id={b.id}
@@ -273,37 +250,91 @@ export default function Profile() {
                           dateTo={b.dateTo}
                           guests={b.guests}
                           venue={b.venue}
-                        >
-                          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                            <div className="text-sm text-muted-foreground">
-                              {message}
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <RatingStars
-                                value={displayValue}
-                                onSelect={(value) =>
-                                  handleRate(b.id, venueId, value, isOwner)
-                                }
-                                disabled={disabled}
-                              />
-                              {pendingRatingId === b.id && (
-                                <Spinner
-                                  className="size-4"
-                                  aria-hidden="true"
-                                />
-                              )}
-                            </div>
-                          </div>
-                        </BookingCard>
+                        />
                       </li>
-                    );
-                  })}
-                </ul>
-              )}
-            </TabsContent>
-          </Tabs>
-        )}
-      </section>
+                    ))}
+                  </ul>
+                )}
+              </TabsContent>
+
+              <TabsContent value="past" role="region" aria-live="polite">
+                {pastBookings.length === 0 ? (
+                  <EmptyBookings message="No earlier bookings yet." />
+                ) : (
+                  <ul className="grid gap-3">
+                    {pastBookings.map((b) => {
+                      const venueId = b.venue?.id;
+                      const isOwner = venueId
+                        ? b.venue?.owner?.name === p.name
+                        : false;
+                      const serverRating =
+                        typeof b.venue?.rating === "number"
+                          ? b.venue.rating
+                          : 0;
+                      const localRating = mockRatings[b.id];
+                      const sessionRating = ratedBookings[b.id];
+                      const currentRating =
+                        sessionRating ?? localRating ?? serverRating;
+                      const displayValue = Math.round(currentRating ?? 0);
+
+                      let message: string;
+                      if (!venueId) {
+                        message = "Venue no longer available for rating.";
+                      } else if (!isOwner) {
+                        message = localRating
+                          ? `You rated this stay ${localRating}/5.`
+                          : "How would you rate your stay?";
+                      } else if (currentRating) {
+                        message = `Current rating: ${currentRating}/5`;
+                      } else {
+                        message = "Tell guests how this stay went.";
+                      }
+
+                      const disabled =
+                        !venueId ||
+                        (isOwner &&
+                          (pendingRatingId === b.id || rateVenue.isPending));
+
+                      return (
+                        <li key={b.id}>
+                          <BookingCard
+                            id={b.id}
+                            dateFrom={b.dateFrom}
+                            dateTo={b.dateTo}
+                            guests={b.guests}
+                            venue={b.venue}
+                          >
+                            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                              <div className="text-sm text-muted-foreground">
+                                {message}
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <RatingStars
+                                  value={displayValue}
+                                  onSelect={(value) =>
+                                    handleRate(b.id, venueId, value, isOwner)
+                                  }
+                                  disabled={disabled}
+                                />
+                                {pendingRatingId === b.id && (
+                                  <Spinner
+                                    className="size-4"
+                                    aria-hidden="true"
+                                  />
+                                )}
+                              </div>
+                            </div>
+                          </BookingCard>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </TabsContent>
+            </Tabs>
+          )}
+        </section>
+      </div>
     </div>
   );
 }
@@ -346,4 +377,31 @@ function RatingStars({ value, onSelect, disabled }: RatingStarsProps) {
       })}
     </div>
   );
+}
+
+function readStoredMockRatings(userName: string): Record<string, number> {
+  if (typeof window === "undefined" || !userName) return {};
+  try {
+    const raw = window.localStorage.getItem(LOCAL_RATINGS_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw) as LocalRatingStore;
+    return parsed?.[userName] ?? {};
+  } catch {
+    return {};
+  }
+}
+
+function persistMockRating(
+  userName: string,
+  ratings: Record<string, number>,
+): void {
+  if (typeof window === "undefined" || !userName) return;
+  try {
+    const raw = window.localStorage.getItem(LOCAL_RATINGS_KEY);
+    const parsed: LocalRatingStore = raw ? JSON.parse(raw) : {};
+    parsed[userName] = ratings;
+    window.localStorage.setItem(LOCAL_RATINGS_KEY, JSON.stringify(parsed));
+  } catch {
+    // ignore write errors
+  }
 }

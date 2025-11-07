@@ -579,9 +579,7 @@ export function VenueForm({
           </CardContent>
         </Card>
         <Card className="hidden md:block sticky top-6">
-          <CardHeader>
-            <CardTitle>Ready to create your venue?</CardTitle>
-          </CardHeader>
+          <CardHeader />
           <CardContent className="space-y-2">
             {secondaryAction}
             <Button
