@@ -37,7 +37,7 @@ export function ProfileMenu() {
           <div className="flex my-2">
             <p>{profile?.name}</p>
             {profile?.venueManager && (
-              <span className="ml-2 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+              <span className="ml-2 rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-medium">
                 Venue Manager
               </span>
             )}
