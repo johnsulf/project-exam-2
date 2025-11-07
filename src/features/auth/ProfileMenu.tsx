@@ -20,9 +20,7 @@ export function ProfileMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="secondary"
-          size="lg"
-          className="rounded-xl"
+          variant="outline"
           aria-label="Open profile menu"
           aria-haspopup="menu"
         >

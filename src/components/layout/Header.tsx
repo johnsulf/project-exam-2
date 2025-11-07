@@ -1,5 +1,4 @@
 import { Link, NavLink, useLocation, type Location } from "react-router-dom";
-import Logo from "@/assets/Logo.svg";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -45,13 +44,10 @@ export function Header() {
             className="flex items-center gap-2 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-primary"
             aria-label="Holidaze home"
           >
-            <img
-              src={Logo}
-              alt="Holidaze logo"
-              width={74}
-              height={74}
-              className="rounded-xl"
-            />
+            <div className="flex font-bold text-2xl">
+              <span className="text-primary">holidaze</span>
+              <span className="text-orange-500">&nbsp;.</span>
+            </div>
           </NavLink>
 
           {/* Nav */}
@@ -86,11 +82,11 @@ export function Header() {
               <Button
                 type="button"
                 variant="outline"
-                size="icon"
                 className="md:hidden"
                 aria-label="Open navigation"
               >
                 <Menu className="h-5 w-5" aria-hidden="true" />
+                Menu
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-full max-w-xs p-0">
@@ -120,12 +116,7 @@ export function Header() {
           {token ? (
             <ProfileMenu />
           ) : (
-            <Button
-              variant="secondary"
-              className="rounded-xl"
-              aria-label="Sign in or register"
-              asChild
-            >
+            <Button variant="outline" aria-label="Sign in or register" asChild>
               <Link to={routes.auth.login} state={{ from: fromState }}>
                 <User className="mr-2 h-4 w-4" aria-hidden="true" /> Sign in
               </Link>
