@@ -65,7 +65,7 @@ export default function ManageVenueBookings() {
         ]}
       />
       <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Bookings — {name}</h1>
+        <h1 className="text-2xl font-semibold">Bookings - {name}</h1>
         {venue?.id && (
           <Button asChild variant="outline">
             <Link to={`/venues/${venue.id}`}>View venue</Link>
@@ -98,7 +98,7 @@ export default function ManageVenueBookings() {
                     const from = new Date(b.dateFrom);
                     const to = new Date(b.dateTo);
                     const nights = nightsBetween(from, to);
-                    const customerName = b.customer?.name ?? "—";
+                    const customerName = b.customer?.name ?? "-";
                     return (
                       <tr key={b.id} className="border-b last:border-0">
                         <td className="py-2 pr-3">

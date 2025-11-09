@@ -35,7 +35,10 @@ export function Header() {
     }`;
 
   return (
-    <header className="w-full" role="banner">
+    <header
+      className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/75"
+      role="banner"
+    >
       <div className="p-4 flex justify-between items-center max-w-[1280px] mx-auto">
         <section className="flex items-center gap-3">
           {/* Logo */}

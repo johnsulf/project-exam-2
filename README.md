@@ -5,6 +5,10 @@
 
 Holidaze web app – browse venues, manage listings, and handle bookings with an improved search experience, inline availability filtering, and post-stay owner ratings.
 
+## Preview image
+
+![App preview](public/preview.png)
+
 Built with:
 
 - React 19 + TypeScript
@@ -39,16 +43,15 @@ Then open the printed local URL (usually http://localhost:5173).
 
 ## Scripts
 
-| Script           | Purpose                                     |
-| ---------------- | ------------------------------------------- |
-| `pnpm dev`       | Start Vite dev server with HMR              |
-| `pnpm build`     | Type check then build production bundle     |
-| `pnpm test`      | Run Vitest test suite (CI friendly)         |
-| `pnpm test:ui`   | Interactive test watcher/UI (if configured) |
-| `pnpm lint`      | Run ESLint over source                      |
-| `pnpm typecheck` | Run TypeScript without emitting             |
-
-Optional additions you can add later: `pnpm format` (Prettier), `pnpm preview` (serve built assets).
+| Script           | Purpose                                 |
+| ---------------- | --------------------------------------- |
+| `pnpm dev`       | Start Vite dev server with HMR          |
+| `pnpm build`     | Type check then build production bundle |
+| `pnpm test`      | Run Vitest test suite (CI friendly)     |
+| `pnpm test:unit` | Interactive test watcher/UI             |
+| `pnpm test:e2e`  | Test with PlayWright                    |
+| `pnpm lint`      | Run ESLint over source                  |
+| `pnpm typecheck` | Run TypeScript without emitting         |
 
 ---
 
@@ -64,31 +67,15 @@ Optional additions you can add later: `pnpm format` (Prettier), `pnpm preview` (
 
 ---
 
-## Deployment
+## Required Project Links
 
-Target: GitHub Pages.
-
-Placeholder live URL (update after first deploy):
-`https://<username>.github.io/project-exam-2/`
-
-Basic steps (once build + gh-pages workflow configured):
-
-1. Set `base` in `vite.config.ts` to `/project-exam-2/`.
-2. Build: `pnpm build`.
-3. Publish `dist/` (via GH Action or `gh-pages` branch strategy).
-
----
-
-## Required Project Links (Placeholders)
-
-- Figma overview: <ADD FIGMA LINK>
-- Figma component specs: <ADD FIGMA LINK>
-- Figma: <ADD FIGMA LINK>
-- Style Guide: <ADD STYLE GUIDE LINK>
-- Gantt Chart: <ADD GANTT LINK>
-- Kanban Board: <ADD KANBAN (e.g. GitHub Projects / Trello) LINK>
-- Repository: <ADD REPO URL>
-- Live Demo: <ADD DEPLOYED APP URL>
+- Style Guide: [Figma](https://www.figma.com/proto/yZvqiW2RABCeLQqSNWAuhk/Holidaze---Style-Guide---Prototype?node-id=0-1&t=CzSYfnTh7sjlGqfT-1)
+- Design Prototype Desktop: [Figma](https://www.figma.com/proto/yZvqiW2RABCeLQqSNWAuhk/Holidaze---Style-Guide---Prototype?node-id=57-6401&t=2xDY2KzqmgSfusDb-1)
+- Design Prototype Mobile: [Figma](https://www.figma.com/proto/yZvqiW2RABCeLQqSNWAuhk/Holidaze---Style-Guide---Prototype?node-id=68-3133&t=CzSYfnTh7sjlGqfT-1)
+- Gantt Chart: [GitHub Projects](https://github.com/users/johnsulf/projects/7/views/2)
+- Kanban Board: [GitHub Projects](https://github.com/users/johnsulf/projects/7/views/1)
+- Repository: [GitHub](https://github.com/johnsulf/project-exam-2)
+- Live Demo: [Holidaze](https://johnsulf.github.io/project-exam-2/)
 
 Keep these updated for examiner & collaborators.
 
@@ -108,49 +95,3 @@ src/
 ```
 
 ---
-
-## Verification Checklist (New Contributor <5 min)
-
-- [ ] Cloned repository
-- [ ] Ran `pnpm install` without errors
-- [ ] `pnpm dev` starts server & homepage renders
-- [ ] Tailwind classes apply (inspect element to confirm) _(if initialized)_
-- [ ] `pnpm test` passes
-- [ ] `pnpm build` produces a `dist/` folder
-
-If any box fails, open an issue titled "Onboarding friction: <short description>".
-
----
-
-## Roadmap (Initial)
-
-- [ ] Configure Tailwind v4 + base design tokens
-- [ ] Add shadcn/ui foundational components
-- [ ] Set up API layer (fetch wrapper + error handling)
-- [ ] Implement routing (if multi-page / dashboard required)
-- [ ] Accessibility & keyboard navigation audit
-- [ ] GitHub Pages deploy workflow (CI)
-
----
-
-## Conventions
-
-- Commits: `feat:`, `fix:`, `chore:`, `refactor:`, `test:`, `docs:`
-- Branches: `feature/<name>`, `fix/<issue-id>`, `chore/<task>`
-- PRs: concise description + screenshots (UI) + test notes
-
----
-
-## Known Issues
-
-- `pnpm test` currently fails due to an upstream `jsdom`/`parse5` ESM interop bug (`ERR_REQUIRE_ESM`). Pinning jsdom < 27 or waiting for a patched release resolves the problem – keep an eye on the jsdom changelog.
-
----
-
-## License
-
-Add license info here if required by assignment guidelines.
-
----
-
-Update this README continuously as architecture & scope evolve.

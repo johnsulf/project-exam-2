@@ -143,7 +143,7 @@ export default function ManageVenueDetail() {
                     <li key={b.id} className="text-muted-foreground">
                       {formatDateRange(f, t)} • {b.guests} guest
                       {b.guests === 1 ? "" : "s"}
-                      {b.customer?.name ? ` — ${b.customer.name}` : ""}
+                      {b.customer?.name ? ` - ${b.customer.name}` : ""}
                     </li>
                   );
                 })}

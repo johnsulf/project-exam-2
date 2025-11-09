@@ -52,7 +52,7 @@ export const Profile = ProfileBase.extend({
   bookings: z.array(Booking).optional(),
 });
 
-// Slim owner (embedded under venue.owner — venueManager often omitted)
+// Slim owner (embedded under venue.owner - venueManager often omitted)
 export const OwnerProfile = ProfileBase.extend({
   venueManager: z.boolean().optional(),
 });
