@@ -1,5 +1,5 @@
 // Date helpers for Holidaze
-// NOTE: Ranges are treated as [start, end) — checkout day is NOT booked.
+// NOTE: Ranges are treated as [start, end) - checkout day is NOT booked.
 
 const pad = (n: number) => n.toString().padStart(2, "0");
 

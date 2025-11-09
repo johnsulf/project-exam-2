@@ -20,7 +20,7 @@ export default function RegisterCustomer() {
   async function handleRegister(values: RegisterFormValues) {
     try {
       await registerUser({ ...values, venueManager: false });
-      toast.success("Account created — welcome to Holidaze!");
+      toast.success("Account created - welcome to Holidaze!");
       navigate(routes.home, { replace: true });
     } catch (err) {
       toast.error(getErrorMessage(err));

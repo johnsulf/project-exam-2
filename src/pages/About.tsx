@@ -96,7 +96,7 @@ export default function About() {
           <CardContent>
             <p className="text-sm text-muted-foreground">
               All venues are mock entries created by me and classmates. They
-              don’t exist in real life—they help demonstrate the booking flows
+              don’t exist in real life - they help demonstrate the booking flows
               the exam requires.
             </p>
           </CardContent>

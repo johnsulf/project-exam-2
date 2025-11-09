@@ -161,7 +161,7 @@ export default function ManageHome() {
                     <TableCell className="text-sm">
                       {typeof v.rating === "number" && v.rating > 0
                         ? v.rating.toPrecision(2)
-                        : "—"}
+                        : "-"}
                     </TableCell>
                     <TableCell className="text-sm">
                       {formatMoney(v.price, { currency: "USD" })}
@@ -211,14 +211,14 @@ export default function ManageHome() {
                 <div className="grid gap-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">City</span>
-                    <span>{v.location?.city ?? "—"}</span>
+                    <span>{v.location?.city ?? "-"}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Rating</span>
                     <span>
                       {typeof v.rating === "number" && v.rating > 0
                         ? v.rating.toPrecision(2)
-                        : "—"}
+                        : "-"}
                     </span>
                   </div>
                   <div className="flex justify-between">

@@ -127,7 +127,7 @@ export default function Home() {
         <section className="grid gap-6 md:grid-cols-3">
           <HighlightCard
             title="Curated for inspiration"
-            description="Every venue on Holidaze is handpicked for its stories, architecture, or location—so every trip feels special."
+            description="Every venue on Holidaze is handpicked for its stories, architecture, or location - so every trip feels special."
           />
           <HighlightCard
             title="Always in the know"
