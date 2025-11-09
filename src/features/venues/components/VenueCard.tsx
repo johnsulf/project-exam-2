@@ -19,7 +19,7 @@ export function VenueCard({ v }: { v: Venue }) {
   return (
     <Link
       to={`/venues/${v.id}`}
-      className="group block overflow-hidden rounded-[28px] border bg-card transition duration-300 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="group flex h-full flex-col overflow-hidden rounded-[28px] border bg-card transition duration-300 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       <div className="relative h-56 overflow-hidden">
         {imageUrl ? (
@@ -49,7 +49,7 @@ export function VenueCard({ v }: { v: Venue }) {
         </div>
       </div>
 
-      <div className="space-y-4 p-6">
+      <div className="flex flex-1 flex-col space-y-4 p-6">
         <div className="flex items-start justify-between gap-3">
           <div>
             <h3 className="text-lg font-semibold tracking-tight text-slate-900">
@@ -76,7 +76,7 @@ export function VenueCard({ v }: { v: Venue }) {
           {v.meta?.breakfast && <Badge variant="secondary">Breakfast</Badge>}
         </div>
 
-        <div className="flex items-center justify-between text-sm font-medium text-primary transition group-hover:text-primary/80">
+        <div className="mt-auto flex items-center justify-between pt-2 text-sm font-medium text-primary transition group-hover:text-primary/80">
           <span>View details</span>
           <ArrowRight className="size-4 transition duration-300 group-hover:translate-x-1" />
         </div>

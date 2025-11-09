@@ -109,7 +109,7 @@ export default function About() {
             <p>• React + TypeScript + Vite</p>
             <p>• Tailwind & shadcn/ui for components</p>
             <p>• TanStack Query for data fetching</p>
-            <p>• React Router, Zod, and Sonner toast kit</p>
+            <p>• React Router for routing and Zod for validation</p>
           </CardContent>
         </Card>
       </section>
