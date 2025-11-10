@@ -271,6 +271,8 @@ export default function Profile() {
                         typeof b.venue?.rating === "number"
                           ? b.venue.rating
                           : 0;
+                      // Ratings come from (1) this session's API mutation, (2) locally stored guest ratings,
+                      // then finally fall back to the server's current rating.
                       const localRating = mockRatings[b.id];
                       const sessionRating = ratedBookings[b.id];
                       const currentRating =
@@ -293,6 +295,7 @@ export default function Profile() {
                       const disabled =
                         !venueId ||
                         (isOwner &&
+                          // Owners write ratings to the API, so lock the control while the mutation runs.
                           (pendingRatingId === b.id || rateVenue.isPending));
 
                       return (

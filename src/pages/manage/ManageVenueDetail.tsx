@@ -66,6 +66,7 @@ export default function ManageVenueDetail() {
   const disabledRanges = (v.bookings ?? []).map((b) => {
     const from = new Date(b.dateFrom);
     const to = new Date(b.dateTo);
+    // Calendar expects inclusive ranges; bookings expose `dateTo` as exclusive so shift one day back.
     const toInclusive = new Date(to);
     toInclusive.setDate(toInclusive.getDate() - 1);
     return { from, to: toInclusive };

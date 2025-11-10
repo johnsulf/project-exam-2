@@ -59,6 +59,7 @@ export default function Venues() {
     wantBreakfast ||
     wantsDates;
 
+  // Client-side filters need broader source data, so fetch up to 100 items and normalize to page 1.
   const fetchLimit = hasClientFilters ? 100 : limit;
   const serverParams: Record<string, unknown> = {
     page: hasClientFilters ? 1 : page,
@@ -125,6 +126,7 @@ export default function Venues() {
 
   let meta: TPageMeta;
   if (hasClientFilters) {
+    // Manual filtering means the meta has to be recomputed locally to preserve pagination UI.
     const total = filtered.length;
     const pageCount = Math.max(1, Math.ceil(total / limit));
     const currentPage = Math.min(page, pageCount);

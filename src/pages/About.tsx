@@ -37,8 +37,8 @@ export default function About() {
   return (
     <div className="space-y-6 pb-12">
       <PageBreadcrumbs items={breadcrumbs} />
-      <div className="space-y-20">
-        <section className="rounded-lg border bg-card p-8 md:p-12 shadow-xl space-y-6">
+      <div className="space-y-12">
+        <section className="rounded-lg border bg-card p-8 md:p-12  space-y-6">
           <span className="inline-flex w-fit rounded-full bg-teal-100 px-4 py-2 text-sm font-semibold uppercase tracking-widest text-teal-700">
             final exam
           </span>
