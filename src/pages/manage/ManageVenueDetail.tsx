@@ -138,7 +138,7 @@ export default function ManageVenueDetail() {
           {(v.bookings?.length ?? 0) === 0 ? (
             <p className="text-sm text-muted-foreground">No bookings yet.</p>
           ) : (
-            <div className="rounded-xl border p-3">
+            <div className="rounded-lg border p-3">
               <div className="flex justify-center ">
                 <Calendar
                   mode="single"

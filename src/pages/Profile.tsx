@@ -128,7 +128,7 @@ export default function Profile() {
       <div className="space-y-8">
         {/* Banner (decorative) */}
         <div
-          className="rounded-xl border bg-muted h-24 w-full"
+          className="rounded-lg border bg-muted h-24 w-full"
           aria-hidden="true"
         />
 

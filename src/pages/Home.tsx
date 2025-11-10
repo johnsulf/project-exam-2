@@ -74,7 +74,7 @@ export default function Home() {
       <PageBreadcrumbs items={breadcrumbs} />
       <div className="space-y-16">
         {/* Hero */}
-        <section className="overflow-hidden rounded-4xl border bg-white shadow-xl">
+        <section className="overflow-hidden rounded-lg border bg-white shadow-xl">
           <div className="px-6 py-12 sm:px-10 md:px-16 lg:px-20 space-y-12">
             <div className="max-w-3xl space-y-6 ">
               <span className="inline-flex items-center gap-2 rounded-full text-teal-950 bg-teal-100 px-4 py-1 text-sm font-medium backdrop-blur-sm">
@@ -93,7 +93,7 @@ export default function Home() {
               </p>
             </div>
             <div className="space-y-6">
-              <div className="rounded-2xl bg-white/95 p-4 sm:p-5 shadow-2xl backdrop-blur">
+              <div className="rounded-lg bg-white/95 p-4 sm:p-5 shadow-2xl backdrop-blur">
                 <VenuesSearchBar redirectTo="/venues" />
                 <div className="grid gap-3 sm:grid-cols-3 text-sm">
                   <StatPill
@@ -154,7 +154,7 @@ export default function Home() {
               items={featured}
             />
 
-            <section className="rounded-3xl bg-white border p-8 md:p-10 space-y-6">
+            <section className="rounded-lg bg-white border p-8 md:p-10 space-y-6">
               <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                 <div>
                   <h2 className="text-2xl font-semibold">
@@ -206,7 +206,7 @@ type TrendingStripProps = {
 
 function TrendingStrip({ venues }: TrendingStripProps) {
   return (
-    <div className="space-y-4 rounded-3xl border border-white/20 bg-white/15 sm:p-6">
+    <div className="space-y-4 rounded-lg border border-white/20 bg-white/15 sm:p-6">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-sm uppercase tracking-[0.3em] ">
@@ -244,9 +244,9 @@ function TrendingStrip({ venues }: TrendingStripProps) {
             <Link
               key={venue.id}
               to={routes.venue(venue.id)}
-              className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-indigo-50 p-3 transition hover:bg-indigo-100 hover:shadow-lg lg:min-w-xs xl:min-w-0"
+              className="group flex items-center gap-4 rounded-lg border border-white/10 bg-indigo-50 p-3 transition hover:bg-indigo-100 hover:shadow-lg lg:min-w-xs xl:min-w-0"
             >
-              <div className="relative h-20 w-24 overflow-hidden rounded-xl">
+              <div className="relative h-20 w-24 overflow-hidden rounded-lg">
                 {cover?.url ? (
                   <img
                     src={cover.url}
@@ -292,7 +292,7 @@ type StatPillProps = {
 
 function StatPill({ icon, label, value }: StatPillProps) {
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-white px-4 py-3 shadow-sm">
+    <div className="flex items-center gap-3 rounded-lg border border-neutral-200 bg-white px-4 py-3 shadow-sm">
       <span className="flex size-8 items-center justify-center rounded-full bg-neutral-900/5 ">
         {icon}
       </span>
@@ -311,7 +311,7 @@ type HighlightCardProps = {
 
 function HighlightCard({ title, description }: HighlightCardProps) {
   return (
-    <div className="rounded-3xl border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+    <div className="rounded-lg border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
       <h3 className="text-lg font-semibold">{title}</h3>
       <p className="mt-2 text-sm text-muted-foreground">{description}</p>
     </div>

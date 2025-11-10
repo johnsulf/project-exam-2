@@ -31,7 +31,7 @@ export function ManagerToggle({ name, venueManager }: Props) {
 
   return (
     <div
-      className="inline-flex items-center gap-3 rounded-xl border p-3"
+      className="inline-flex items-center gap-3 rounded-lg border p-3"
       role="group"
       aria-labelledby={`${id}-label`}
     >

@@ -19,10 +19,10 @@ export function ManageVenueDetailSkeleton() {
         </div>
       </div>
       <div className="md:grid md:grid-cols-2 md:gap-6">
-        <Skeleton className="h-56 w-full rounded-xl" />
+        <Skeleton className="h-56 w-full rounded-lg" />
         <div className="space-y-4 mt-6 md:mt-0">
           <Skeleton className="h-6 w-48" />
-          <Skeleton className="h-64 w-full rounded-xl" />
+          <Skeleton className="h-64 w-full rounded-lg" />
         </div>
       </div>
     </div>

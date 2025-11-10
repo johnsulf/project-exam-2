@@ -38,7 +38,7 @@ export default function About() {
     <div className="space-y-10">
       <PageBreadcrumbs items={breadcrumbs} />
 
-      <section className="rounded-3xl border bg-white p-8 md:p-12 shadow-xl space-y-6">
+      <section className="rounded-lg border bg-white p-8 md:p-12 shadow-xl space-y-6">
         <span className="inline-flex w-fit rounded-full bg-teal-100 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-teal-700">
           final exam
         </span>
@@ -128,7 +128,7 @@ export default function About() {
               {gradingCriteria.map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-2xl border p-4 space-y-2 bg-gradient-to-br from-white to-muted/60 shadow-sm"
+                  className="rounded-lg border p-4 space-y-2 bg-gradient-to-br from-white to-muted/60 shadow-sm"
                 >
                   <div className="flex items-center justify-between">
                     <p className="text-xs uppercase tracking-widest text-muted-foreground">
@@ -144,7 +144,7 @@ export default function About() {
                 </div>
               ))}
             </div>
-            <div className="rounded-3xl border bg-card/80 p-5 space-y-4 shadow-inner">
+            <div className="rounded-lg border bg-card/80 p-5 space-y-4 shadow-inner">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs uppercase tracking-widest text-muted-foreground">
@@ -162,7 +162,7 @@ export default function About() {
                 {gradeScale.map((grade) => (
                   <div
                     key={grade.grade}
-                    className="flex items-center gap-2 rounded-2xl border bg-white/70 p-3 shadow-sm"
+                    className="flex items-center gap-2 rounded-lg border bg-white/70 p-3 shadow-sm"
                   >
                     <span
                       className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold text-white ${grade.color}`}

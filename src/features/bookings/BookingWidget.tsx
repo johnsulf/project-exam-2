@@ -96,7 +96,7 @@ export function BookingWidget({
     <section
       aria-labelledby={headingId}
       aria-describedby={summaryId}
-      className="rounded-xl border p-4 space-y-4 w-full md:w-[360px]"
+      className="rounded-lg border p-4 space-y-4 w-full md:w-[360px]"
     >
       <div className="space-y-1">
         <h2 id={headingId} className="text-xl font-semibold">

@@ -121,7 +121,7 @@ export default function ManageHome() {
         <EmptyState />
       ) : (
         <>
-          <div className="hidden md:block rounded-xl border overflow-hidden">
+          <div className="hidden md:block rounded-lg border overflow-hidden">
             <Table>
               <TableHeader className="bg-muted/30">
                 <TableRow>
@@ -186,7 +186,7 @@ export default function ManageHome() {
             {venues.map((v) => (
               <article
                 key={v.id}
-                className="rounded-xl border p-4 space-y-3 bg-card/50"
+                className="rounded-lg border p-4 space-y-3 bg-card/50"
               >
                 <div>
                   <h2 className="text-lg font-semibold leading-tight">

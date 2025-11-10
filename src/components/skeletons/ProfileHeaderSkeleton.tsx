@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export function ProfileHeaderSkeleton() {
   return (
     <div className="space-y-4">
-      <Skeleton className="h-24 w-full rounded-xl" />
+      <Skeleton className="h-24 w-full rounded-lg" />
       <div className="flex items-center gap-4">
         <Skeleton className="h-18 w-18 rounded-full" />
         <div className="space-y-2">
