@@ -298,7 +298,7 @@ function StatPill({ icon, label, value }: StatPillProps) {
       </span>
       <div>
         <p className="text-sm font-semibold">{value}</p>
-        <p className="text-xs text-neutral-700">{label}</p>
+        <p className="text-xs text-muted-foreground">{label}</p>
       </div>
     </div>
   );

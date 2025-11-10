@@ -9,15 +9,12 @@ export function RequireManager() {
   const { token, profile, loading } = useAuth();
   const loc = useLocation();
 
-  // 1) Not signed in? Go to login and come back after.
   if (!token) {
     const from =
       (loc.state as { from?: Location | string } | null | undefined)?.from ??
       loc;
     return <Navigate to={routes.auth.login} replace state={{ from }} />;
   }
-
-  // 2) While the store is figuring itself out (e.g., after refresh)
   if (loading) {
     return (
       <div className="sr-only" role="status" aria-live="polite">
@@ -33,7 +30,6 @@ export function RequireManager() {
     return <Navigate to={routes.profile} replace />;
   }
 
-  // 4) Authorized
   return <Outlet />;
 }
 
