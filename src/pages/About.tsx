@@ -35,45 +35,43 @@ export default function About() {
   const breadcrumbs = [{ label: "Home", to: routes.home }, { label: "About" }];
 
   return (
-    <div className="space-y-20">
+    <div className="space-y-6">
       <PageBreadcrumbs items={breadcrumbs} />
-
+      <h1 className="text-4xl font-medium">About Holidaze</h1>
       <section className="rounded-lg border bg-card p-8 md:p-12 shadow-xl space-y-6">
-        <span className="inline-flex w-fit rounded-full bg-teal-100 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-teal-700">
+        <span className="inline-flex w-fit rounded-full bg-teal-100 px-4 py-2 text-sm font-semibold uppercase tracking-widest text-teal-700">
           final exam
         </span>
-        <div className="space-y-4">
-          <h1 className="text-3xl md:text-4xl font-semibold leading-tight">
-            Holidaze is a Noroff Front-end exam project crafted by Johnsulf.
-          </h1>
-          <p className="text-base md:text-lg text-muted-foreground max-w-3xl">
-            Goal: demonstrate two years of front-end studies by planning,
-            designing, and shipping a complete accommodation platform. Holidaze
-            is a fictional booking company that needed both a customer-facing
-            venue marketplace and an admin-facing venue manager dashboard. The
-            entire UI is built on the official Noroff Holidaze API, with all
-            venue data mocked by me and fellow students.
-          </p>
-          <p className="text-base md:text-lg text-muted-foreground max-w-3xl">
-            Deliverables included user research, Figma prototypes, a style
-            guide, kanban planning, and a hosted demo using approved resources:
-            React + TypeScript + Vite, Tailwind with shadcn/ui, TanStack Query,
-            and GitHub Pages. Everything here is front end only; the API handles
-            authentication, bookings, and venue persistence.
-          </p>
-          <p className="text-base text-muted-foreground max-w-3xl">
-            Want to dive deeper?{" "}
-            <a
-              href="https://github.com/johnsulf/project-exam-2"
-              className="text-primary underline font-medium"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Check out the GitHub repo
-            </a>{" "}
-            and read the full documentation there.
-          </p>
-        </div>
+        <h2 className="text-3xl font-semibold leading-tight">
+          Holidaze is a Noroff Front-end exam project crafted by Johnsulf.
+        </h2>
+        <p className="text-muted-foreground max-w-3xl">
+          Goal: demonstrate two years of front-end studies by planning,
+          designing, and shipping a complete accommodation platform. Holidaze is
+          a fictional booking company that needed both a customer-facing venue
+          marketplace and an admin-facing venue manager dashboard. The entire UI
+          is built on the official Noroff Holidaze API, with all venue data
+          mocked by me and fellow students.
+        </p>
+        <p className="text-muted-foreground max-w-3xl">
+          Deliverables included user research, Figma prototypes, a style guide,
+          kanban planning, and a hosted demo using approved resources: React +
+          TypeScript + Vite, Tailwind with shadcn/ui, TanStack Query, and GitHub
+          Pages. Everything here is front end only; the API handles
+          authentication, bookings, and venue persistence.
+        </p>
+        <p className="text-muted-foreground max-w-3xl">
+          Want to dive deeper?{" "}
+          <a
+            href="https://github.com/johnsulf/project-exam-2"
+            className="text-primary underline font-medium"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Check out the GitHub repo
+          </a>{" "}
+          and read the full documentation there.
+        </p>
       </section>
 
       <section className="grid gap-4 md:grid-cols-3">
@@ -82,7 +80,7 @@ export default function About() {
             <CardTitle>Made for Noroff</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground">
               Built as part of my final exam in the Front-end studies program.
               It’s a proof of learning focused on thoughtful UI, data handling,
               and responsive layouts.
@@ -94,7 +92,7 @@ export default function About() {
             <CardTitle>Fictional inventory</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground">
               All venues are mock entries created by me and classmates. They
               don’t exist in real life - they help demonstrate the booking flows
               the exam requires.
@@ -105,7 +103,7 @@ export default function About() {
           <CardHeader>
             <CardTitle>Tech stack</CardTitle>
           </CardHeader>
-          <CardContent className="text-sm text-muted-foreground space-y-2">
+          <CardContent className="text-muted-foreground space-y-1">
             <p>• React + TypeScript + Vite</p>
             <p>• Tailwind & shadcn/ui for components</p>
             <p>• TanStack Query for data fetching</p>
@@ -119,42 +117,40 @@ export default function About() {
           <CardHeader>
             <CardTitle>Project Exam 2 Grading</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6 text-sm text-muted-foreground">
+          <CardContent className="space-y-4 text-muted-foreground">
             <p>
               Each criterion is scored out of the maximum shown below. Scores
               are pending while the exam is under review.
             </p>
-            <div className="grid gap-3 md:grid-cols-3">
+            <div className="grid gap-4 md:grid-cols-3">
               {gradingCriteria.map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-lg border p-4 space-y-2 bg-gradient-to-br from-white to-muted/60 shadow-sm"
+                  className="rounded-lg border p-4 space-y-2 bg-gradient-to-br from-white to-muted/60"
                 >
                   <div className="flex items-center justify-between">
-                    <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                    <p className="uppercase tracking-widest text-muted-foreground">
                       {item.label}
                     </p>
-                    <span className="rounded-full bg-teal-100 px-2 py-0.5 text-xs font-semibold text-teal-700">
+                    <span className="rounded-full bg-teal-100 px-2 py-0.5 text-sm font-medium text-teal-700">
                       ? / {item.max}
                     </span>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    {item.description}
-                  </p>
+                  <p className="text-muted-foreground">{item.description}</p>
                 </div>
               ))}
             </div>
-            <div className="rounded-lg border bg-card/80 p-5 space-y-4 shadow-inner">
+            <div className="rounded-lg border bg-card p-5 space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                  <p className="uppercase tracking-widest text-muted-foreground">
                     Final grade
                   </p>
-                  <p className="text-3xl font-semibold text-foreground">
-                    Pending
+                  <p className="text-2xl font-semibold text-foreground">
+                    Pending...
                   </p>
                 </div>
-                <div className="pending-grade-indicator rounded-full px-4 py-2 text-xs font-semibold text-white shadow">
+                <div className="pending-grade-indicator rounded-full px-4 py-2 text-sm font-semibold text-white">
                   Awaiting evaluation
                 </div>
               </div>
@@ -162,16 +158,14 @@ export default function About() {
                 {gradeScale.map((grade) => (
                   <div
                     key={grade.grade}
-                    className="flex items-center gap-2 rounded-lg border bg-card/70 p-3 shadow-sm"
+                    className="flex items-center gap-2 rounded-lg border bg-card p-2"
                   >
                     <span
-                      className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold text-white ${grade.color}`}
+                      className={`flex h-8 w-8 items-center justify-center rounded-full font-semibold text-white ${grade.color}`}
                     >
                       {grade.grade}
                     </span>
-                    <p className="text-sm text-muted-foreground">
-                      {grade.label}
-                    </p>
+                    <p className="text-muted-foreground">{grade.label}</p>
                   </div>
                 ))}
               </div>
