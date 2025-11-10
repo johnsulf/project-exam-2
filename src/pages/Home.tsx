@@ -74,7 +74,7 @@ export default function Home() {
       <PageBreadcrumbs items={breadcrumbs} />
       <div className="space-y-16">
         {/* Hero */}
-        <section className="overflow-hidden rounded-[32px] border bg-white shadow-xl">
+        <section className="overflow-hidden rounded-4xl border bg-white shadow-xl">
           <div className="px-6 py-12 sm:px-10 md:px-16 lg:px-20 space-y-12">
             <div className="max-w-3xl space-y-6 ">
               <span className="inline-flex items-center gap-2 rounded-full text-teal-950 bg-teal-100 px-4 py-1 text-sm font-medium backdrop-blur-sm">
@@ -95,7 +95,7 @@ export default function Home() {
             <div className="space-y-6">
               <div className="rounded-2xl bg-white/95 p-4 sm:p-5 shadow-2xl backdrop-blur">
                 <VenuesSearchBar redirectTo="/venues" />
-                <div className="grid gap-3 sm:grid-cols-3 text-sm text-slate-600">
+                <div className="grid gap-3 sm:grid-cols-3 text-sm">
                   <StatPill
                     icon={<MapPin className="size-4" aria-hidden="true" />}
                     label="Featured stays"
@@ -244,7 +244,7 @@ function TrendingStrip({ venues }: TrendingStripProps) {
             <Link
               key={venue.id}
               to={routes.venue(venue.id)}
-              className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-indigo-50 p-3 transition hover:bg-indigo-100 hover:shadow-lg lg:min-w-[320px] xl:min-w-0"
+              className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-indigo-50 p-3 transition hover:bg-indigo-100 hover:shadow-lg lg:min-w-xs xl:min-w-0"
             >
               <div className="relative h-20 w-24 overflow-hidden rounded-xl">
                 {cover?.url ? (
@@ -267,9 +267,6 @@ function TrendingStrip({ venues }: TrendingStripProps) {
                 <div className="flex items-center gap-2">
                   <span className="inline-flex items-center rounded-full text-teal-950  bg-teal-100 px-2 py-0.5 text-[10px] uppercase tracking-wide">
                     Limited
-                  </span>
-                  <span className="inline-flex items-center rounded-full bg-white px-2 py-0.5 text-[10px] uppercase tracking-wide">
-                    Top rated
                   </span>
                 </div>
                 <p className="text-sm font-semibold">{venue.name}</p>
@@ -295,13 +292,13 @@ type StatPillProps = {
 
 function StatPill({ icon, label, value }: StatPillProps) {
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-slate-200/60 bg-white/80 px-4 py-3 shadow-sm">
-      <span className="flex size-8 items-center justify-center rounded-full bg-slate-900/5 text-slate-700">
+    <div className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-white px-4 py-3 shadow-sm">
+      <span className="flex size-8 items-center justify-center rounded-full bg-neutral-900/5 ">
         {icon}
       </span>
       <div>
-        <p className="text-sm font-semibold text-slate-900">{value}</p>
-        <p className="text-xs text-slate-500">{label}</p>
+        <p className="text-sm font-semibold">{value}</p>
+        <p className="text-xs text-neutral-700">{label}</p>
       </div>
     </div>
   );

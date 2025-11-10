@@ -29,18 +29,18 @@ export function VenueCard({ v }: { v: Venue }) {
             className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-200 via-slate-300 to-slate-400 text-sm font-medium text-slate-600">
+          <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-neutral-200 via-neutral-300 to-neutral-400 text-sm font-medium text-neutral-600">
             No image available
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent" />
         <div className="absolute left-4 bottom-4">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/85 px-3 py-1 text-xs font-medium text-slate-900 shadow-sm backdrop-blur">
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/85 px-3 py-1 text-xs font-medium text-neutral-900 shadow-sm backdrop-blur">
             <MapPin className="size-3.5" aria-hidden="true" />
             {locationLabel}
           </span>
         </div>
-        <div className="absolute right-4 top-4 flex items-center gap-1 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-900 shadow-sm backdrop-blur">
+        <div className="absolute right-4 top-4 flex items-center gap-1 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-neutral-900 shadow-sm backdrop-blur">
           <Star
             className={showStar ? "size-3.5 text-yellow-500" : "size-3.5"}
             aria-hidden="true"
@@ -52,7 +52,7 @@ export function VenueCard({ v }: { v: Venue }) {
       <div className="flex flex-1 flex-col space-y-4 p-6">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h3 className="text-lg font-semibold tracking-tight text-slate-900">
+            <h3 className="text-lg font-semibold tracking-tight text-neutral-900">
               {v.name}
             </h3>
             <p className="text-sm text-muted-foreground line-clamp-2">
@@ -61,7 +61,7 @@ export function VenueCard({ v }: { v: Venue }) {
           </div>
           <div className="text-right">
             <p className="text-sm text-muted-foreground">From</p>
-            <p className="text-base font-semibold text-slate-900">
+            <p className="text-base font-semibold text-neutral-900">
               {formatMoney(v.price, { currency: "USD" })}{" "}
               <span className="text-xs text-muted-foreground">/ night</span>
             </p>
