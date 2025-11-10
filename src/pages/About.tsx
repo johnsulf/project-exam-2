@@ -147,11 +147,8 @@ export default function About() {
                       Final grade
                     </p>
                     <p className="text-2xl font-semibold text-foreground">
-                      Pending...
+                      Pending<span className="pending-dots">...</span>
                     </p>
-                  </div>
-                  <div className="pending-grade-indicator rounded-full px-4 py-2 text-sm font-semibold text-white">
-                    Awaiting evaluation
                   </div>
                 </div>
                 <div className="grid gap-2 sm:grid-cols-3">
