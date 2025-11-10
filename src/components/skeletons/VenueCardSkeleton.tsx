@@ -2,9 +2,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function VenueCardSkeleton() {
   return (
-    <div className="rounded-md shadow border p-2 grid gap-2">
+    <div className="rounded-lg shadow border p-2 grid gap-2">
       {/* image */}
-      <Skeleton className="w-full h-48 rounded-md" />
+      <Skeleton className="w-full h-48 rounded-lg" />
 
       {/* top row: location + rating */}
       <div className="flex justify-between items-center">
@@ -29,7 +29,7 @@ export function VenueCardSkeleton() {
       {/* footer: price + button */}
       <div className="flex justify-between items-center mb-2">
         <Skeleton className="h-5 w-16" />
-        <Skeleton className="h-9 w-28 rounded-md" />
+        <Skeleton className="h-9 w-28 rounded-lg" />
       </div>
     </div>
   );

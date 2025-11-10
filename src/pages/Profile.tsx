@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { AvatarDialog } from "@/features/profile/AvatarDialog";
 import { BookingCard } from "@/features/profile/BookingCard";
 import { EmptyBookings } from "@/features/profile/EmptyBookings";
-import { BookingListSkeleton } from "@/features/profile/BookingListSkeleton";
+import { BookingListSkeleton } from "@/components/skeletons/BookingListSkeleton";
 import { useRouteHeadingFocus } from "@/components/a11y/useRouteHeadingFocus";
 import { ManagerToggle } from "@/features/profile/ManagerToggle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

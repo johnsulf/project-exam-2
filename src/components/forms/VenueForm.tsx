@@ -434,7 +434,7 @@ export function VenueForm({
                     const item = mediaWatch?.[idx];
                     return (
                       <div key={field.id} className="space-y-2">
-                        <div className="w-full aspect-video rounded-md overflow-hidden border bg-muted">
+                        <div className="w-full aspect-video rounded-lg overflow-hidden border bg-muted">
                           {item?.url?.trim() ? (
                             <img
                               src={item.url}

@@ -23,7 +23,7 @@ function CrashFallback({ error, resetErrorBoundary }: FallbackProps) {
       <p className="text-muted-foreground">
         We hit an unexpected error while rendering.
       </p>
-      <pre className="mx-auto max-w-full overflow-auto rounded-md bg-muted p-3 text-left text-xs">
+      <pre className="mx-auto max-w-full overflow-auto rounded-lg bg-muted p-3 text-left text-xs">
         {error.message}
       </pre>
       <div className="flex justify-center gap-2">

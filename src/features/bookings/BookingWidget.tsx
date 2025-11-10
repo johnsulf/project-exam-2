@@ -150,7 +150,7 @@ export function BookingWidget({
         </div>
       </div>
 
-      <div className="rounded-md bg-muted p-3 text-sm" id={summaryId}>
+      <div className="rounded-lg bg-muted p-3 text-sm" id={summaryId}>
         {range?.from && range?.to ? (
           <>
             <div>{formatDateRange(range.from, range.to)}</div>

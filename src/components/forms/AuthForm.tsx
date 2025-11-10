@@ -274,7 +274,7 @@ export function AuthForm(props: AuthFormProps) {
         <div
           role="alert"
           aria-live="assertive"
-          className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive"
+          className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive"
         >
           {errorMessage}
         </div>
