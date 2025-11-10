@@ -19,7 +19,7 @@ export function VenueGallery({ media, venueName, className }: Props) {
 
   if (!images.length) {
     return (
-      <div className={cn("overflow-hidden rounded-xl border", className)}>
+      <div className={cn("overflow-hidden rounded-lg border", className)}>
         <div className="aspect-[4/3] grid place-items-center text-sm text-muted-foreground">
           No image available
         </div>
@@ -43,9 +43,9 @@ export function VenueGallery({ media, venueName, className }: Props) {
   }
 
   return (
-    <div className={cn("space-y-3", className)}>
+    <div className={cn("space-y-6", className)}>
       {/* Main */}
-      <div className="overflow-hidden rounded-xl border">
+      <div className="overflow-hidden rounded-lg">
         <img
           key={main.url}
           src={main.url}
@@ -60,7 +60,7 @@ export function VenueGallery({ media, venueName, className }: Props) {
           ref={listRef}
           role="listbox"
           aria-label="Choose image"
-          className="flex gap-3 overflow-x-auto pb-1"
+          className="flex gap-4 overflow-x-auto p-0.5"
         >
           {images.map((m, i) => (
             <button
@@ -70,7 +70,7 @@ export function VenueGallery({ media, venueName, className }: Props) {
               data-idx={i}
               onClick={() => select(i)}
               className={cn(
-                "shrink-0 overflow-hidden rounded-xl border",
+                "shrink-0 overflow-hidden rounded-lg border",
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                 i === index ? "ring-2 ring-ring" : "",
               )}

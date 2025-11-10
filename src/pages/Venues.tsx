@@ -59,6 +59,7 @@ export default function Venues() {
     wantBreakfast ||
     wantsDates;
 
+  // Client-side filters need broader source data, therefor fetch up to 100 items and normalize to page 1.
   const fetchLimit = hasClientFilters ? 100 : limit;
   const serverParams: Record<string, unknown> = {
     page: hasClientFilters ? 1 : page,
@@ -78,7 +79,7 @@ export default function Venues() {
 
   if (isError || !data) {
     return (
-      <div className="space-y-3">
+      <div className="space-y-4">
         <p className="text-destructive">Couldn’t load venues.</p>
         <Button onClick={() => refetch()}>Retry</Button>
       </div>
@@ -125,6 +126,7 @@ export default function Venues() {
 
   let meta: TPageMeta;
   if (hasClientFilters) {
+    // Manual filtering means the meta has to be recomputed locally to preserve pagination UI.
     const total = filtered.length;
     const pageCount = Math.max(1, Math.ceil(total / limit));
     const currentPage = Math.min(page, pageCount);
@@ -164,12 +166,15 @@ export default function Venues() {
 
   return (
     <>
-      <PageBreadcrumbs items={breadcrumbs} className="mb-4" />
-      <VenuesSearchBar loading={isFetching} />
-      <ActiveFilters />
+      {/* Breadcrumbs and search bar */}
+      <div className="space-y-6">
+        <PageBreadcrumbs items={breadcrumbs} />
+        <VenuesSearchBar loading={isFetching} />
+        <ActiveFilters />
+      </div>
 
       {/* Result header */}
-      <div className="flex items-center justify-between mb-2 text-sm text-muted-foreground">
+      <div className="flex items-center justify-between mt-6 mb-2 text-muted-foreground">
         <div>
           <span className="font-medium text-foreground">{meta.totalCount}</span>
           {hasFiltersApplied ? <> filtered results</> : <> results</>}
@@ -193,7 +198,7 @@ export default function Venues() {
       )}
 
       <PaginationBar meta={meta} />
-      {isFetching && <div className="mt-3 text-sm opacity-70">Refreshing…</div>}
+      {isFetching && <p className="mt-4 text-muted-foreground">Refreshing…</p>}
     </>
   );
 }

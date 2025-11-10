@@ -1,11 +1,23 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
 import { useVenue } from "@/features/venues/hooks";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar } from "@/components/ui/calendar";
 import { formatDateRange } from "@/lib/date";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Spinner } from "@/components/ui/spinner";
+import { useDeleteVenue } from "@/features/manager/hooks";
+import { ManageVenueDetailSkeleton } from "@/components/skeletons/ManageVenueDetailSkeleton";
 
 function computeStatus(bookings?: { dateFrom: string; dateTo: string }[]) {
   const now = Date.now();
@@ -19,6 +31,7 @@ function computeStatus(bookings?: { dateFrom: string; dateTo: string }[]) {
 
 export default function ManageVenueDetail() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { data: v, isLoading, isError } = useVenue(id);
 
   const baseBreadcrumbs = [
@@ -31,12 +44,12 @@ export default function ManageVenueDetail() {
     return (
       <div className="space-y-6">
         <PageBreadcrumbs items={baseBreadcrumbs} />
-        <DetailSkeleton />
+        <ManageVenueDetailSkeleton />
       </div>
     );
   if (isError || !v) {
     return (
-      <div className="space-y-3">
+      <div className="space-y-4">
         <PageBreadcrumbs items={baseBreadcrumbs} />
         <h1 className="text-2xl font-semibold">Venue</h1>
         <p className="text-destructive">Couldn’t load venue.</p>
@@ -53,6 +66,7 @@ export default function ManageVenueDetail() {
   const disabledRanges = (v.bookings ?? []).map((b) => {
     const from = new Date(b.dateFrom);
     const to = new Date(b.dateTo);
+    // Calendar expects inclusive ranges; bookings expose `dateTo` as exclusive so shift one day back.
     const toInclusive = new Date(to);
     toInclusive.setDate(toInclusive.getDate() - 1);
     return { from, to: toInclusive };
@@ -72,7 +86,14 @@ export default function ManageVenueDetail() {
       {/* Header */}
       <header className="flex flex-col gap-4 sm:flex-row sm:items-start">
         <div className="flex-1">
-          <h1 className="text-2xl font-semibold">{v.name}</h1>
+          <h1 className="text-4xl font-semibold">{v.name}</h1>
+          {v.location?.city || v.location?.country ? (
+            <p className="text-muted-foreground">
+              {v.location?.city ?? ""}
+              {v.location?.city && v.location?.country ? ", " : ""}
+              {v.location?.country ?? ""}
+            </p>
+          ) : null}
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <Badge variant={status.variant}>{status.label}</Badge>
             <Badge variant="secondary">Guests {v.maxGuests}</Badge>
@@ -80,13 +101,6 @@ export default function ManageVenueDetail() {
             {v.meta?.parking && <Badge variant="secondary">Parking</Badge>}
             {v.meta?.pets && <Badge variant="secondary">Pets</Badge>}
             {v.meta?.breakfast && <Badge variant="secondary">Breakfast</Badge>}
-            {v.location?.city || v.location?.country ? (
-              <span className="text-sm text-muted-foreground">
-                {v.location?.city ?? ""}
-                {v.location?.city && v.location?.country ? ", " : ""}
-                {v.location?.country ?? ""}
-              </span>
-            ) : null}
           </div>
         </div>
         <div className="flex gap-2">
@@ -96,9 +110,11 @@ export default function ManageVenueDetail() {
           <Button asChild variant="outline">
             <Link to={`/manage/${v.id}/edit`}>Edit</Link>
           </Button>
-          <Button asChild variant="destructive">
-            <Link to={`/manage/${v.id}/delete`}>Delete</Link>
-          </Button>
+          <DeleteVenueDialog
+            venueId={v.id}
+            venueName={v.name}
+            onDeleted={() => navigate("/manage", { replace: true })}
+          />
         </div>
       </header>
 
@@ -118,12 +134,12 @@ export default function ManageVenueDetail() {
           )}
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           <h2 className="text-xl font-semibold">Booked dates</h2>
           {(v.bookings?.length ?? 0) === 0 ? (
             <p className="text-sm text-muted-foreground">No bookings yet.</p>
           ) : (
-            <div className="rounded-xl border p-3">
+            <div className="rounded-lg border p-3">
               <div className="flex justify-center ">
                 <Calendar
                   mode="single"
@@ -132,15 +148,15 @@ export default function ManageVenueDetail() {
                   disabled={disabledRanges}
                 />
               </div>
-              <p className="mt-2 text-xs text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 Booked ranges are disabled in the calendar.
               </p>
-              <ul className="mt-3 text-sm grid gap-1">
+              <ul className="my-4 text-sm grid gap-1">
                 {v.bookings!.map((b) => {
                   const f = new Date(b.dateFrom);
                   const t = new Date(b.dateTo);
                   return (
-                    <li key={b.id} className="text-muted-foreground">
+                    <li key={b.id}>
                       {formatDateRange(f, t)} • {b.guests} guest
                       {b.guests === 1 ? "" : "s"}
                       {b.customer?.name ? ` - ${b.customer.name}` : ""}
@@ -156,31 +172,59 @@ export default function ManageVenueDetail() {
   );
 }
 
-function DetailSkeleton() {
+type DeleteVenueDialogProps = {
+  venueId: string;
+  venueName: string;
+  onDeleted: () => void;
+};
+
+function DeleteVenueDialog({
+  venueId,
+  venueName,
+  onDeleted,
+}: DeleteVenueDialogProps) {
+  const [open, setOpen] = useState(false);
+  const { mutateAsync, isPending } = useDeleteVenue(venueId);
+
+  async function handleDelete() {
+    await mutateAsync();
+    setOpen(false);
+    onDeleted();
+  }
+
   return (
-    <div className="space-y-6">
-      <div className="flex items-start justify-between">
-        <div className="space-y-2">
-          <Skeleton className="h-8 w-64" />
-          <div className="flex gap-2">
-            <Skeleton className="h-6 w-24" />
-            <Skeleton className="h-6 w-16" />
-            <Skeleton className="h-6 w-20" />
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <Skeleton className="h-9 w-20" />
-          <Skeleton className="h-9 w-20" />
-          <Skeleton className="h-9 w-20" />
-        </div>
-      </div>
-      <div className="md:grid md:grid-cols-2 md:gap-6">
-        <Skeleton className="h-56 w-full rounded-xl" />
-        <div className="space-y-4 mt-6 md:mt-0">
-          <Skeleton className="h-6 w-48" />
-          <Skeleton className="h-64 w-full rounded-xl" />
-        </div>
-      </div>
-    </div>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="destructive">Delete</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Delete venue</DialogTitle>
+          <DialogDescription>
+            You're about to permanently delete{" "}
+            <span className="font-medium">{venueName}</span>. This action cannot
+            be undone.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter className="flex flex-col gap-2 sm:flex-row sm:justify-end">
+          <Button
+            variant="outline"
+            onClick={() => setOpen(false)}
+            disabled={isPending}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={handleDelete}
+            disabled={isPending}
+            aria-busy={isPending}
+          >
+            {isPending && <Spinner className="mr-2" aria-hidden="true" />}
+            {isPending ? "Deleting…" : "Delete"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

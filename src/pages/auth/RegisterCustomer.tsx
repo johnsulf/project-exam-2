@@ -53,7 +53,7 @@ export default function RegisterCustomer() {
             defaultValues={{ venueManager: false }}
             onSubmit={handleRegister}
           />
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground">
             Ready to manage venues?{" "}
             <Link
               className="text-primary underline"
@@ -63,7 +63,7 @@ export default function RegisterCustomer() {
             </Link>
             .
           </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground">
             Already have an account?{" "}
             <Link className="text-primary underline" to={routes.auth.login}>
               Sign in

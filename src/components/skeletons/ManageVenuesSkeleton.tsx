@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function ManageVenuesSkeleton({ rows = 5 }: { rows?: number }) {
   return (
-    <div className="rounded-xl border overflow-hidden">
+    <div className="rounded-lg border overflow-hidden">
       <div className="grid grid-cols-[1fr_120px_90px_120px_100px] gap-0 p-3 border-b bg-muted/30">
         <Skeleton className="h-5 w-40" />
         <Skeleton className="h-5 w-16" />

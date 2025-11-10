@@ -53,14 +53,14 @@ export default function RegisterManager() {
             defaultValues={{ venueManager: true }}
             onSubmit={handleRegister}
           />
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground">
             Looking for a guest account?{" "}
             <Link className="text-primary underline" to={routes.auth.register}>
               Register as a customer
             </Link>
             .
           </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground">
             Already manage a venue?{" "}
             <Link className="text-primary underline" to={routes.auth.login}>
               Sign in

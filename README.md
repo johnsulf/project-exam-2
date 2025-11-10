@@ -31,7 +31,7 @@ Prerequisites:
 Clone & run:
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/johnsulf/project-exam-2.git
 cd project-exam-2
 pnpm install
 pnpm dev

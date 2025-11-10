@@ -96,17 +96,15 @@ export function BookingWidget({
     <section
       aria-labelledby={headingId}
       aria-describedby={summaryId}
-      className="rounded-xl border p-4 space-y-4 w-full md:w-[360px]"
+      className="rounded-lg border flex flex-col p-4 space-y-4 w-full md:w-screen-sm"
     >
-      <div className="space-y-1">
+      <div className="space-y-2">
         <h2 id={headingId} className="text-xl font-semibold">
           Book this venue
         </h2>
-        <p className="text-base">
+        <p>
           {formatMoney(price, { currency: "USD" })}{" "}
-          <span className="text-sm font-normal text-muted-foreground">
-            per night
-          </span>
+          <span className="text-sm text-muted-foreground">/ per night</span>
         </p>
       </div>
 
@@ -150,7 +148,7 @@ export function BookingWidget({
         </div>
       </div>
 
-      <div className="rounded-md bg-muted p-3 text-sm" id={summaryId}>
+      <div className="rounded-lg bg-muted p-4" id={summaryId}>
         {range?.from && range?.to ? (
           <>
             <div>{formatDateRange(range.from, range.to)}</div>
@@ -158,7 +156,7 @@ export function BookingWidget({
               <span>
                 {nights} {nights === 1 ? "night" : "nights"}
               </span>
-              <span className="font-medium">
+              <span className="font-semibold">
                 {formatMoney(total, { currency: "USD" })}
               </span>
             </div>

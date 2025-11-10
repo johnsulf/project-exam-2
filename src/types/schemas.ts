@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-/* --- Shared --- */
 export const Media = z.object({
   url: z.url(),
   alt: z.string().optional(),
@@ -32,8 +31,6 @@ export const Booking = z.object({
   updated: z.string().optional(),
 });
 
-/* --- Profiles --- */
-// Base fields common to both shapes
 const ProfileBase = z.object({
   name: z.string(),
   email: z.email(),
@@ -42,9 +39,8 @@ const ProfileBase = z.object({
   banner: Media.optional(),
 });
 
-// Full profile (from /profiles/*)
 export const Profile = ProfileBase.extend({
-  venueManager: z.boolean(), // required in full profile responses
+  venueManager: z.boolean(),
   _count: z
     .object({ venues: z.number().optional(), bookings: z.number().optional() })
     .optional(),
@@ -52,12 +48,10 @@ export const Profile = ProfileBase.extend({
   bookings: z.array(Booking).optional(),
 });
 
-// Slim owner (embedded under venue.owner - venueManager often omitted)
 export const OwnerProfile = ProfileBase.extend({
   venueManager: z.boolean().optional(),
 });
 
-/* --- Booking with customer --- */
 export const BookingWithCustomer = z.object({
   id: z.string(),
   dateFrom: z.string(),
@@ -80,7 +74,6 @@ export const BookingWithCustomer = z.object({
     .optional(),
 });
 
-/* --- Venues --- */
 export const Venue = z.object({
   id: z.string(),
   name: z.string(),
@@ -94,15 +87,13 @@ export const Venue = z.object({
   meta: VenueMeta.optional(),
   location: VenueLocation.optional(),
   owner: OwnerProfile.optional(),
-  bookings: z.array(BookingWithCustomer).optional(), // ⬅️ here
+  bookings: z.array(BookingWithCustomer).optional(),
 });
 
-/* --- Booking with venue --- */
 export const BookingWithVenue = Booking.extend({
   venue: Venue.optional(),
 });
 
-/* --- Forms / Requests --- */
 export const VenueCreate = z.object({
   name: z.string().min(2, "Please enter a name"),
   description: z.string().min(10, "Please add a longer description"),
@@ -116,7 +107,6 @@ export const VenueCreate = z.object({
 
 export const VenueUpdate = VenueCreate.partial();
 
-/* --- Meta / Envelope --- */
 export const PageMeta = z.object({
   isFirstPage: z.boolean(),
   isLastPage: z.boolean(),

@@ -31,7 +31,7 @@ export function BookingCard({
   return (
     <article
       aria-labelledby={titleId}
-      className="rounded-lg border overflow-hidden bg-card shadow-sm"
+      className="rounded-lg border overflow-hidden bg-card"
     >
       <div className="flex flex-col sm:flex-row">
         <div
@@ -45,21 +45,21 @@ export function BookingCard({
               className="h-full w-full object-cover"
             />
           ) : (
-            <div className="h-full w-full grid place-items-center text-xs text-muted-foreground">
+            <div className="h-full w-full grid place-items-center text-sm text-muted-foreground">
               No image
             </div>
           )}
         </div>
-        <div className="flex flex-1 flex-col gap-3 p-4">
+        <div className="flex flex-1 flex-col gap-4 p-4">
           <header>
             <h3
               id={titleId}
-              className="text-lg font-semibold leading-snug text-balance"
+              className="text-lg font-semibold leading-snug text-balanced"
             >
               {vName}
             </h3>
           </header>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground">
             {formatDateRange(from, to)} • {nights}{" "}
             {nights === 1 ? "night" : "nights"}
           </p>
@@ -68,17 +68,15 @@ export function BookingCard({
             <Badge variant="outline">Booking #{id.slice(0, 8)}</Badge>
           </div>
           {vId && (
-            <div className="pt-1">
-              <Link
-                to={`/venues/${vId}`}
-                className="text-sm font-medium text-primary underline-offset-4 hover:underline"
-              >
-                View venue <span className="sr-only">“{vName}”</span>
-              </Link>
-            </div>
+            <Link
+              to={`/venues/${vId}`}
+              className="font-medium text-primary underline-offset-4 hover:underline my-2"
+            >
+              View venue <span className="sr-only">“{vName}”</span>
+            </Link>
           )}
           {children ? (
-            <div className="pt-3 border-t border-border/70">{children}</div>
+            <div className="pt-2 border-t border-border/70">{children}</div>
           ) : null}
         </div>
       </div>

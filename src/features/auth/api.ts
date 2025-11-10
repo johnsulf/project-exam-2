@@ -1,6 +1,6 @@
 import { authApi } from "@/lib/authApi";
 import { getJson, postJson } from "@/lib/api";
-import type { AuthLoginResponse, AuthRegisterBody, Profile } from "./types";
+import type { AuthLoginResponse, AuthRegisterBody, Profile } from "@/types/api";
 
 // Login
 export async function loginRequest(email: string, password: string) {

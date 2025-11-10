@@ -33,7 +33,7 @@ describe("Venues", () => {
     );
 
     expect(html).toContain("No image available");
-    expect(html).toContain("Guests: <!-- -->3");
+    expect(html).toContain("Up to <!-- -->3<!-- --> guests");
     expect(html).not.toContain("WiFi");
     expect(html).toContain("No ratings");
   });

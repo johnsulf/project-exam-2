@@ -43,6 +43,11 @@ export const useAuth = create<AuthState>()(
       profile: null,
       loading: false,
 
+      /**
+       * Updates the cached profile reference while allowing functional updaters,
+       * mirroring React's `setState` API for convenience.
+       * @param next - New profile object or updater function.
+       */
       setProfile(next) {
         if (typeof next === "function") {
           set((s) => ({
@@ -53,6 +58,10 @@ export const useAuth = create<AuthState>()(
         }
       },
 
+      /**
+       * Performs the login flow: authenticates, stores the token, ensures an API key,
+       * wires the axios getters, and eagerly fetches the profile (with sensible fallback).
+       */
       async signIn(email, password) {
         set({ loading: true, error: undefined });
         try {
@@ -85,6 +94,9 @@ export const useAuth = create<AuthState>()(
         }
       },
 
+      /**
+       * Registers a new account (enforcing the Noroff domain) and immediately signs the user in.
+       */
       async register({ name, email, password, venueManager }) {
         set({ loading: true, error: undefined });
         try {
@@ -108,6 +120,9 @@ export const useAuth = create<AuthState>()(
         }
       },
 
+      /**
+       * Refetches the authenticated profile to keep local state in sync with server changes.
+       */
       async refreshProfile() {
         const p = get().profile;
         if (!p?.name) return;
@@ -115,6 +130,9 @@ export const useAuth = create<AuthState>()(
         set({ profile: updated });
       },
 
+      /**
+       * Clears auth state (token, api key, profile) and triggers configured logout side-effects.
+       */
       signOut() {
         set({ token: null, profile: null, apiKey: null });
       },

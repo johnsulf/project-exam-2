@@ -3,8 +3,7 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { SkipLink } from "./SkipLink";
 import { AppCrashBoundary } from "@/components/errors/AppCrashBoundary";
-import { useRef, useEffect, Suspense } from "react";
-import { PageSkeleton } from "../skeletons/PageSkeleton";
+import { useRef, useEffect } from "react";
 import { RouteAnnouncer } from "../a11y/RouteAnnouncer";
 import { ToastAnnouncer } from "../a11y/ToastAnnouncer";
 
@@ -34,7 +33,7 @@ export default function RootLayout() {
     mainEl.focus({ preventScroll: true });
   }, [pathname]);
   return (
-    <div className="min-h-dvh flex flex-col bg-background text-foreground">
+    <div className="min-h-dvh flex flex-col">
       <SkipLink />
       <Header />
       <RouteAnnouncer />
@@ -46,12 +45,10 @@ export default function RootLayout() {
         tabIndex={-1}
         className="flex-1"
       >
-        <div className="mx-auto max-w-[1280px] px-5 py-6">
-          <Suspense fallback={<PageSkeleton />}>
-            <AppCrashBoundary>
-              <Outlet />
-            </AppCrashBoundary>
-          </Suspense>
+        <div className="mx-auto max-w-screen-xl px-4 py-6">
+          <AppCrashBoundary>
+            <Outlet />
+          </AppCrashBoundary>
         </div>
       </main>
       <Footer />

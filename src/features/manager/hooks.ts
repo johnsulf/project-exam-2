@@ -30,7 +30,6 @@ export function useCreateVenue() {
     mutationFn: (input: TVenueCreate) => createVenue(input),
     onSuccess: () => {
       toast.success("Venue created");
-      // refresh lists
       qc.invalidateQueries({ queryKey: qk.venues() });
       qc.invalidateQueries({ queryKey: ["profileVenues"] });
     },

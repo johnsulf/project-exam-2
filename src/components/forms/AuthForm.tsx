@@ -23,7 +23,7 @@ type BaseProps<T> = {
 const NOROFF_DOMAIN_MESSAGE = "Use your stud.noroff.no email";
 
 const loginSchema = z.object({
-  email: z.string().email("Enter a valid email"),
+  email: z.email("Enter a valid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
@@ -33,7 +33,6 @@ const registerSchema = z.object({
     .min(2, "Name must be at least 2 characters")
     .max(60, "Name must be at most 60 characters"),
   email: z
-    .string()
     .email("Enter a valid email")
     .refine((e) => /@stud\.noroff\.no$/i.test(e), NOROFF_DOMAIN_MESSAGE),
   password: z.string().min(6, "Password must be at least 6 characters"),
@@ -94,7 +93,6 @@ export function AuthForm(props: AuthFormProps) {
     formState: { errors, isSubmitting },
   } = form;
 
-  // Narrow error types to avoid union property access issues
   const loginErrors =
     props.mode === "login"
       ? (errors as import("react-hook-form").FieldErrors<LoginFormValues>)
@@ -161,7 +159,7 @@ export function AuthForm(props: AuthFormProps) {
       ) : null}
 
       {props.mode === "register" ? (
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <Label htmlFor="auth-name">Name</Label>
           <Input
             id="auth-name"
@@ -184,7 +182,7 @@ export function AuthForm(props: AuthFormProps) {
         </div>
       ) : null}
 
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         <Label htmlFor="auth-email">Email</Label>
         <Input
           id="auth-email"
@@ -213,7 +211,7 @@ export function AuthForm(props: AuthFormProps) {
         ) : null}
       </div>
 
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         <Label htmlFor="auth-password">Password</Label>
         <Input
           id="auth-password"
@@ -276,7 +274,7 @@ export function AuthForm(props: AuthFormProps) {
         <div
           role="alert"
           aria-live="assertive"
-          className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive"
+          className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive"
         >
           {errorMessage}
         </div>

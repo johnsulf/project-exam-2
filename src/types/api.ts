@@ -73,3 +73,16 @@ export interface Envelope<T> {
   data: T;
   meta?: unknown;
 }
+
+export interface AuthLoginResponse {
+  accessToken: string;
+  name?: string;
+  email?: string;
+}
+
+export interface AuthRegisterBody {
+  name: string;
+  email: string;
+  password: string;
+  venueManager?: boolean;
+}

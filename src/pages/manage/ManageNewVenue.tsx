@@ -28,7 +28,7 @@ export default function ManageNewVenue() {
         ]}
       />
       <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Create venue</h1>
+        <h1 className="text-4xl font-semibold">Create venue</h1>
         <Button variant="outline" asChild>
           <Link to="/manage">Cancel</Link>
         </Button>

@@ -5,7 +5,7 @@ export function BookingListSkeleton({ count = 3 }: { count?: number }) {
       {Array.from({ length: count }).map((_, index) => (
         <div
           key={`booking-card-skeleton-${index}`}
-          className="grid grid-cols-[140px_1fr] gap-0 rounded-md border overflow-hidden"
+          className="grid grid-cols-[140px_1fr] gap-0 rounded-lg border overflow-hidden"
         >
           <Skeleton className="h-24 w-full" />
           <div className="p-3 space-y-2">

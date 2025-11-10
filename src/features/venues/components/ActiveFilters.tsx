@@ -5,16 +5,17 @@ import { Button } from "@/components/ui/button";
 
 function Chip({ label, onRemove }: { label: string; onRemove: () => void }) {
   return (
-    <Badge variant="secondary" className="gap-1 pr-1.5">
+    <Badge variant="secondary">
       {label}
-      <button
-        type="button"
+      <Button
+        variant="ghost"
+        size="sm"
         onClick={onRemove}
         aria-label={`Remove ${label} filter`}
-        className="ml-1 rounded p-0.5 hover:bg-muted"
+        className="p-0.5"
       >
-        <X className="h-3 w-3" />
-      </button>
+        <X />
+      </Button>
     </Badge>
   );
 }
@@ -96,7 +97,7 @@ export function ActiveFilters() {
   if (entries.length === 0) return null;
 
   return (
-    <div className="flex flex-wrap items-center gap-2 mb-3">
+    <div className="flex flex-wrap items-center gap-2 mb-4">
       {entries.map((e) => (
         <Chip key={e.key} label={e.label} onRemove={e.remove} />
       ))}
