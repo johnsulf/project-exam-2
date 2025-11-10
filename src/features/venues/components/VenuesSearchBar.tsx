@@ -491,7 +491,7 @@ function MobileSearchSheet({
             Search venues
           </Button>
         </SheetTrigger>
-        <SheetContent side="bottom" className="p-0">
+        <SheetContent side="bottom" className="p-0 max-h-[70dvh]">
           <SheetHeader className="px-4 pt-4 pb-2 flex items-center justify-between space-y-0">
             <SheetTitle>Search venues</SheetTitle>
             <SheetClose asChild>

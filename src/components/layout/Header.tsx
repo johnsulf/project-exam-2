@@ -27,20 +27,13 @@ export function Header() {
     (location.state as { from?: Location | string } | null | undefined)?.from ??
     location;
 
-  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
-      isActive
-        ? "text-primary"
-        : "text-foreground hover:text-primary focus-visible:text-primary"
-    }`;
-
   return (
     <header
-      className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/75"
+      className="sticky top-0 z-50 w-full border-b border-border backdrop-blur supports-[backdrop-filter]:bg-background/70"
       role="banner"
     >
-      <div className="p-4 flex justify-between items-center max-w-[1280px] mx-auto">
-        <section className="flex items-center gap-3">
+      <div className="p-4 flex justify-between items-center max-w-screen-xl mx-auto">
+        <section className="flex items-center gap-4">
           {/* Logo */}
           <NavLink
             to={routes.home}
@@ -49,7 +42,7 @@ export function Header() {
           >
             <div className="flex font-bold text-2xl">
               <span className="text-primary">holidaze</span>
-              <span className="text-orange-500">&nbsp;.</span>
+              <span className="text-teal-600">&nbsp;.</span>
             </div>
           </NavLink>
 
@@ -93,35 +86,29 @@ export function Header() {
                 className="md:hidden"
                 aria-label="Open navigation"
               >
-                <Menu className="h-5 w-5" aria-hidden="true" />
+                <Menu aria-hidden="true" />
                 Menu
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-full max-w-xs p-0">
+            <SheetContent side="left" className="w-full max-w-xs">
               <SheetHeader className="p-4 pb-2">
                 <SheetTitle>Menu</SheetTitle>
               </SheetHeader>
               <nav
                 aria-labelledby="mobile-navigation-label"
-                className="flex flex-col gap-1 px-4 pb-6"
+                className="flex flex-col gap-4 px-4"
               >
                 <span id="mobile-navigation-label" className="sr-only">
                   Mobile navigation
                 </span>
                 <SheetClose asChild>
-                  <NavLink to={routes.home} className={navLinkClass}>
-                    Home
-                  </NavLink>
+                  <NavLink to={routes.home}>Home</NavLink>
                 </SheetClose>
                 <SheetClose asChild>
-                  <NavLink to={routes.venues} className={navLinkClass}>
-                    Venues
-                  </NavLink>
+                  <NavLink to={routes.venues}>Venues</NavLink>
                 </SheetClose>
                 <SheetClose asChild>
-                  <NavLink to={routes.about} className={navLinkClass}>
-                    About
-                  </NavLink>
+                  <NavLink to={routes.about}>About</NavLink>
                 </SheetClose>
               </nav>
             </SheetContent>
@@ -131,7 +118,7 @@ export function Header() {
           ) : (
             <Button variant="outline" aria-label="Sign in or register" asChild>
               <Link to={routes.auth.login} state={{ from: fromState }}>
-                <User className="mr-2 h-4 w-4" aria-hidden="true" /> Sign in
+                <User aria-hidden="true" /> Sign in
               </Link>
             </Button>
           )}

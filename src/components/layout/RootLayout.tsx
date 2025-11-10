@@ -46,7 +46,7 @@ export default function RootLayout() {
         tabIndex={-1}
         className="flex-1"
       >
-        <div className="mx-auto max-w-[1280px] px-5 py-6">
+        <div className="mx-auto max-w-screen-xl px-4 py-6">
           <Suspense fallback={<PageSkeleton />}>
             <AppCrashBoundary>
               <Outlet />
