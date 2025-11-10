@@ -141,7 +141,7 @@ export function VenuesSearchBar({ redirectTo, loading = false }: Props) {
   }
 
   return (
-    <div className="rounded-lg border p-3 md:p-4 mb-4 bg-card">
+    <div className="p-4 my-4 md:p-6 md:bg-card md:border md:rounded-lg">
       <MobileSearchSheet
         open={mobileSheetOpen}
         onOpenChange={setMobileSheetOpen}
@@ -395,7 +395,7 @@ function DateRangeControl({
               : "Pick dates"}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0 z-[60]" align="end">
+        <PopoverContent className="w-auto z-30" align="end">
           <Calendar
             mode="range"
             numberOfMonths={2}
@@ -438,7 +438,7 @@ function FiltersControl({
             Filters
           </Button>
         </PopoverTrigger>
-        <PopoverContent align="end" className="w-56 z-[60]">
+        <PopoverContent align="end" className="w-auto z-30">
           <div className="space-y-2">
             {options.map(({ key, label, value, setValue }) => (
               <Label
@@ -491,18 +491,18 @@ function MobileSearchSheet({
             Search venues
           </Button>
         </SheetTrigger>
-        <SheetContent side="bottom" className="p-0 max-h-[70dvh]">
-          <SheetHeader className="px-4 pt-4 pb-2 flex items-center justify-between space-y-0">
+        <SheetContent side="bottom" className="p-2 max-h-[70dvh]">
+          <SheetHeader className="p-4 flex items-center justify-between">
             <SheetTitle>Search venues</SheetTitle>
             <SheetClose asChild>
               <Button variant="outline" aria-label="Close search panel">
-                <X className="size-5" aria-hidden="true" />
+                <X aria-hidden="true" />
                 Cancel
               </Button>
             </SheetClose>
           </SheetHeader>
-          <div className="px-4 pb-4 space-y-4">
-            <form onSubmit={onSubmit} className="space-y-4">
+          <div className="p-4">
+            <form onSubmit={onSubmit} className="space-y-6">
               <SearchControl {...searchProps} />
               <GuestControl {...guestProps} />
               <InlineDatePicker
@@ -520,11 +520,7 @@ function MobileSearchSheet({
                 disabled={loading}
                 aria-busy={loading}
               >
-                {loading ? (
-                  <Spinner className="mr-2" />
-                ) : (
-                  <Search className="size-4 mr-2" />
-                )}
+                {loading ? <Spinner className="mr-2" /> : <Search />}
                 Apply search
               </Button>
             </form>
@@ -566,11 +562,7 @@ function DesktopSearchForm({
           disabled={loading}
           aria-busy={loading}
         >
-          {loading ? (
-            <Spinner className="mr-2" />
-          ) : (
-            <Search className="size-4 mr-2" />
-          )}
+          {loading ? <Spinner /> : <Search className="size-4" />}
           Search
         </Button>
       </div>
@@ -580,10 +572,10 @@ function DesktopSearchForm({
 
 function InlineDatePicker({ range, onSelect, onClear }: InlineDatePickerProps) {
   return (
-    <div className="space-y-2">
+    <>
       <div className="flex items-center justify-between">
-        <div className="text-sm font-medium">Dates</div>
-        <Button size="sm" variant="ghost" type="button" onClick={onClear}>
+        <p className="font-medium">Dates</p>
+        <Button size="sm" variant="outline" type="button" onClick={onClear}>
           Clear
         </Button>
       </div>
@@ -593,16 +585,16 @@ function InlineDatePicker({ range, onSelect, onClear }: InlineDatePickerProps) {
         selected={range}
         onSelect={onSelect}
       />
-    </div>
+    </>
   );
 }
 
 function InlineAmenityList({ options, onClear }: InlineAmenityListProps) {
   return (
-    <div className="space-y-2">
+    <>
       <div className="flex items-center justify-between">
-        <div className="text-sm font-medium">Filters</div>
-        <Button size="sm" variant="ghost" type="button" onClick={onClear}>
+        <p className="font-medium">Filters</p>
+        <Button size="sm" variant="outline" type="button" onClick={onClear}>
           Clear
         </Button>
       </div>
@@ -622,6 +614,6 @@ function InlineAmenityList({ options, onClear }: InlineAmenityListProps) {
           </Label>
         ))}
       </div>
-    </div>
+    </>
   );
 }
