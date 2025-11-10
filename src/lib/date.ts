@@ -1,6 +1,3 @@
-// Date helpers for Holidaze
-// NOTE: Ranges are treated as [start, end) - checkout day is NOT booked.
-
 const pad = (n: number) => n.toString().padStart(2, "0");
 
 export function toISODate(d: Date): string {
@@ -8,7 +5,6 @@ export function toISODate(d: Date): string {
 }
 
 export function parseISODate(s: string): Date {
-  // Works with 'YYYY-MM-DD' and full ISO strings
   return new Date(s);
 }
 
@@ -37,7 +33,6 @@ export function formatDate(
 }
 
 export function formatDateRange(from: Date, to: Date, locale?: string) {
-  // ex. 12–15 Sep 2025  |  28 Sep – 2 Oct 2025  |  31 Dec 2025 – 2 Jan 2026
   const sameYear = from.getFullYear() === to.getFullYear();
   const sameMonth = sameYear && from.getMonth() === to.getMonth();
 
@@ -64,7 +59,6 @@ export function formatDateRange(from: Date, to: Date, locale?: string) {
   return `${A} – ${B}`;
 }
 
-/** Expand [start, end) into ISO YYYY-MM-DD strings for each booked night */
 export function expandRangeDays(start: Date, end: Date): string[] {
   const out: string[] = [];
   let cur = parseISODate(toISODate(start));
@@ -76,7 +70,6 @@ export function expandRangeDays(start: Date, end: Date): string[] {
   return out;
 }
 
-/** Does [aStart, aEnd) overlap [bStart, bEnd)? */
 export function rangesOverlap(
   aStart: Date,
   aEnd: Date,
@@ -86,20 +79,18 @@ export function rangesOverlap(
   return aStart < bEnd && bStart < aEnd;
 }
 
-/** Build a Set of disabled YYYY-MM-DD strings from existing bookings (booked nights). */
 export function buildDisabledDates(
   bookings: Array<{ dateFrom: string; dateTo: string }>,
 ): Set<string> {
   const set = new Set<string>();
   for (const b of bookings) {
     const from = parseISODate(b.dateFrom);
-    const to = parseISODate(b.dateTo); // checkout (exclusive)
+    const to = parseISODate(b.dateTo);
     for (const iso of expandRangeDays(from, to)) set.add(iso);
   }
   return set;
 }
 
-/** Is candidate [from, to) available given bookings? */
 export function isRangeAvailable(
   from: Date,
   to: Date,

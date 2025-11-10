@@ -44,7 +44,6 @@ type ProfileVenuesParams = {
   _bookings?: boolean;
 };
 
-// List venues
 export async function listVenues(
   params: VenueParams = {},
   signal?: AbortSignal,
@@ -102,7 +101,6 @@ export async function listAllVenues(
   return { ...firstPage, data: combined };
 }
 
-// Single venue by id
 export async function getVenueById(
   id: string,
   opts?: { _owner?: boolean; _bookings?: boolean },
@@ -112,7 +110,6 @@ export async function getVenueById(
   return VenueSchema.parse(raw);
 }
 
-// Create a booking
 export async function createBooking(body: {
   dateFrom: string;
   dateTo: string;
@@ -122,13 +119,11 @@ export async function createBooking(body: {
   return postJson<Booking, typeof body>("/bookings", body);
 }
 
-// Get profile by name
 export async function getProfile(
   name: string,
   opts?: { _bookings?: boolean; _venues?: boolean },
   signal?: AbortSignal,
 ) {
-  // /holidaze/profiles/<name>?_bookings=true&_venues=true
   return getJson<Profile>(
     `/profiles/${encodeURIComponent(name)}`,
     opts,
@@ -136,16 +131,13 @@ export async function getProfile(
   );
 }
 
-// Update profile by name
 export async function updateProfile(name: string, patch: ProfilePatch) {
-  // PUT /holidaze/profiles/<name>
   return putJson<Profile, ProfilePatch>(
     `/profiles/${encodeURIComponent(name)}`,
     patch,
   );
 }
 
-// Get bookings by profile
 export async function getBookingsByProfile(
   name: string,
   opts?: { _venue?: boolean; page?: number; limit?: number },
@@ -158,13 +150,11 @@ export async function getBookingsByProfile(
   );
 }
 
-// Get venues by profile
 export async function getVenuesByProfile(
   name: string,
   params: ProfileVenuesParams = {},
   signal?: AbortSignal,
 ) {
-  // GET /holidaze/profiles/:name/venues
   return getEnvelope<TVenue[]>(
     `/profiles/${encodeURIComponent(name)}/venues`,
     params,
@@ -172,17 +162,14 @@ export async function getVenuesByProfile(
   );
 }
 
-// Create venue
 export async function createVenue(body: TVenueCreate) {
   return postJson<ApiVenue, TVenueCreate>("/venues", body);
 }
 
-// Update venue
 export async function updateVenue(id: string, patch: TVenueUpdate) {
   return putJson<ApiVenue, TVenueUpdate>(`/venues/${id}`, patch);
 }
 
-// Delete venue
 export async function deleteVenue(id: string) {
   return deleteJson<{ data: { id: string } }>(`/venues/${id}`);
 }

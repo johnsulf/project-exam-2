@@ -32,7 +32,6 @@ export function calcBookingTotals(
   return { nights, subtotal, taxes, fees, total };
 }
 
-// Tiny local helper (for avoiding cross-file import)
 const pad = (n: number) => n.toString().padStart(2, "0");
 const toISO = (d: Date) =>
   `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;

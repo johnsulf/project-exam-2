@@ -9,15 +9,12 @@ type ApiErrorPayload = {
 };
 
 export function getErrorMessage(err: unknown): string {
-  // Zod
   if (err instanceof ZodError) {
     return err.issues?.[0]?.message ?? "Invalid input";
   }
 
-  // Native Error
   if (err instanceof Error) return err.message;
 
-  // Axios-style: err.response.data
   const maybeAxios = err as unknown & { response?: { data?: unknown } };
   const data: ApiErrorPayload =
     maybeAxios?.response?.data ?? (maybeAxios as ApiErrorPayload);
