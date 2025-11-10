@@ -43,9 +43,9 @@ export function VenueGallery({ media, venueName, className }: Props) {
   }
 
   return (
-    <div className={cn("space-y-4", className)}>
+    <div className={cn("space-y-6", className)}>
       {/* Main */}
-      <div className="overflow-hidden rounded-lg border">
+      <div className="overflow-hidden rounded-lg">
         <img
           key={main.url}
           src={main.url}
@@ -60,7 +60,7 @@ export function VenueGallery({ media, venueName, className }: Props) {
           ref={listRef}
           role="listbox"
           aria-label="Choose image"
-          className="flex gap-3 overflow-x-auto pb-1"
+          className="flex gap-4 overflow-x-auto p-0.5"
         >
           {images.map((m, i) => (
             <button
