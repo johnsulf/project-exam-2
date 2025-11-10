@@ -59,7 +59,7 @@ export default function Venues() {
     wantBreakfast ||
     wantsDates;
 
-  // Client-side filters need broader source data, so fetch up to 100 items and normalize to page 1.
+  // Client-side filters need broader source data, therefor fetch up to 100 items and normalize to page 1.
   const fetchLimit = hasClientFilters ? 100 : limit;
   const serverParams: Record<string, unknown> = {
     page: hasClientFilters ? 1 : page,

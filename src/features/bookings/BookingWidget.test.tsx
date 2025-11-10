@@ -98,6 +98,12 @@ describe("BookingWidget", () => {
 
     fireEvent.click(actionButton);
 
+    const confirmButton = await screen.findByRole("button", {
+      name: /confirm booking/i,
+    });
+
+    fireEvent.click(confirmButton);
+
     await waitFor(() => expect(mutateAsync).toHaveBeenCalledTimes(1));
 
     expect(mutateAsync).toHaveBeenCalledWith({
