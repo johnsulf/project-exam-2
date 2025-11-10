@@ -61,6 +61,15 @@ export async function listVenues(
   return getEnvelope<ApiVenue[]>(path, query, signal);
 }
 
+/**
+ * Fetches venues while eagerly walking the pagination cursor until every page has been merged.
+ *
+ * Useful when the UI applies client-side filtering/sorting and needs the entire dataset up front.
+ *
+ * @param params - Base query parameters passed to the API. `page` is used as the initial cursor.
+ * @param signal - Optional abort signal so callers can cancel long-running multi-page fetches.
+ * @returns The first page envelope with `data` replaced by the aggregated venue list.
+ */
 export async function listAllVenues(
   params: VenueParams = {},
   signal?: AbortSignal,

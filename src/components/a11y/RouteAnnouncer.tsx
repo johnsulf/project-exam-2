@@ -1,10 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-/**
- * Announces route changes through an ARIA live region for screen reader users.
- * @returns A visually hidden element that conveys navigation updates.
- */
 export function RouteAnnouncer() {
   const { pathname } = useLocation();
   const [message, setMessage] = useState("");

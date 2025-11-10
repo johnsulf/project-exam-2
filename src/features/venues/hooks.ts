@@ -10,6 +10,13 @@ import type { TBookingWithCustomer } from "@/types/schemas";
 import { useQueryErrorToast } from "@/lib/queryToasts";
 import { getErrorMessage } from "@/lib/errors";
 
+/**
+ * React Query hook that lists venues while optionally fetching every page up front.
+ *
+ * @param params - Query string params forwarded to the `/venues` endpoints.
+ * @param opts - Additional options such as `fetchAllPages` to force multi-page aggregation.
+ * @returns A standard `useQuery` result keyed by the params (and fetchAll flag) for caching.
+ */
 export function useVenues(
   params: Record<string, unknown> = {},
   opts: { fetchAllPages?: boolean } = {},

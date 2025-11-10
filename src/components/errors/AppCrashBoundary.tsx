@@ -39,12 +39,6 @@ function CrashFallback({ error, resetErrorBoundary }: FallbackProps) {
   );
 }
 
-/**
- * Wraps child components in an error boundary that resets when the route changes.
- *
- * @param children - The React nodes to render within the crash boundary.
- * @returns The rendered children safeguarded by the crash fallback error boundary.
- */
 export function AppCrashBoundary({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation();
   return (

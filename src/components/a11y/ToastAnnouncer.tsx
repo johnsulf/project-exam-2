@@ -28,33 +28,6 @@ type Announcement = {
   role: "status" | "alert";
 };
 
-/**
- * A component that announces toast notifications to screen readers for improved accessibility.
- *
- * @remarks
- * This component monitors toast notifications from the `useSonner` hook and converts them into
- * ARIA live region announcements. It ensures that screen reader users are notified of important
- * messages by extracting text content from toast titles and descriptions.
- *
- * The component determines the announcement priority based on the toast type:
- * - Error and warning toasts use "assertive" politeness with an "alert" role
- * - Other toasts use "polite" politeness with a "status" role
- *
- * @returns A visually hidden div element with ARIA attributes for screen reader announcements,
- * or null if there is no announcement to make.
- *
- * @example
- * ```tsx
- * function App() {
- *   return (
- *     <>
- *       <ToastAnnouncer />
- *       <Toaster />
- *     </>
- *   );
- * }
- * ```
- */
 export function ToastAnnouncer() {
   const { toasts } = useSonner();
   const [announcement, setAnnouncement] = useState<Announcement | null>(null);
