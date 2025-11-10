@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useVenue } from "@/features/venues/hooks";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar } from "@/components/ui/calendar";
 import { formatDateRange } from "@/lib/date";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
@@ -18,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { Spinner } from "@/components/ui/spinner";
 import { useDeleteVenue } from "@/features/manager/hooks";
+import { ManageVenueDetailSkeleton } from "@/components/skeletons/ManageVenueDetailSkeleton";
 
 function computeStatus(bookings?: { dateFrom: string; dateTo: string }[]) {
   const now = Date.now();
@@ -44,7 +44,7 @@ export default function ManageVenueDetail() {
     return (
       <div className="space-y-6">
         <PageBreadcrumbs items={baseBreadcrumbs} />
-        <DetailSkeleton />
+        <ManageVenueDetailSkeleton />
       </div>
     );
   if (isError || !v) {
@@ -225,34 +225,5 @@ function DeleteVenueDialog({
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
-}
-
-function DetailSkeleton() {
-  return (
-    <div className="space-y-6">
-      <div className="flex items-start justify-between">
-        <div className="space-y-2">
-          <Skeleton className="h-8 w-64" />
-          <div className="flex gap-2">
-            <Skeleton className="h-6 w-24" />
-            <Skeleton className="h-6 w-16" />
-            <Skeleton className="h-6 w-20" />
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <Skeleton className="h-9 w-20" />
-          <Skeleton className="h-9 w-20" />
-          <Skeleton className="h-9 w-20" />
-        </div>
-      </div>
-      <div className="md:grid md:grid-cols-2 md:gap-6">
-        <Skeleton className="h-56 w-full rounded-xl" />
-        <div className="space-y-4 mt-6 md:mt-0">
-          <Skeleton className="h-6 w-48" />
-          <Skeleton className="h-64 w-full rounded-xl" />
-        </div>
-      </div>
-    </div>
   );
 }
