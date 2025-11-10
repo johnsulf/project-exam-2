@@ -141,7 +141,7 @@ export function VenuesSearchBar({ redirectTo, loading = false }: Props) {
   }
 
   return (
-    <div className="p-4 my-4 md:p-6 md:bg-card md:border md:rounded-lg">
+    <div className="md:p-6 md:bg-card md:border md:rounded-lg">
       <MobileSearchSheet
         open={mobileSheetOpen}
         onOpenChange={setMobileSheetOpen}
