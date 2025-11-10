@@ -8,7 +8,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { cn } from "@/lib/utils";
 
 type Item = {
   key?: string;
@@ -22,16 +21,11 @@ type Props = {
   className?: string;
 };
 
-/**
- * Renders a responsive breadcrumb trail using shadcn primitives.
- * @param items - Ordered breadcrumb items describing the current navigation path.
- * @param className - Optional wrapper class name.
- */
-export function PageBreadcrumbs({ items, className }: Props) {
+export function PageBreadcrumbs({ items }: Props) {
   if (!items.length) return null;
   return (
-    <div className={cn("space-y-1", className)}>
-      <Breadcrumb className="text-sm text-muted-foreground overflow-x-auto whitespace-nowrap">
+    <>
+      <Breadcrumb>
         <BreadcrumbList>
           {items.map((item, idx) => {
             const isLast = idx === items.length - 1;
@@ -41,16 +35,13 @@ export function PageBreadcrumbs({ items, className }: Props) {
                 <BreadcrumbItem>
                   {item.to && !isLast ? (
                     <BreadcrumbLink asChild>
-                      <Link
-                        to={item.to}
-                        className="inline-flex items-center gap-1"
-                      >
+                      <Link to={item.to} className="">
                         {item.icon}
                         <span>{item.label}</span>
                       </Link>
                     </BreadcrumbLink>
                   ) : (
-                    <BreadcrumbPage className="inline-flex items-center gap-1 font-medium text-foreground">
+                    <BreadcrumbPage className="font-medium">
                       {item.icon}
                       <span>{item.label}</span>
                     </BreadcrumbPage>
@@ -62,6 +53,6 @@ export function PageBreadcrumbs({ items, className }: Props) {
           })}
         </BreadcrumbList>
       </Breadcrumb>
-    </div>
+    </>
   );
 }

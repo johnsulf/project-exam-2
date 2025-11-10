@@ -34,7 +34,7 @@ export default function RootLayout() {
     mainEl.focus({ preventScroll: true });
   }, [pathname]);
   return (
-    <div className="min-h-dvh flex flex-col bg-background text-foreground">
+    <div className="min-h-dvh flex flex-col">
       <SkipLink />
       <Header />
       <RouteAnnouncer />

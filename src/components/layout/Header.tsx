@@ -29,7 +29,7 @@ export function Header() {
 
   return (
     <header
-      className="sticky top-0 z-50 w-full border-b border-border backdrop-blur supports-[backdrop-filter]:bg-background/70"
+      className="sticky top-0 z-40 w-full border-b border-border backdrop-blur supports-[backdrop-filter]:bg-background/70"
       role="banner"
     >
       <div className="p-4 flex justify-between items-center max-w-screen-xl mx-auto">
