@@ -23,7 +23,7 @@ type BaseProps<T> = {
 const NOROFF_DOMAIN_MESSAGE = "Use your stud.noroff.no email";
 
 const loginSchema = z.object({
-  email: z.string().email("Enter a valid email"),
+  email: z.email("Enter a valid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
@@ -33,7 +33,6 @@ const registerSchema = z.object({
     .min(2, "Name must be at least 2 characters")
     .max(60, "Name must be at most 60 characters"),
   email: z
-    .string()
     .email("Enter a valid email")
     .refine((e) => /@stud\.noroff\.no$/i.test(e), NOROFF_DOMAIN_MESSAGE),
   password: z.string().min(6, "Password must be at least 6 characters"),
@@ -94,7 +93,6 @@ export function AuthForm(props: AuthFormProps) {
     formState: { errors, isSubmitting },
   } = form;
 
-  // Narrow error types to avoid union property access issues
   const loginErrors =
     props.mode === "login"
       ? (errors as import("react-hook-form").FieldErrors<LoginFormValues>)

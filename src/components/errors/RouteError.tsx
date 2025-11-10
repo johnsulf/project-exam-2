@@ -5,6 +5,13 @@ import {
 } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
+/**
+ * React error boundary route component that renders a fallback view based on the current router error.
+ *
+ * Displays an error title and message derived from the route error payload and offers actions to retry the failed navigation or return home.
+ *
+ * @returns JSX element containing the structured error presentation and navigation actions.
+ */
 export default function RouteError() {
   const error = useRouteError();
   const navigate = useNavigate();
