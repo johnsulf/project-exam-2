@@ -38,7 +38,7 @@ export default function About() {
     <div className="space-y-10">
       <PageBreadcrumbs items={breadcrumbs} />
 
-      <section className="rounded-lg border bg-white p-8 md:p-12 shadow-xl space-y-6">
+      <section className="rounded-lg border bg-card p-8 md:p-12 shadow-xl space-y-6">
         <span className="inline-flex w-fit rounded-full bg-teal-100 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-teal-700">
           final exam
         </span>
@@ -162,7 +162,7 @@ export default function About() {
                 {gradeScale.map((grade) => (
                   <div
                     key={grade.grade}
-                    className="flex items-center gap-2 rounded-lg border bg-white/70 p-3 shadow-sm"
+                    className="flex items-center gap-2 rounded-lg border bg-card/70 p-3 shadow-sm"
                   >
                     <span
                       className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold text-white ${grade.color}`}

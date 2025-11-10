@@ -498,7 +498,7 @@ export function VenueForm({
           <CardHeader>
             <CardTitle>Location</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-4">
             <div className="grid gap-3 sm:grid-cols-2">
               <Field>
                 <FieldLabel htmlFor="city">City</FieldLabel>

@@ -115,7 +115,7 @@ export default function Profile() {
 
   if (isError || !p) {
     return (
-      <div className="space-y-3" role="alert">
+      <div className="space-y-4" role="alert">
         <p className="text-destructive">Couldn’t load your profile.</p>
         <Button onClick={() => refetch()}>Retry</Button>
       </div>
@@ -226,7 +226,7 @@ export default function Profile() {
                 setBookingTab((value as "upcoming" | "past") ?? "upcoming")
               }
               aria-label="Bookings categories"
-              className="space-y-3"
+              className="space-y-4"
             >
               <TabsList>
                 <TabsTrigger value="upcoming">

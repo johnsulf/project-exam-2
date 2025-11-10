@@ -16,7 +16,6 @@ import {
 import { routes } from "@/router/routes";
 
 export default function Home() {
-  // one fetch, then derive sections
   const { data, isLoading, isError, refetch } = useVenues({
     page: 1,
     limit: 100,
@@ -24,7 +23,6 @@ export default function Home() {
 
   const all = data?.data ?? [];
 
-  // Featured: top 6 by rating (fallback rating 0)
   const featured = [...all]
     .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
     .slice(27, 33);
@@ -74,7 +72,7 @@ export default function Home() {
       <PageBreadcrumbs items={breadcrumbs} />
       <div className="space-y-16">
         {/* Hero */}
-        <section className="overflow-hidden rounded-lg border bg-white shadow-xl">
+        <section className="overflow-hidden rounded-lg border bg-card shadow-xl">
           <div className="px-6 py-12 sm:px-10 md:px-16 lg:px-20 space-y-12">
             <div className="max-w-3xl space-y-6 ">
               <span className="inline-flex items-center gap-2 rounded-full text-teal-950 bg-teal-100 px-4 py-1 text-sm font-medium backdrop-blur-sm">
@@ -93,7 +91,7 @@ export default function Home() {
               </p>
             </div>
             <div className="space-y-6">
-              <div className="rounded-lg bg-white/95 p-4 sm:p-5 shadow-2xl backdrop-blur">
+              <div className="rounded-lg bg-card/95 p-4 sm:p-5 shadow-2xl backdrop-blur">
                 <VenuesSearchBar redirectTo="/venues" />
                 <div className="grid gap-3 sm:grid-cols-3 text-sm">
                   <StatPill
@@ -154,7 +152,7 @@ export default function Home() {
               items={featured}
             />
 
-            <section className="rounded-lg bg-white border p-8 md:p-10 space-y-6">
+            <section className="rounded-lg bg-card border p-8 md:p-10 space-y-6">
               <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                 <div>
                   <h2 className="text-2xl font-semibold">
@@ -206,7 +204,7 @@ type TrendingStripProps = {
 
 function TrendingStrip({ venues }: TrendingStripProps) {
   return (
-    <div className="space-y-4 rounded-lg border border-white/20 bg-white/15 sm:p-6">
+    <div className="space-y-4 rounded-lg border border-white/20 bg-card/15 sm:p-6">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-sm uppercase tracking-[0.3em] ">
@@ -254,7 +252,7 @@ function TrendingStrip({ venues }: TrendingStripProps) {
                     className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-white/20 text-xs text-white/70">
+                  <div className="flex h-full w-full items-center justify-center bg-card/20 text-xs text-white/70">
                     No image
                   </div>
                 )}
@@ -292,7 +290,7 @@ type StatPillProps = {
 
 function StatPill({ icon, label, value }: StatPillProps) {
   return (
-    <div className="flex items-center gap-3 rounded-lg border border-neutral-200 bg-white px-4 py-3 shadow-sm">
+    <div className="flex items-center gap-3 rounded-lg border border-neutral-200 bg-card px-4 py-3 shadow-sm">
       <span className="flex size-8 items-center justify-center rounded-full bg-neutral-900/5 ">
         {icon}
       </span>

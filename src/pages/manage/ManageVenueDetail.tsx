@@ -49,7 +49,7 @@ export default function ManageVenueDetail() {
     );
   if (isError || !v) {
     return (
-      <div className="space-y-3">
+      <div className="space-y-4">
         <PageBreadcrumbs items={baseBreadcrumbs} />
         <h1 className="text-2xl font-semibold">Venue</h1>
         <p className="text-destructive">Couldn’t load venue.</p>
@@ -133,7 +133,7 @@ export default function ManageVenueDetail() {
           )}
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           <h2 className="text-xl font-semibold">Booked dates</h2>
           {(v.bookings?.length ?? 0) === 0 ? (
             <p className="text-sm text-muted-foreground">No bookings yet.</p>

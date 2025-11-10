@@ -22,7 +22,7 @@ export default function ManageVenueBookings() {
 
   if (isLoading || vLoading) {
     return (
-      <div className="space-y-3">
+      <div className="space-y-4">
         <PageBreadcrumbs items={baseBreadcrumbs} />
         <Skeleton className="h-8 w-56" />
         <Skeleton className="h-40 w-full" />
@@ -32,7 +32,7 @@ export default function ManageVenueBookings() {
 
   if (isError || !bookings) {
     return (
-      <div className="space-y-3">
+      <div className="space-y-4">
         <PageBreadcrumbs items={baseBreadcrumbs} />
         <h1 className="text-2xl font-semibold">Venue bookings</h1>
         <p className="text-destructive">Couldn’t load bookings.</p>

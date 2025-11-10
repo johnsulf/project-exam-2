@@ -19,7 +19,7 @@ export function VenueDetailSkeleton() {
         </div>
         <Skeleton className="h-24 w-full" />
       </div>
-      <div className="space-y-3">
+      <div className="space-y-4">
         <Skeleton className="h-[460px] w-full rounded-lg" />
       </div>
     </div>

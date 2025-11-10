@@ -35,12 +35,12 @@ export function VenueCard({ v }: { v: Venue }) {
         )}
         <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent" />
         <div className="absolute left-4 bottom-4">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/85 px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm backdrop-blur">
+          <span className="inline-flex items-center gap-2 rounded-full bg-card/85 px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm backdrop-blur">
             <MapPin className="size-3.5" aria-hidden="true" />
             {locationLabel}
           </span>
         </div>
-        <div className="absolute right-4 top-4 flex items-center gap-1 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-muted-foreground shadow-sm backdrop-blur">
+        <div className="absolute right-4 top-4 flex items-center gap-1 rounded-full bg-card/90 px-3 py-1 text-xs font-semibold text-muted-foreground shadow-sm backdrop-blur">
           <Star
             className={showStar ? "size-3.5 text-yellow-500" : "size-3.5"}
             aria-hidden="true"

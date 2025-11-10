@@ -43,7 +43,7 @@ export function VenueGallery({ media, venueName, className }: Props) {
   }
 
   return (
-    <div className={cn("space-y-3", className)}>
+    <div className={cn("space-y-4", className)}>
       {/* Main */}
       <div className="overflow-hidden rounded-lg border">
         <img

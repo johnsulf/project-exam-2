@@ -78,7 +78,7 @@ export default function Venues() {
 
   if (isError || !data) {
     return (
-      <div className="space-y-3">
+      <div className="space-y-4">
         <p className="text-destructive">Couldn’t load venues.</p>
         <Button onClick={() => refetch()}>Retry</Button>
       </div>

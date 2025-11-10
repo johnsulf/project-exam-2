@@ -52,7 +52,7 @@ export default function ManageHome() {
   // if query is disabled (no name) or errored
   if (!name || isError || !data) {
     return (
-      <div className="space-y-3">
+      <div className="space-y-4">
         <PageBreadcrumbs items={breadcrumbs} />
         <h1 className="text-2xl font-semibold">Manage venues</h1>
         <p className="text-destructive">
@@ -182,11 +182,11 @@ export default function ManageHome() {
             </Table>
           </div>
 
-          <div className="space-y-3 md:hidden">
+          <div className="space-y-4 md:hidden">
             {venues.map((v) => (
               <article
                 key={v.id}
-                className="rounded-lg border p-4 space-y-3 bg-card/50"
+                className="rounded-lg border p-4 space-y-4 bg-card/50"
               >
                 <div>
                   <h2 className="text-lg font-semibold leading-tight">

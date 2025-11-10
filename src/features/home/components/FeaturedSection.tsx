@@ -16,12 +16,12 @@ export function FeaturedSection({
   emptyText?: string;
 }) {
   return (
-    <section className="space-y-3">
+    <section className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-semibold">{title}</h2>
         <Button asChild variant="outline">
           <Link to={cta.to}>
-            {cta.label} <ArrowRight className="ml-2 h-4 w-4" />
+            {cta.label} <ArrowRight />
           </Link>
         </Button>
       </div>
