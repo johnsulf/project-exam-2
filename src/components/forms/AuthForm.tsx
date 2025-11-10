@@ -159,7 +159,7 @@ export function AuthForm(props: AuthFormProps) {
       ) : null}
 
       {props.mode === "register" ? (
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <Label htmlFor="auth-name">Name</Label>
           <Input
             id="auth-name"
@@ -182,7 +182,7 @@ export function AuthForm(props: AuthFormProps) {
         </div>
       ) : null}
 
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         <Label htmlFor="auth-email">Email</Label>
         <Input
           id="auth-email"
@@ -211,7 +211,7 @@ export function AuthForm(props: AuthFormProps) {
         ) : null}
       </div>
 
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         <Label htmlFor="auth-password">Password</Label>
         <Input
           id="auth-password"

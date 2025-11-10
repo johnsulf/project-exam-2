@@ -98,7 +98,7 @@ export function BookingWidget({
       aria-describedby={summaryId}
       className="rounded-lg border flex flex-col p-4 space-y-4 w-full md:w-screen-sm"
     >
-      <div className="space-y-1">
+      <div className="space-y-2">
         <h2 id={headingId} className="text-xl font-semibold">
           Book this venue
         </h2>

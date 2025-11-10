@@ -31,7 +31,7 @@ export function BookingCard({
   return (
     <article
       aria-labelledby={titleId}
-      className="rounded-lg border overflow-hidden bg-card shadow-sm"
+      className="rounded-lg border overflow-hidden bg-card"
     >
       <div className="flex flex-col sm:flex-row">
         <div
@@ -54,7 +54,7 @@ export function BookingCard({
           <header>
             <h3
               id={titleId}
-              className="text-lg font-semibold leading-snug text-balance"
+              className="text-lg font-semibold leading-snug text-balanced"
             >
               {vName}
             </h3>
@@ -68,17 +68,15 @@ export function BookingCard({
             <Badge variant="outline">Booking #{id.slice(0, 8)}</Badge>
           </div>
           {vId && (
-            <div className="pt-1">
-              <Link
-                to={`/venues/${vId}`}
-                className="text-sm font-medium text-primary underline-offset-4 hover:underline"
-              >
-                View venue <span className="sr-only">“{vName}”</span>
-              </Link>
-            </div>
+            <Link
+              to={`/venues/${vId}`}
+              className="text-sm font-medium text-primary underline-offset-4 hover:underline my-2"
+            >
+              View venue <span className="sr-only">“{vName}”</span>
+            </Link>
           )}
           {children ? (
-            <div className="pt-3 border-t border-border/70">{children}</div>
+            <div className="pt-2 border-t border-border/70">{children}</div>
           ) : null}
         </div>
       </div>

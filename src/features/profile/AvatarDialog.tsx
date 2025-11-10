@@ -28,7 +28,7 @@ type FormValues = z.infer<typeof schema>;
 type Props = {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  name: string; // current user name (id)
+  name: string;
   currentUrl?: string;
   currentAlt?: string;
 };
@@ -73,7 +73,7 @@ export function AvatarDialog({
         </DialogHeader>
 
         <form className="space-y-4" onSubmit={f.handleSubmit(onSubmit)}>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor="url">Image URL</Label>
             <Input id="url" placeholder="https://..." {...f.register("url")} />
             {f.formState.errors.url && (
@@ -83,7 +83,7 @@ export function AvatarDialog({
             )}
           </div>
 
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor="alt">Alt text (optional)</Label>
             <Input
               id="alt"
@@ -118,7 +118,7 @@ export function AvatarDialog({
             )}
           </div>
 
-          <DialogFooter className="gap-2 sm:gap-0">
+          <DialogFooter className="gap-2">
             <Button
               type="button"
               variant="outline"

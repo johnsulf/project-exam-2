@@ -35,7 +35,7 @@ export default function About() {
   const breadcrumbs = [{ label: "Home", to: routes.home }, { label: "About" }];
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-20">
       <PageBreadcrumbs items={breadcrumbs} />
 
       <section className="rounded-lg border bg-card p-8 md:p-12 shadow-xl space-y-6">
@@ -105,7 +105,7 @@ export default function About() {
           <CardHeader>
             <CardTitle>Tech stack</CardTitle>
           </CardHeader>
-          <CardContent className="text-sm text-muted-foreground space-y-1">
+          <CardContent className="text-sm text-muted-foreground space-y-2">
             <p>• React + TypeScript + Vite</p>
             <p>• Tailwind & shadcn/ui for components</p>
             <p>• TanStack Query for data fetching</p>

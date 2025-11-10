@@ -31,7 +31,7 @@ export function ManagerToggle({ name, venueManager }: Props) {
 
   return (
     <div
-      className="inline-flex items-center gap-3 rounded-lg border p-3"
+      className="inline-flex items-center gap-4 rounded-lg border p-4"
       role="group"
       aria-labelledby={`${id}-label`}
     >
@@ -40,28 +40,25 @@ export function ManagerToggle({ name, venueManager }: Props) {
           Venue manager
         </Label>
         <p className="text-sm text-muted-foreground">
-          {checked
-            ? "Manage venues and bookings."
-            : "Enable to create and manage venues."}
+          Manage venues and bookings.
         </p>
       </div>
 
-      <div className="ml-4 flex items-center gap-2">
-        <Switch
-          id={id}
-          checked={checked}
-          onCheckedChange={(v) => onChange(!!v)}
-          aria-describedby={`${id}-help`}
-          disabled={isPending}
-        />
-        {isPending && (
+      <div className="flex items-center gap-2">
+        {isPending ? (
           <span
             id={`${id}-help`}
-            className="flex items-center gap-1.5 text-xs text-muted-foreground"
+            className="flex items-center gap-2 text-xs text-muted-foreground"
           >
-            <Spinner className="size-3" aria-hidden="true" />
-            Saving…
+            <Spinner aria-hidden="true" />
           </span>
+        ) : (
+          <Switch
+            id={id}
+            checked={checked}
+            onCheckedChange={(v) => onChange(!!v)}
+            aria-describedby={`${id}-help`}
+          />
         )}
       </div>
     </div>

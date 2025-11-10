@@ -70,10 +70,10 @@ export default function Home() {
   return (
     <div className="space-y-8 pb-12">
       <PageBreadcrumbs items={breadcrumbs} />
-      <div className="space-y-16">
+      <div className="space-y-26">
         {/* Hero */}
         <section className="overflow-hidden rounded-lg border bg-card shadow-xl">
-          <div className="px-6 py-12 sm:px-10 md:px-16 lg:px-20 space-y-12">
+          <div className="px-6 py-12 sm:px-10 md:px-16 lg:px-20 space-y-22">
             <div className="max-w-3xl space-y-6 ">
               <span className="inline-flex items-center gap-2 rounded-full text-teal-950 bg-teal-100 px-4 py-1 text-sm font-medium backdrop-blur-sm">
                 <Heart className="size-4" aria-hidden="true" />
@@ -261,7 +261,7 @@ function TrendingStrip({ venues }: TrendingStripProps) {
                   {rating}
                 </span>
               </div>
-              <div className="flex-1 space-y-1">
+              <div className="flex-1 space-y-2">
                 <div className="flex items-center gap-2">
                   <span className="inline-flex items-center rounded-full text-teal-950  bg-teal-100 px-2 py-0.5 text-[10px] uppercase tracking-wide">
                     Limited
