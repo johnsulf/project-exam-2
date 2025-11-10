@@ -1,4 +1,5 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
 import { useVenue } from "@/features/venues/hooks";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,17 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar } from "@/components/ui/calendar";
 import { formatDateRange } from "@/lib/date";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Spinner } from "@/components/ui/spinner";
+import { useDeleteVenue } from "@/features/manager/hooks";
 
 function computeStatus(bookings?: { dateFrom: string; dateTo: string }[]) {
   const now = Date.now();
@@ -19,6 +31,7 @@ function computeStatus(bookings?: { dateFrom: string; dateTo: string }[]) {
 
 export default function ManageVenueDetail() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { data: v, isLoading, isError } = useVenue(id);
 
   const baseBreadcrumbs = [
@@ -96,9 +109,11 @@ export default function ManageVenueDetail() {
           <Button asChild variant="outline">
             <Link to={`/manage/${v.id}/edit`}>Edit</Link>
           </Button>
-          <Button asChild variant="destructive">
-            <Link to={`/manage/${v.id}/delete`}>Delete</Link>
-          </Button>
+          <DeleteVenueDialog
+            venueId={v.id}
+            venueName={v.name}
+            onDeleted={() => navigate("/manage", { replace: true })}
+          />
         </div>
       </header>
 
@@ -153,6 +168,63 @@ export default function ManageVenueDetail() {
         </div>
       </section>
     </div>
+  );
+}
+
+type DeleteVenueDialogProps = {
+  venueId: string;
+  venueName: string;
+  onDeleted: () => void;
+};
+
+function DeleteVenueDialog({
+  venueId,
+  venueName,
+  onDeleted,
+}: DeleteVenueDialogProps) {
+  const [open, setOpen] = useState(false);
+  const { mutateAsync, isPending } = useDeleteVenue(venueId);
+
+  async function handleDelete() {
+    await mutateAsync();
+    setOpen(false);
+    onDeleted();
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="destructive">Delete</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Delete venue</DialogTitle>
+          <DialogDescription>
+            You're about to permanently delete{" "}
+            <span className="font-medium">{venueName}</span>. This action cannot
+            be undone.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter className="flex flex-col gap-2 sm:flex-row sm:justify-end">
+          <Button
+            variant="outline"
+            onClick={() => setOpen(false)}
+            disabled={isPending}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={handleDelete}
+            disabled={isPending}
+            aria-busy={isPending}
+          >
+            {isPending && <Spinner className="mr-2" aria-hidden="true" />}
+            {isPending ? "Deleting…" : "Delete"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 

@@ -5,7 +5,7 @@ import { PaginationBar } from "@/features/venues/components/PaginationBar";
 import { useAuth } from "@/features/auth/store";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { useMyVenues } from "@/features/manager/hooks";
-import { ManageVenuesSkeleton } from "@/features/manager/ManageVenuesSkeleton";
+import { ManageVenuesSkeleton } from "@/components/skeletons/ManageVenuesSkeleton";
 import { Plus } from "lucide-react";
 import { CircleQuestionMark } from "lucide-react";
 import { formatMoney } from "@/lib/money";

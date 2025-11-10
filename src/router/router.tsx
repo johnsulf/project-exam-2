@@ -17,9 +17,6 @@ const Profile = lazy(() => import("@/pages/Profile"));
 const ManageHome = lazy(() => import("@/pages/manage/ManageHome"));
 const ManageNewVenue = lazy(() => import("@/pages/manage/ManageNewVenue"));
 const ManageEditVenue = lazy(() => import("@/pages/manage/ManageEditVenue"));
-const ManageDeleteVenue = lazy(
-  () => import("@/pages/manage/ManageDeleteVenue"),
-);
 const ManageVenueBookings = lazy(
   () => import("@/pages/manage/ManageVenueBookings"),
 );
@@ -64,7 +61,6 @@ export const router = createBrowserRouter(
                 { path: "manage", element: <ManageHome /> },
                 { path: "manage/new", element: <ManageNewVenue /> },
                 { path: "manage/:id/edit", element: <ManageEditVenue /> },
-                { path: "manage/:id/delete", element: <ManageDeleteVenue /> },
                 {
                   path: "manage/:id/bookings",
                   element: <ManageVenueBookings />,

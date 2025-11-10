@@ -4,7 +4,7 @@ import {
   useProfileBookings,
   useRateVenue,
 } from "@/features/profile/hooks";
-import { ProfileHeaderSkeleton } from "@/features/profile/ProfileHeaderSkeleton";
+import { ProfileHeaderSkeleton } from "@/components/skeletons/ProfileHeaderSkeleton";
 import { AvatarBlock } from "@/features/profile/AvatarBlock";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
