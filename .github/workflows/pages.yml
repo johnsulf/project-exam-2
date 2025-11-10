@@ -1,9 +1,10 @@
-name: Deploy static content to Pages
+name: deploy
 
 on:
-  push:
-    branches: [main]
-
+  workflow_run:
+    workflows: ["ci"]
+    types:
+      - completed
   workflow_dispatch:
 
 permissions:
@@ -17,25 +18,17 @@ concurrency:
 
 jobs:
   deploy:
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success') }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v2
+      - name: Download artifact from CI
+        uses: actions/download-artifact@v4
         with:
-          version: 10.7.0
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-
-      - run: pnpm install
-
-      - run: pnpm build
+          name: github-pages
+          path: ./dist
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
