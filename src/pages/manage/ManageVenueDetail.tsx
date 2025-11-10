@@ -85,7 +85,14 @@ export default function ManageVenueDetail() {
       {/* Header */}
       <header className="flex flex-col gap-4 sm:flex-row sm:items-start">
         <div className="flex-1">
-          <h1 className="text-2xl font-semibold">{v.name}</h1>
+          <h1 className="text-4xl font-semibold">{v.name}</h1>
+          {v.location?.city || v.location?.country ? (
+            <p className="text-muted-foreground">
+              {v.location?.city ?? ""}
+              {v.location?.city && v.location?.country ? ", " : ""}
+              {v.location?.country ?? ""}
+            </p>
+          ) : null}
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <Badge variant={status.variant}>{status.label}</Badge>
             <Badge variant="secondary">Guests {v.maxGuests}</Badge>
@@ -93,13 +100,6 @@ export default function ManageVenueDetail() {
             {v.meta?.parking && <Badge variant="secondary">Parking</Badge>}
             {v.meta?.pets && <Badge variant="secondary">Pets</Badge>}
             {v.meta?.breakfast && <Badge variant="secondary">Breakfast</Badge>}
-            {v.location?.city || v.location?.country ? (
-              <span className="text-sm text-muted-foreground">
-                {v.location?.city ?? ""}
-                {v.location?.city && v.location?.country ? ", " : ""}
-                {v.location?.country ?? ""}
-              </span>
-            ) : null}
           </div>
         </div>
         <div className="flex gap-2">
@@ -147,15 +147,15 @@ export default function ManageVenueDetail() {
                   disabled={disabledRanges}
                 />
               </div>
-              <p className="mt-2 text-xs text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 Booked ranges are disabled in the calendar.
               </p>
-              <ul className="mt-3 text-sm grid gap-1">
+              <ul className="my-4 text-sm grid gap-1">
                 {v.bookings!.map((b) => {
                   const f = new Date(b.dateFrom);
                   const t = new Date(b.dateTo);
                   return (
-                    <li key={b.id} className="text-muted-foreground">
+                    <li key={b.id}>
                       {formatDateRange(f, t)} • {b.guests} guest
                       {b.guests === 1 ? "" : "s"}
                       {b.customer?.name ? ` - ${b.customer.name}` : ""}

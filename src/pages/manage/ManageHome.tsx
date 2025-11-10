@@ -45,16 +45,15 @@ export default function ManageHome() {
     return (
       <div className="space-y-4">
         <PageBreadcrumbs items={breadcrumbs} />
-        <ManageVenuesSkeleton rows={limit} />
+        <ManageVenuesSkeleton rows={6} />
       </div>
     );
 
-  // if query is disabled (no name) or errored
   if (!name || isError || !data) {
     return (
       <div className="space-y-4">
         <PageBreadcrumbs items={breadcrumbs} />
-        <h1 className="text-2xl font-semibold">Manage venues</h1>
+        <h1 className="text-4xl font-semibold">Manage venues</h1>
         <p className="text-destructive">
           {name ? "Couldn’t load your venues." : "You must be signed in."}
         </p>
@@ -65,7 +64,6 @@ export default function ManageHome() {
 
   const venues = data.data ?? [];
 
-  // Explicit meta types to avoid use of 'any'
   type PageMeta = {
     isFirstPage: boolean;
     isLastPage: boolean;
@@ -108,7 +106,7 @@ export default function ManageHome() {
     <div className="space-y-4">
       <PageBreadcrumbs items={breadcrumbs} />
       <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Manage venues</h1>
+        <h1 className="text-4xl font-semibold">Manage venues</h1>
         <Button asChild>
           <Link to="/manage/new">
             Create venue
@@ -123,7 +121,7 @@ export default function ManageHome() {
         <>
           <div className="hidden md:block rounded-lg border overflow-hidden">
             <Table>
-              <TableHeader className="bg-muted/30">
+              <TableHeader className="bg-muted/50">
                 <TableRow>
                   <TableHead>Venue</TableHead>
                   <TableHead>City</TableHead>
@@ -135,12 +133,12 @@ export default function ManageHome() {
               <TableBody>
                 {venues.map((v) => (
                   <TableRow key={v.id}>
-                    <TableCell className="min-w-0">
+                    <TableCell className="min-w-0 space-y-1">
                       <div className="truncate font-medium">{v.name}</div>
-                      <div className="text-xs text-muted-foreground truncate">
+                      <div className="text-muted-foreground truncate">
                         {v.description}
                       </div>
-                      <div className="mt-1 flex gap-1 flex-wrap">
+                      <div className="flex gap-2 flex-wrap">
                         {v.meta?.wifi && (
                           <Badge variant="secondary">WiFi</Badge>
                         )}
@@ -155,15 +153,13 @@ export default function ManageHome() {
                         )}
                       </div>
                     </TableCell>
-                    <TableCell className="text-sm">
-                      {v.location?.city ?? "-"}
-                    </TableCell>
-                    <TableCell className="text-sm">
+                    <TableCell>{v.location?.city ?? "-"}</TableCell>
+                    <TableCell>
                       {typeof v.rating === "number" && v.rating > 0
                         ? v.rating.toPrecision(2)
                         : "-"}
                     </TableCell>
-                    <TableCell className="text-sm">
+                    <TableCell>
                       {formatMoney(v.price, { currency: "USD" })}
                     </TableCell>
                     <TableCell>
@@ -186,18 +182,16 @@ export default function ManageHome() {
             {venues.map((v) => (
               <article
                 key={v.id}
-                className="rounded-lg border p-4 space-y-4 bg-card/50"
+                className="rounded-lg border p-4 space-y-4 bg-card"
               >
-                <div>
+                <div className="space-y-2">
                   <h2 className="text-lg font-semibold leading-tight">
                     {v.name}
                   </h2>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {v.description}
-                  </p>
+                  <p className="text-muted-foreground">{v.description}</p>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5">
+                <div className="flex flex-wrap gap-2">
                   {v.meta?.wifi && <Badge variant="secondary">WiFi</Badge>}
                   {v.meta?.parking && (
                     <Badge variant="secondary">Parking</Badge>
@@ -208,7 +202,7 @@ export default function ManageHome() {
                   )}
                 </div>
 
-                <div className="grid gap-2 text-sm">
+                <div className="grid gap-2">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">City</span>
                     <span>{v.location?.city ?? "-"}</span>
@@ -252,9 +246,7 @@ export default function ManageHome() {
           <div className="mt-4">
             <PaginationBar meta={paginationMeta} />
             {isFetching && (
-              <div className="mt-2 text-sm text-muted-foreground">
-                Refreshing…
-              </div>
+              <div className="text-muted-foreground">Refreshing…</div>
             )}
           </div>
         </>

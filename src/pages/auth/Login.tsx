@@ -81,14 +81,14 @@ export default function Login() {
             loading={loading}
             onSubmit={handleLogin}
           />
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground">
             Don&apos;t have an account?{" "}
             <Link className="text-primary underline" to={routes.auth.register}>
               Register now
             </Link>
             .
           </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground">
             Ready to manage venues?{" "}
             <Link
               className="text-primary underline"
