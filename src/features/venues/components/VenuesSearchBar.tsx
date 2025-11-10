@@ -491,8 +491,8 @@ function MobileSearchSheet({
             Search venues
           </Button>
         </SheetTrigger>
-        <SheetContent side="bottom" className="p-2 max-h-[70dvh]">
-          <SheetHeader className="p-4 flex items-center justify-between">
+        <SheetContent side="bottom" className="p-0 max-h-[85dvh] flex flex-col">
+          <SheetHeader className="p-4 flex items-center justify-between border-b shrink-0">
             <SheetTitle>Search venues</SheetTitle>
             <SheetClose asChild>
               <Button variant="outline" aria-label="Close search panel">
@@ -501,7 +501,7 @@ function MobileSearchSheet({
               </Button>
             </SheetClose>
           </SheetHeader>
-          <div className="p-4">
+          <div className="p-4 overflow-y-auto">
             <form onSubmit={onSubmit} className="space-y-6">
               <SearchControl {...searchProps} />
               <GuestControl {...guestProps} />

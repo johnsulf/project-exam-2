@@ -241,6 +241,27 @@
   }
 }
 
+@keyframes dots {
+  0% {
+    width: 0ch;
+  }
+  33% {
+    width: 1ch;
+  }
+  66% {
+    width: 2ch;
+  }
+  100% {
+    width: 3ch;
+  }
+}
+.pending-dots {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  animation: dots 2s steps(4) infinite;
+}
+
 @layer utilities {
   .animate-fade-in-up {
     animation: fade-in-up 260ms var(--ease-out-soft) both;
