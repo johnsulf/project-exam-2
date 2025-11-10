@@ -48,13 +48,11 @@ export const router = createBrowserRouter(
           element: <RegisterManager />,
         },
 
-        // Signed-in only
         {
           element: <RequireAuth />,
           children: [
             { path: toRelative(routes.profile), element: <Profile /> },
 
-            // Manager-only
             {
               element: <RequireManager />,
               children: [

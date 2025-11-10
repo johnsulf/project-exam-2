@@ -43,7 +43,7 @@ export default function VenueDetail() {
 
         {/* Right column */}
         <aside className="md:pl-2">
-          <h1 className="text-3xl font-semibold">{venue.name}</h1>
+          <h1 className="text-4xl font-semibold">{venue.name}</h1>
           <h2 className="text-2xl font-medium">{locLine}</h2>
           <div className="flex flex-wrap gap-2 my-2">
             <Badge variant="secondary">Guests {venue.maxGuests}</Badge>
@@ -56,7 +56,7 @@ export default function VenueDetail() {
           </div>
           {/* Rating */}
           {venue.rating !== undefined && (
-            <div className="flex gap-1 items-center font-semibold my-2 ml-auto">
+            <div className="flex gap-2 items-center font-semibold my-2 ml-auto">
               <p>
                 {venue.rating == 0
                   ? "No ratings"
@@ -73,7 +73,7 @@ export default function VenueDetail() {
           )}
           {/* Owner */}
           {venue.owner?.name && (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               {venue.owner.avatar?.url ? (
                 <img
                   src={venue.owner.avatar.url}
@@ -84,27 +84,25 @@ export default function VenueDetail() {
                 <div className="h-12 w-12 rounded-full bg-muted" />
               )}
               <div className="text-sm">
-                <span className="font-medium text-sky-800">
+                <span className="font-medium text-teal-600">
                   {venue.owner.name}
-                </span>{" "}
-                <span className="font-semibold">is the owner</span>
+                </span>
+                <span>&nbsp;is the owner</span>
               </div>
             </div>
           )}
-          <article className="prose max-w-none">
+          <article className="prose max-w-none my-4">
             <p className="font-light">{venue.description}</p>
           </article>
-          <div className="sticky top-20">
-            <BookingWidget
-              venueId={venue.id}
-              price={venue.price}
-              maxGuests={venue.maxGuests}
-              bookings={(venue.bookings ?? []).map((b) => ({
-                dateFrom: b.dateFrom,
-                dateTo: b.dateTo,
-              }))}
-            />
-          </div>
+          <BookingWidget
+            venueId={venue.id}
+            price={venue.price}
+            maxGuests={venue.maxGuests}
+            bookings={(venue.bookings ?? []).map((b) => ({
+              dateFrom: b.dateFrom,
+              dateTo: b.dateTo,
+            }))}
+          />
         </aside>
       </div>
     );

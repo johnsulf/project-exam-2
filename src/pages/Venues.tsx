@@ -164,12 +164,15 @@ export default function Venues() {
 
   return (
     <>
-      <PageBreadcrumbs items={breadcrumbs} className="mb-4" />
-      <VenuesSearchBar loading={isFetching} />
-      <ActiveFilters />
+      {/* Breadcrumbs and search bar */}
+      <div className="space-y-6">
+        <PageBreadcrumbs items={breadcrumbs} />
+        <VenuesSearchBar loading={isFetching} />
+        <ActiveFilters />
+      </div>
 
       {/* Result header */}
-      <div className="flex items-center justify-between mb-2 text-sm text-muted-foreground">
+      <div className="flex items-center justify-between mt-6 mb-2 text-muted-foreground">
         <div>
           <span className="font-medium text-foreground">{meta.totalCount}</span>
           {hasFiltersApplied ? <> filtered results</> : <> results</>}
@@ -193,7 +196,7 @@ export default function Venues() {
       )}
 
       <PaginationBar meta={meta} />
-      {isFetching && <div className="mt-3 text-sm opacity-70">Refreshing…</div>}
+      {isFetching && <p className="mt-4 text-muted-foreground">Refreshing…</p>}
     </>
   );
 }
