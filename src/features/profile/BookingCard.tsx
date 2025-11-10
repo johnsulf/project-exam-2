@@ -45,12 +45,12 @@ export function BookingCard({
               className="h-full w-full object-cover"
             />
           ) : (
-            <div className="h-full w-full grid place-items-center text-xs text-muted-foreground">
+            <div className="h-full w-full grid place-items-center text-sm text-muted-foreground">
               No image
             </div>
           )}
         </div>
-        <div className="flex flex-1 flex-col gap-3 p-4">
+        <div className="flex flex-1 flex-col gap-4 p-4">
           <header>
             <h3
               id={titleId}
@@ -59,7 +59,7 @@ export function BookingCard({
               {vName}
             </h3>
           </header>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground">
             {formatDateRange(from, to)} • {nights}{" "}
             {nights === 1 ? "night" : "nights"}
           </p>
@@ -70,7 +70,7 @@ export function BookingCard({
           {vId && (
             <Link
               to={`/venues/${vId}`}
-              className="text-sm font-medium text-primary underline-offset-4 hover:underline my-2"
+              className="font-medium text-primary underline-offset-4 hover:underline my-2"
             >
               View venue <span className="sr-only">“{vName}”</span>
             </Link>

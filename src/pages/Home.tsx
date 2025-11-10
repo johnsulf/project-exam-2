@@ -83,7 +83,7 @@ export default function Home() {
               Escape the ordinary. Discover inspiring places to stay with
               Holidaze.
             </h1>
-            <p className="text-base sm:text-lg max-w-2xl">
+            <p className="sm:text-lg max-w-2xl">
               Browse design-led apartments, eco-friendly cabins, and beachfront
               getaways curated from hosts across the globe. Search by city,
               filter by amenities, and book with confidence in seconds.
@@ -150,10 +150,10 @@ export default function Home() {
             <section className="rounded-lg bg-card border p-8 md:p-10 space-y-6">
               <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <h2 className="text-2xl font-semibold">
+                  <h2 className="text-3xl font-semibold">
                     Plan your next escape
                   </h2>
-                  <p className="text-sm text-muted-foreground max-w-2xl">
+                  <p className="text-muted-foreground max-w-2xl">
                     From dreaming to confirming, Holidaze keeps every step
                     simple. Create a wishlist, share it with friends, and book
                     the moment you’re ready.
@@ -162,7 +162,7 @@ export default function Home() {
                 <Button asChild>
                   <Link to={routes.venues}>
                     Start exploring
-                    <ArrowRight className="ml-2 size-4" aria-hidden="true" />
+                    <ArrowRight aria-hidden="true" />
                   </Link>
                 </Button>
               </div>
