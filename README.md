@@ -87,7 +87,7 @@ Then open the printed local URL (usually http://localhost:5173).
 ## Features
 
 - Venue search with client-side filtering (name, description, and location fields) plus amenity/date filters
-- Mobile bottom-sheet search UI, including inline popovers for dates & filters
+- Mobile bottom-sheet search UI, including inline popover content for dates & filters
 - Venue detail gallery with smooth image transitions
 - Auth flows (sign in, register customer, register manager) with subtle entry animations and spinner feedback
 - Owner dashboard for creating, editing, deleting venues, and managing bookings; responsive cards on mobile
@@ -110,7 +110,7 @@ Keep these updated for examiner & collaborators.
 
 ---
 
-## Project Structure (Evolving)
+## Project Structure
 
 ```
 src/
