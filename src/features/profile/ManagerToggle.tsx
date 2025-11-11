@@ -36,7 +36,7 @@ export function ManagerToggle({ name, venueManager }: Props) {
       aria-labelledby={`${id}-label`}
     >
       <div>
-        <Label id={`${id}-label`} className="font-medium">
+        <Label htmlFor={id} id={`${id}-label`} className="font-medium">
           Venue manager
         </Label>
         <p className="text-sm text-muted-foreground">

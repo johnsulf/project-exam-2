@@ -275,6 +275,7 @@ export function VenueForm({
               <FieldLabel htmlFor="name">Name</FieldLabel>
               <Input
                 id="name"
+                autoComplete="organization"
                 {...f.register("name")}
                 aria-invalid={!!errors.name}
                 aria-describedby={errors.name ? "name-error" : undefined}
@@ -287,6 +288,7 @@ export function VenueForm({
               <Textarea
                 id="description"
                 rows={6}
+                autoComplete="off"
                 {...f.register("description")}
                 aria-invalid={!!errors.description}
                 aria-describedby={
@@ -309,6 +311,7 @@ export function VenueForm({
                   type="number"
                   min={0}
                   step={1}
+                  autoComplete="off"
                   {...f.register("price", { valueAsNumber: true })}
                   aria-invalid={!!errors.price}
                   aria-describedby={errors.price ? "price-error" : undefined}
@@ -328,6 +331,7 @@ export function VenueForm({
                   type="number"
                   min={1}
                   max={100}
+                  autoComplete="off"
                   {...f.register("maxGuests", { valueAsNumber: true })}
                   aria-invalid={!!errors.maxGuests}
                   aria-describedby={
@@ -362,7 +366,9 @@ export function VenueForm({
                 <FieldLabel htmlFor="media-draft-url">Image URL</FieldLabel>
                 <Input
                   id="media-draft-url"
+                  name="media-draft-url"
                   placeholder="https://example.com/image.jpg"
+                  autoComplete="url"
                   value={draftUrl}
                   onChange={(e) => {
                     setDraftUrl(e.currentTarget.value);
@@ -401,7 +407,9 @@ export function VenueForm({
                 </FieldLabel>
                 <Input
                   id="media-draft-alt"
+                  name="media-draft-alt"
                   placeholder="Describe the image"
+                  autoComplete="off"
                   value={draftAlt}
                   onChange={(e) => setDraftAlt(e.currentTarget.value)}
                 />
@@ -502,21 +510,37 @@ export function VenueForm({
             <div className="grid gap-3 sm:grid-cols-2">
               <Field>
                 <FieldLabel htmlFor="city">City</FieldLabel>
-                <Input id="city" {...f.register("location.city")} />
+                <Input
+                  id="city"
+                  autoComplete="address-level2"
+                  {...f.register("location.city")}
+                />
               </Field>
               <Field>
                 <FieldLabel htmlFor="country">Country</FieldLabel>
-                <Input id="country" {...f.register("location.country")} />
+                <Input
+                  id="country"
+                  autoComplete="country"
+                  {...f.register("location.country")}
+                />
               </Field>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
               <Field>
                 <FieldLabel htmlFor="address">Address</FieldLabel>
-                <Input id="address" {...f.register("location.address")} />
+                <Input
+                  id="address"
+                  autoComplete="street-address"
+                  {...f.register("location.address")}
+                />
               </Field>
               <Field>
                 <FieldLabel htmlFor="zip">ZIP</FieldLabel>
-                <Input id="zip" {...f.register("location.zip")} />
+                <Input
+                  id="zip"
+                  autoComplete="postal-code"
+                  {...f.register("location.zip")}
+                />
               </Field>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
@@ -526,6 +550,7 @@ export function VenueForm({
                   id="lat"
                   type="number"
                   step="any"
+                  autoComplete="off"
                   {...f.register("location.lat", { valueAsNumber: true })}
                 />
                 <FieldDescription>
@@ -538,6 +563,7 @@ export function VenueForm({
                   id="lng"
                   type="number"
                   step="any"
+                  autoComplete="off"
                   {...f.register("location.lng", { valueAsNumber: true })}
                 />
               </Field>
@@ -562,18 +588,30 @@ export function VenueForm({
                     ["pets", "Pets"],
                     ["breakfast", "Breakfast"],
                   ] as const
-                ).map(([key, label]) => (
-                  <Field key={key} orientation="horizontal">
-                    <FieldLabel htmlFor={`amenity-${key}`}>{label}</FieldLabel>
-                    <Switch
-                      id={`amenity-${key}`}
-                      checked={!!f.watch(`meta.${key}`)}
-                      onCheckedChange={(value) =>
-                        f.setValue(`meta.${key}`, value, { shouldDirty: true })
-                      }
-                    />
-                  </Field>
-                ))}
+                ).map(([key, label]) => {
+                  const fieldName = `meta.${key}` as const;
+                  const checked = !!f.watch(fieldName);
+                  return (
+                    <Field key={key} orientation="horizontal">
+                      <FieldLabel htmlFor={`amenity-${key}`}>
+                        {label}
+                      </FieldLabel>
+                      <input
+                        type="hidden"
+                        {...f.register(fieldName)}
+                        value={checked ? "true" : "false"}
+                      />
+                      <Switch
+                        id={`amenity-${key}`}
+                        name={fieldName}
+                        checked={checked}
+                        onCheckedChange={(value) =>
+                          f.setValue(fieldName, value, { shouldDirty: true })
+                        }
+                      />
+                    </Field>
+                  );
+                })}
               </FieldGroup>
             </FieldSet>
           </CardContent>

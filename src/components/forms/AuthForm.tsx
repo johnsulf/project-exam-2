@@ -252,6 +252,7 @@ export function AuthForm(props: AuthFormProps) {
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id={checkboxId}
+                  name="venueManager"
                   checked={value}
                   onCheckedChange={(checked) =>
                     field.onChange(Boolean(checked))

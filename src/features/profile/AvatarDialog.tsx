@@ -74,8 +74,13 @@ export function AvatarDialog({
 
         <form className="space-y-4" onSubmit={f.handleSubmit(onSubmit)}>
           <div className="space-y-2">
-            <Label htmlFor="url">Image URL</Label>
-            <Input id="url" placeholder="https://..." {...f.register("url")} />
+            <Label htmlFor="avatar-url">Image URL</Label>
+            <Input
+              id="avatar-url"
+              placeholder="https://..."
+              autoComplete="url"
+              {...f.register("url")}
+            />
             {f.formState.errors.url && (
               <p className="text-sm text-destructive">
                 {f.formState.errors.url.message}
@@ -84,9 +89,9 @@ export function AvatarDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="alt">Alt text (optional)</Label>
+            <Label htmlFor="avatar-alt">Alt text (optional)</Label>
             <Input
-              id="alt"
+              id="avatar-alt"
               placeholder="Describe the image"
               {...f.register("alt")}
             />
