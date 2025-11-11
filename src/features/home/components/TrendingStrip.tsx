@@ -21,9 +21,7 @@ export function TrendingStrip({ venues }: TrendingStripProps) {
           <p className="text-sm uppercase tracking-[0.3em] ">
             Trending this week
           </p>
-          <h2 className="text-xl font-semibold">
-            Hot picks from the Holidaze community
-          </h2>
+          <h2>Hot picks from the Holidaze community</h2>
           <p className="text-sm ">
             Handpicked stays guests are loving right now. Limited availability.
           </p>

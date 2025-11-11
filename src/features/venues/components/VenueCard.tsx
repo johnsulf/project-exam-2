@@ -52,9 +52,7 @@ export function VenueCard({ v }: { v: Venue }) {
       <div className="flex flex-1 flex-col space-y-4 p-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h3 className="text-lg font-semibold tracking-tight text-muted-foreground">
-              {v.name}
-            </h3>
+            <h3>{v.name}</h3>
             <p className="text-sm text-muted-foreground line-clamp-2">
               {v.description}
             </p>

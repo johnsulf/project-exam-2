@@ -79,7 +79,7 @@ export default function Home() {
               <Heart aria-hidden="true" />
               Handpicked stays, just for you
             </span>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight">
+            <h1>
               Escape the ordinary. Discover inspiring places to stay with
               Holidaze.
             </h1>
@@ -150,9 +150,7 @@ export default function Home() {
             <section className="rounded-lg bg-card border p-8 md:p-10 space-y-6">
               <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <h2 className="text-3xl font-semibold">
-                    Plan your next escape
-                  </h2>
+                  <h2>Plan your next escape</h2>
                   <p className="text-muted-foreground max-w-2xl">
                     From dreaming to confirming, Holidaze keeps every step
                     simple. Create a wishlist, share it with friends, and book

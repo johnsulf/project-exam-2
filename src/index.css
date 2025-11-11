@@ -3,6 +3,38 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@layer base {
+  :root {
+    font-size: 16px;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans text-base leading-relaxed antialiased;
+  }
+
+  h1 {
+    @apply text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight break-words text-balance;
+  }
+
+  h2 {
+    @apply text-2xl sm:text-3xl font-semibold leading-tight break-words text-balance;
+  }
+
+  h3 {
+    @apply text-xl sm:text-2xl font-semibold leading-snug text-balance;
+  }
+
+  h1:focus-visible,
+  h2:focus-visible,
+  h3:focus-visible {
+    @apply outline-none ring-2 ring-ring rounded;
+  }
+
+  p {
+    @apply leading-relaxed text-base text-foreground/90;
+  }
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

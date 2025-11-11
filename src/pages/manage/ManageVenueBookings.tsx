@@ -42,7 +42,7 @@ export default function ManageVenueBookings() {
     return (
       <div className="space-y-4">
         <PageBreadcrumbs items={baseBreadcrumbs} />
-        <h1 className="text-4xl font-semibold">Venue bookings</h1>
+        <h1>Venue bookings</h1>
         <p className="text-destructive">Couldn’t load bookings.</p>
         <Button asChild variant="outline">
           <Link to="/manage">Back to Manage</Link>
@@ -72,7 +72,10 @@ export default function ManageVenueBookings() {
         ]}
       />
       <header className="flex items-center justify-between">
-        <h1 className="text-4xl font-semibold">Bookings - {name}</h1>
+        <div>
+          <h1>Bookings</h1>
+          <p>{name}</p>
+        </div>
         {venue?.id && (
           <Button asChild variant="outline">
             <Link to={`/venues/${venue.id}`}>View venue</Link>

@@ -43,8 +43,8 @@ export default function VenueDetail() {
 
         {/* Right column */}
         <aside className="md:pl-2">
-          <h1 className="text-4xl font-semibold">{venue.name}</h1>
-          <h2 className="text-2xl font-medium">{locLine}</h2>
+          <h1>{venue.name}</h1>
+          <h2>{locLine}</h2>
           <div className="flex flex-wrap gap-2 my-2">
             <Badge variant="secondary">Guests {venue.maxGuests}</Badge>
             {venue.meta?.parking && <Badge variant="secondary">Parking</Badge>}

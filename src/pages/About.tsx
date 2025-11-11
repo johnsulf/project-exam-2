@@ -42,9 +42,9 @@ export default function About() {
           <span className="inline-flex w-fit rounded-full bg-teal-100 px-4 py-2 text-sm font-semibold uppercase tracking-widest text-teal-700">
             final exam
           </span>
-          <h2 className="text-3xl font-semibold leading-tight">
+          <h1>
             Holidaze is a Noroff Front-end exam project crafted by Johnsulf.
-          </h2>
+          </h1>
           <p className="text-muted-foreground max-w-3xl">
             Goal: demonstrate two years of front-end studies by planning,
             designing, and shipping a complete accommodation platform. Holidaze

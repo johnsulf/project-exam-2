@@ -18,7 +18,7 @@ export function FeaturedSection({
   return (
     <section className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-semibold">{title}</h2>
+        <h2>{title}</h2>
         <Button asChild variant="outline">
           <Link to={cta.to}>
             {cta.label} <ArrowRight />

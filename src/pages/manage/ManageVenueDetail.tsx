@@ -51,7 +51,7 @@ export default function ManageVenueDetail() {
     return (
       <div className="space-y-4">
         <PageBreadcrumbs items={baseBreadcrumbs} />
-        <h1 className="text-2xl font-semibold">Venue</h1>
+        <h1>Venue</h1>
         <p className="text-destructive">Couldn’t load venue.</p>
         <Button asChild variant="outline">
           <Link to="/manage">Back to Manage</Link>
@@ -86,7 +86,7 @@ export default function ManageVenueDetail() {
       {/* Header */}
       <header className="flex flex-col gap-4 sm:flex-row sm:items-start">
         <div className="flex-1">
-          <h1 className="text-4xl font-semibold">{v.name}</h1>
+          <h1>{v.name}</h1>
           {v.location?.city || v.location?.country ? (
             <p className="text-muted-foreground">
               {v.location?.city ?? ""}
@@ -135,11 +135,11 @@ export default function ManageVenueDetail() {
         </div>
 
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold">Booked dates</h2>
+          <h2>Booked dates</h2>
           {(v.bookings?.length ?? 0) === 0 ? (
             <p className="text-sm text-muted-foreground">No bookings yet.</p>
           ) : (
-            <div className="rounded-lg border p-3">
+            <div className="rounded-lg border p-2">
               <div className="flex justify-center ">
                 <Calendar
                   mode="single"

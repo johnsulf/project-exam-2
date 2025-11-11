@@ -52,12 +52,7 @@ export function BookingCard({
         </div>
         <div className="flex flex-1 flex-col gap-4 p-4">
           <header>
-            <h3
-              id={titleId}
-              className="text-lg font-semibold leading-snug text-balanced"
-            >
-              {vName}
-            </h3>
+            <h3 id={titleId}>{vName}</h3>
           </header>
           <p className="text-muted-foreground">
             {formatDateRange(from, to)} • {nights}{" "}

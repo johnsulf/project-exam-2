@@ -26,7 +26,7 @@ export default function RouteError() {
 
   return (
     <div className="mx-auto max-w-[720px] py-16 px-5 text-center space-y-4">
-      <h1 className="text-2xl font-semibold">{title}</h1>
+      <h1>{title}</h1>
       <p className="text-muted-foreground">{description}</p>
       {status && (
         <p className="text-xs text-muted-foreground/70">Status: {status}</p>

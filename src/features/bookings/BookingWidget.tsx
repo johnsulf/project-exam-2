@@ -99,9 +99,7 @@ export function BookingWidget({
       className="rounded-lg border flex flex-col p-4 space-y-4 w-full md:w-screen-sm"
     >
       <div className="space-y-2">
-        <h2 id={headingId} className="text-xl font-semibold">
-          Book this venue
-        </h2>
+        <h2 id={headingId}>Book this venue</h2>
         <p>
           {formatMoney(price, { currency: "USD" })}{" "}
           <span className="text-sm text-muted-foreground">/ per night</span>

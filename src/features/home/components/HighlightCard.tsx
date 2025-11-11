@@ -6,7 +6,7 @@ type HighlightCardProps = {
 export function HighlightCard({ title, description }: HighlightCardProps) {
   return (
     <div className="rounded-lg border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-      <h3 className="text-lg font-semibold">{title}</h3>
+      <h3>{title}</h3>
       <p className="mt-2 text-sm text-muted-foreground">{description}</p>
     </div>
   );

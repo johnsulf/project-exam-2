@@ -53,7 +53,7 @@ export default function ManageHome() {
     return (
       <div className="space-y-4">
         <PageBreadcrumbs items={breadcrumbs} />
-        <h1 className="text-4xl font-semibold">Manage venues</h1>
+        <h1>Manage venues</h1>
         <p className="text-destructive">
           {name ? "Couldn’t load your venues." : "You must be signed in."}
         </p>
@@ -106,7 +106,7 @@ export default function ManageHome() {
     <div className="space-y-4">
       <PageBreadcrumbs items={breadcrumbs} />
       <header className="flex items-center justify-between">
-        <h1 className="text-4xl font-semibold">Manage venues</h1>
+        <h1>Manage venues</h1>
         <Button asChild>
           <Link to="/manage/new">
             Create venue
@@ -185,9 +185,7 @@ export default function ManageHome() {
                 className="rounded-lg border p-4 space-y-4 bg-card"
               >
                 <div className="space-y-2">
-                  <h2 className="text-lg font-semibold leading-tight">
-                    {v.name}
-                  </h2>
+                  <h2>{v.name}</h2>
                   <p className="text-muted-foreground">{v.description}</p>
                 </div>
 

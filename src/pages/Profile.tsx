@@ -155,12 +155,7 @@ export default function Profile() {
             />
 
             <div className="space-y-2">
-              <h1
-                id="profile-title"
-                ref={h1Ref}
-                tabIndex={-1}
-                className="text-4xl font-semibold focus:outline-none focus:ring-2 focus:ring-ring rounded"
-              >
+              <h1 id="profile-title" ref={h1Ref} tabIndex={-1}>
                 {p.name}
               </h1>
               <p className="text-muted-foreground">{p.email}</p>
@@ -205,9 +200,7 @@ export default function Profile() {
         {/* Bookings */}
         <section className="space-y-4" aria-labelledby="bookings-heading">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 id="bookings-heading" className="text-3xl font-semibold">
-              Your bookings
-            </h2>
+            <h2 id="bookings-heading">Your bookings</h2>
           </div>
 
           {bLoading ? (

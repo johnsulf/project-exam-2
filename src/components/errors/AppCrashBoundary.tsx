@@ -19,7 +19,7 @@ function CrashFallback({ error, resetErrorBoundary }: FallbackProps) {
 
   return (
     <div className="mx-auto max-w-[720px] py-16 px-5 text-center space-y-4">
-      <h1 className="text-2xl font-semibold">Something broke</h1>
+      <h1>Something broke</h1>
       <p className="text-muted-foreground">
         We hit an unexpected error while rendering.
       </p>

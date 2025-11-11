@@ -39,7 +39,7 @@ export default function ManageEditVenue() {
     return (
       <div className="space-y-4">
         <PageBreadcrumbs items={baseBreadcrumbs} />
-        <h1 className="text-4xl font-semibold">Edit venue</h1>
+        <h1>Edit venue</h1>
         <p className="text-destructive">Couldn’t load venue.</p>
         <Button asChild variant="outline">
           <Link to="/manage">Back to Manage</Link>
@@ -59,7 +59,7 @@ export default function ManageEditVenue() {
         ]}
       />
       <header className="flex items-center justify-between">
-        <h1 className="text-4xl font-semibold">Edit venue</h1>
+        <h1>Edit venue</h1>
         <Button variant="outline" asChild>
           <Link to="/manage">Cancel</Link>
         </Button>
