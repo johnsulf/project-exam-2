@@ -5,6 +5,7 @@ export const routes = {
   login: "http://localhost:5173/auth/login",
   registerManager: "http://localhost:5173/auth/register/manager",
   manage: "http://localhost:5173/manage",
+  profile: "http://localhost:5173/profile",
 };
 
 export const customerCredentials = {

@@ -29,8 +29,8 @@ This checklist covers high-impact flows for Holidaze. Should run before each rel
 
 ## Regression Smoke
 
-- [ ] Load the home page and confirm featured venues render without layout issues.
-- [ ] Search for a venue by city and ensure the results update along with the "results" counter.
-- [ ] From the venues list, open a venue detail page and verify gallery images and amenities render correctly.
-- [ ] Navigate to a user profile page and verify bookings and venues tabs load their content.
-- [ ] View the site on a mobile viewport to confirm navigation, search, and booking actions remain usable.
+- [ ] Load the home page, confirm the hero and **Featured Venues** sections render, then follow **See all Venues** to reach the listing view.
+- [ ] Use the desktop search bar (city or keywords) and ensure the results counter updates and shows “filtered results”; clear the search and confirm the count resets.
+- [ ] Open any venue card, verify the booking widget (book heading, guest controls) renders, then click **Sign in or register** and confirm you are routed back to the same venue after logging in.
+- [ ] From the profile menu, open **Profile**, verify the **Your bookings** section, and switch between **Upcoming** and **Earlier** tabs to ensure both render.
+- [ ] Resize to a mobile viewport (≈390px wide), open the “Search venues” sheet, confirm the panel renders, then close it and verify the CTA still works.
