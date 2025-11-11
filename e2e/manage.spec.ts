@@ -43,9 +43,7 @@ test("Venue management UI smoke", async ({ page }) => {
   const bookingsLink = page.locator('a[href$="/bookings"]').first();
   await expect(bookingsLink).toBeVisible();
   await bookingsLink.click();
-  await expect(
-    page.getByRole("heading", { name: /Bookings - / }),
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Bookings" })).toBeVisible();
   await page.locator('a[href="/manage"]').first().click();
 
   // Create venue button opens form and validation blocks empty submission
