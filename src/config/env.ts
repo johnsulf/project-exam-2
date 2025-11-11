@@ -13,7 +13,6 @@ const DEBUG =
   rawDebug === true ||
   rawDebug === "true" ||
   rawDebug === "1" ||
-  rawDebug === 1 ||
   (rawDebug === undefined && import.meta.env.DEV);
 
 export const env = {

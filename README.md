@@ -21,6 +21,26 @@ The project is production-leaning: strongly typed, componentised, and ready for 
 
 ---
 
+## Environment Variables
+
+Most development scenarios work with the defaults, but you can override them via a `.env` file or shell vars:
+
+| Variable            | Default                          | Purpose                                               |
+| ------------------- | -------------------------------- | ----------------------------------------------------- |
+| `VITE_API_BASE_URL` | `https://v2.api.noroff.dev`      | Switch backend base URL (strip trailing slashes).     |
+| `VITE_APP_ENV`      | inferred from Vite mode          | Surface the environment in logs/analytics.            |
+| `VITE_DEBUG`        | `true` in dev, `false` otherwise | Enables extra logging + development-only diagnostics. |
+
+Example `.env.local`:
+
+```bash
+VITE_API_BASE_URL=https://v2.api.noroff.dev
+VITE_APP_ENV=development
+VITE_DEBUG=true
+```
+
+---
+
 ## Quick Start
 
 Prerequisites:
@@ -52,6 +72,15 @@ Then open the printed local URL (usually http://localhost:5173).
 | `pnpm test:e2e`  | Test with PlayWright                    |
 | `pnpm lint`      | Run ESLint over source                  |
 | `pnpm typecheck` | Run TypeScript without emitting         |
+
+---
+
+## Testing & QA
+
+- **Unit & integration**: `pnpm test:unit` (Vitest + jsdom). Use `pnpm test` for non-watch CI mode.
+- **End-to-end**: `pnpm test:e2e` (Playwright). Expects the Vite dev server on `http://localhost:5173`; Playwright takes care of launching it in CI. The suite exercises most user stories (auth, listing/search, booking entry, manager UX), but some management/registration scenarios are still verified manually.
+- **Linting & types**: run `pnpm lint` and `pnpm typecheck` locally (they’re part of CI’s `unit` job).
+- **Manual QA flows**: see `docs/qa-checklist.md` for sign-off steps covering auth, booking, venue management, and regression smoke tests—kept in sync with the Playwright specs.
 
 ---
 
@@ -89,7 +118,7 @@ src/
   features/          # Domain features (venues, bookings, profile, manager)
   lib/               # API helpers, query keys, utilities
   pages/             # Route-level React components
-  providers/         # Global context (auth, theme, router)
+  providers/         # Global context (auth, app)
   config/            # Runtime configuration
   index.css          # Tailwind layers + motion utilities
 ```
