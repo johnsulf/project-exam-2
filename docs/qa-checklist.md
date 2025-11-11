@@ -12,7 +12,7 @@ This checklist covers high-impact flows for Holidaze. Should run before each rel
 
 ## Booking
 
-- [ ] Open a venue detail page that has availability.
+- [ ] Open a venue I have made to ensure it exist.
 - [ ] Select a valid date range and adjust the guest count within the allowed max.
 - [ ] Submit the booking and confirm the success toast displays and the reservation appears under **My bookings**.
 - [ ] Attempt to book a date range that overlaps an existing reservation and verify an error message is shown.
