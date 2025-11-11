@@ -39,11 +39,13 @@ test("Booking - unauthenticated users must sign in before booking", async ({
     const dayCount = await availableDays.count();
     expect(dayCount).toBeGreaterThan(1);
 
-    const startDay = availableDays.first();
-    const endDay = availableDays.nth(dayCount - 1);
+    await availableDays.first().click();
 
-    await startDay.click();
-    await endDay.click();
+    let enabled = await bookNowButton.isEnabled();
+    for (let i = 1; i < dayCount && !enabled; i++) {
+      await availableDays.nth(i).click();
+      enabled = await bookNowButton.isEnabled();
+    }
 
     await expect(bookNowButton).toBeEnabled();
     await bookNowButton.click();

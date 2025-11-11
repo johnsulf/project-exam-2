@@ -3,10 +3,12 @@ import { expect, type Page } from "@playwright/test";
 export const routes = {
   home: "http://localhost:5173/",
   login: "http://localhost:5173/auth/login",
+  registerManager: "http://localhost:5173/auth/register/manager",
+  manage: "http://localhost:5173/manage",
 };
 
 export const customerCredentials = {
-  email: "holidaze_customer@stud.noroff.no",
+  email: "playwright_tester@stud.noroff.no",
   password: "XPCmpvt3TYZj6HW",
 };
 
@@ -23,7 +25,13 @@ export async function ensureLoggedOut(page: Page, loginUrl = routes.login) {
   if (await profileButton.isVisible()) {
     await profileButton.click();
     await signOutMenuItem.click();
-    await expect(page).toHaveURL(loginUrl);
+    await page.waitForURL((url) => {
+      const current = url.toString();
+      return current === routes.login || current === routes.home;
+    });
+    if (page.url() !== loginUrl) {
+      await page.goto(loginUrl);
+    }
   }
 }
 

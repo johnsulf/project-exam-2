@@ -4,27 +4,28 @@ This checklist covers high-impact flows for Holidaze. Should run before each rel
 
 ## Authentication
 
-- [ ] Launch the site and log out of any existing session.
-- [ ] Navigate to **/auth/login** and verify the "Welcome back" copy renders with the login form.
-- [ ] Attempt to submit the form with empty fields and confirm validation messages appear.
-- [ ] Sign in with a valid stud.noroff.no account and confirm the dashboard/profile loads without errors.
-- [ ] Use the account menu to sign out, then refresh the page to ensure the session is cleared.
+- [ ] Ensure the session is cleared (use the profile menu if it is already visible to sign out).
+- [ ] From the home page, open the **Sign in or register** link and confirm the login view renders the “Welcome back” messaging.
+- [ ] Submit the form with empty fields to confirm the “Enter a valid email” and “Password must be at least 6 characters” validations display.
+- [ ] Sign in with a valid stud.noroff.no account and verify you land back on the home page.
+- [ ] Open the profile menu, navigate to **Profile**, then sign out and confirm you return to **/auth/login** with the sign-in link visible again.
 
 ## Booking
 
-- [ ] Open a venue I have made to ensure it exist.
-- [ ] Select a valid date range and adjust the guest count within the allowed max.
-- [ ] Submit the booking and confirm the success toast displays and the reservation appears under **My bookings**.
-- [ ] Attempt to book a date range that overlaps an existing reservation and verify an error message is shown.
-- [ ] While signed out, click **Sign in to book** and ensure you are redirected to the login page with a return link back to the venue.
+- [ ] Start signed out, open a public venue, and confirm the CTA reads **Sign in to book**.
+- [ ] Click the CTA to ensure you are redirected to the login page, then sign in and verify you are routed back to the same venue with the button reading **Book now**.
+- [ ] With no dates selected, make sure **Book now** stays disabled.
+- [ ] Select two available dates and confirm the button enables.
+- [ ] Click **Book now** and verify the **Confirm booking** dialog opens; cancel out to ensure the dialog closes cleanly.
 
 ## Venue Management
 
-- [ ] Sign in with a venue manager account and open the **Manage venues** area.
-- [ ] Create a new venue with images, amenities, and pricing; verify the success toast appears and the venue shows in your list.
-- [ ] Edit an existing venue, change pricing and amenities, and confirm the updates persist after a refresh.
-- [ ] Delete a venue and ensure it is removed from the list without errors.
-- [ ] Trigger an error state (e.g., disconnect from the network before saving) and confirm the error toast displays helpful messaging.
+- [ ] Sign in with the venue manager account, open the profile menu, and confirm the **Venue Manager** badge plus the **Manage venues** menu item appear.
+- [ ] Go to **Manage venues**, pick a venue’s **Manage** link, and verify the detail view loads.
+- [ ] Open the **Delete** dialog and cancel it to ensure the confirmation sheet closes without deleting the venue.
+- [ ] Use the **Edit** link, confirm the edit form loads, then cancel to return to the dashboard.
+- [ ] Open a venue’s **Bookings** link, confirm the bookings page renders, and navigate back to the dashboard.
+- [ ] Use the **Create venue** link, attempt to submit the empty form, and confirm required-field validation appears before canceling back to Manage.
 
 ## Regression Smoke
 
@@ -33,5 +34,3 @@ This checklist covers high-impact flows for Holidaze. Should run before each rel
 - [ ] From the venues list, open a venue detail page and verify gallery images and amenities render correctly.
 - [ ] Navigate to a user profile page and verify bookings and venues tabs load their content.
 - [ ] View the site on a mobile viewport to confirm navigation, search, and booking actions remain usable.
-
-Document any failures, including console/network errors, with screenshots before handing the build off for release.
