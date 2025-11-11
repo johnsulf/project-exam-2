@@ -7,7 +7,8 @@
     <title>Holidaze</title>
     <link
       rel="shortcut icon"
-      href="%VITE_BASE_URL%favicon.svg"
+      id="app-favicon"
+      href="/favicon.svg"
       type="image/x-icon"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -18,14 +19,24 @@
     />
   </head>
   <body>
-    <script>
-      (function () {
-        var redirect = sessionStorage.getItem("spa-redirect");
-        if (redirect) {
-          sessionStorage.removeItem("spa-redirect");
-          history.replaceState(null, null, redirect);
-        }
-      })();
+    <script type="module">
+      const appBase =
+        (window.__APP_BASE__ = (import.meta.env.BASE_URL || "/").replace(
+          /\/?$/,
+          "/",
+        ));
+
+      const favicon = document.getElementById("app-favicon");
+      if (favicon) {
+        const absolute = new URL(appBase, window.location.origin);
+        favicon.href = `${absolute.pathname}favicon.svg`;
+      }
+
+      const redirect = sessionStorage.getItem("spa-redirect");
+      if (redirect) {
+        sessionStorage.removeItem("spa-redirect");
+        history.replaceState(null, "", redirect);
+      }
     </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

@@ -5,12 +5,18 @@
     <title>Redirecting…</title>
     <script>
       (function () {
-        var redirectPath =
+        var path =
           window.location.pathname +
           window.location.search +
           window.location.hash;
-        sessionStorage.setItem("spa-redirect", redirectPath);
-        window.location.replace("%VITE_BASE_URL%");
+        sessionStorage.setItem("spa-redirect", path);
+
+        var repoSegment = "project-exam-2";
+        var base = "/";
+        if (window.location.pathname.includes("/" + repoSegment + "/")) {
+          base = "/" + repoSegment + "/";
+        }
+        window.location.replace(base);
       })();
     </script>
   </head>
