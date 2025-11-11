@@ -42,7 +42,7 @@ export function Header() {
           >
             <div className="flex font-bold text-2xl">
               <span className="text-primary">holidaze</span>
-              <span className="text-teal-600">&nbsp;.</span>
+              <span className="text-secondary">&nbsp;.</span>
             </div>
           </NavLink>
 

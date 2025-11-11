@@ -84,7 +84,7 @@ export default function VenueDetail() {
                 <div className="h-12 w-12 rounded-full bg-muted" />
               )}
               <div className="text-sm">
-                <span className="font-medium text-teal-600">
+                <span className="font-medium text-secondary">
                   {venue.owner.name}
                 </span>
                 <span>&nbsp;is the owner</span>

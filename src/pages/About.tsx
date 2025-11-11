@@ -39,7 +39,7 @@ export default function About() {
       <PageBreadcrumbs items={breadcrumbs} />
       <div className="space-y-12">
         <section className="rounded-lg border bg-card p-8 md:p-12  space-y-6">
-          <span className="inline-flex w-fit rounded-full bg-teal-100 px-4 py-2 text-sm font-semibold uppercase tracking-widest text-teal-700">
+          <span className="inline-flex w-fit rounded-full bg-teal-100 px-4 py-2 text-sm font-semibold uppercase tracking-widest text-teal-950">
             final exam
           </span>
           <h1>
@@ -132,7 +132,7 @@ export default function About() {
                       <p className="uppercase tracking-widest text-muted-foreground">
                         {item.label}
                       </p>
-                      <span className="rounded-full bg-teal-100 px-2 py-0.5 text-sm font-medium text-teal-700">
+                      <span className="rounded-full bg-teal-100 px-2 py-0.5 text-sm font-medium text-teal-950">
                         ? / {item.max}
                       </span>
                     </div>
