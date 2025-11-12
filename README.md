@@ -3,33 +3,44 @@
 [![CI](https://github.com/johnsulf/project-exam-2/actions/workflows/ci.yml/badge.svg)](https://github.com/johnsulf/project-exam-2/actions/workflows/ci.yml)
 [![Pages Deploy](https://github.com/johnsulf/project-exam-2/actions/workflows/pages.yml/badge.svg)](https://github.com/johnsulf/project-exam-2/actions/workflows/pages.yml)
 
-Holidaze web app – browse venues, manage listings, and handle bookings with an improved search experience, inline availability filtering, and post-stay owner ratings.
-
-## Preview image
+Holidaze web app – browse venues, create a user to book venues or become a venue manager to create and host your own venues.
 
 ![App preview](public/preview.png)
 
-Built with:
+---
+
+## Table of Contents
+
+1. [Tech Stack](#tech-stack)
+2. [Environment Variables](#environment-variables)
+3. [Quick Start](#quick-start)
+4. [Scripts](#scripts)
+5. [Testing & QA](#testing--qa)
+6. [Features](#features)
+7. [Required Project Links](#required-project-links)
+8. [Project Structure](#project-structure)
+
+---
+
+## Tech Stack
 
 - React 19 + TypeScript
-- Vite 5 (fast dev & bundling)
-- Tailwind CSS v4 + shadcn/ui component primitives
-- TanStack Query for data fetching & cache
-- Zustand for client auth/session state
-
-The project is production-leaning: strongly typed, componentised, and ready for CI/CD. Clone, install, and run in under five minutes.
+- Vite 5
+- Tailwind CSS v4 with shadcn/ui primitives
+- TanStack Query
+- Zustand
 
 ---
 
 ## Environment Variables
 
-Most development scenarios work with the defaults, but you can override them via a `.env` file or shell vars:
+Override defaults with a `.env` file or shell variables:
 
-| Variable            | Default                          | Purpose                                               |
-| ------------------- | -------------------------------- | ----------------------------------------------------- |
-| `VITE_API_BASE_URL` | `https://v2.api.noroff.dev`      | Switch backend base URL (strip trailing slashes).     |
-| `VITE_APP_ENV`      | inferred from Vite mode          | Surface the environment in logs/analytics.            |
-| `VITE_DEBUG`        | `true` in dev, `false` otherwise | Enables extra logging + development-only diagnostics. |
+| Variable            | Default                          | Purpose                                  |
+| ------------------- | -------------------------------- | ---------------------------------------- |
+| `VITE_API_BASE_URL` | `https://v2.api.noroff.dev`      | Backend base URL (no trailing slash).    |
+| `VITE_APP_ENV`      | inferred from Vite mode          | Exposes environment in logs/analytics.   |
+| `VITE_DEBUG`        | `true` in dev, `false` otherwise | Enables verbose logging and diagnostics. |
 
 Example `.env.local`:
 
@@ -43,12 +54,12 @@ VITE_DEBUG=true
 
 ## Quick Start
 
-Prerequisites:
+**Prerequisites**
 
-- Node 20+ (LTS recommended)
-- pnpm (install globally: `npm i -g pnpm` if needed)
+- Node.js 20+
+- pnpm (`npm i -g pnpm`)
 
-Clone & run:
+**Setup**
 
 ```bash
 git clone https://github.com/johnsulf/project-exam-2.git
@@ -57,42 +68,44 @@ pnpm install
 pnpm dev
 ```
 
-Then open the printed local URL (usually http://localhost:5173).
+Open the printed local URL (usually http://localhost:5173).
 
 ---
 
 ## Scripts
 
-| Script           | Purpose                                 |
-| ---------------- | --------------------------------------- |
-| `pnpm dev`       | Start Vite dev server with HMR          |
-| `pnpm build`     | Type check then build production bundle |
-| `pnpm test`      | Run Vitest test suite (CI friendly)     |
-| `pnpm test:unit` | Interactive test watcher/UI             |
-| `pnpm test:e2e`  | Test with PlayWright                    |
-| `pnpm lint`      | Run ESLint over source                  |
-| `pnpm typecheck` | Run TypeScript without emitting         |
+| Script           | Description                               |
+| ---------------- | ----------------------------------------- |
+| `pnpm dev`       | Start the Vite dev server with HMR        |
+| `pnpm build`     | Type-check and build production bundle    |
+| `pnpm test`      | Run Vitest in CI mode                     |
+| `pnpm test:unit` | Watch mode for unit and integration tests |
+| `pnpm test:e2e`  | Execute Playwright E2E tests              |
+| `pnpm lint`      | Run ESLint                                |
+| `pnpm typecheck` | Run TypeScript without emitting           |
 
 ---
 
 ## Testing & QA
 
-- **Unit & integration**: `pnpm test:unit` (Vitest + jsdom). Use `pnpm test` for non-watch CI mode.
-- **End-to-end**: `pnpm test:e2e` (Playwright). Expects the Vite dev server on `http://localhost:5173`; Playwright takes care of launching it in CI. The suite exercises most user stories (auth, listing/search, booking entry, manager UX), but some management/registration scenarios are still verified manually.
-- **Linting & types**: run `pnpm lint` and `pnpm typecheck` locally (they’re part of CI’s `unit` job).
-- **Manual QA flows**: see `docs/qa-checklist.md` for sign-off steps covering auth, booking, venue management, and regression smoke tests—kept in sync with the Playwright specs.
+- **Unit & integration:** `pnpm test:unit` (Vitest + jsdom). Use `pnpm test` for CI runs.
+- **End-to-end:** `pnpm test:e2e` (Playwright). Requires the Vite dev server at `http://localhost:5173`; CI launches it automatically.
+- **Linting & types:** `pnpm lint` and `pnpm typecheck` (also wired into CI).
+- **Manual QA:** See `docs/qa-checklist.md` for auth, booking, venue management, and regression flows.
+
+Deployment pipelines require all automated test suites to succeed before release.
 
 ---
 
 ## Features
 
-- Venue search with client-side filtering (name, description, and location fields) plus amenity/date filters
-- Mobile bottom-sheet search UI, including inline popover content for dates & filters
-- Venue detail gallery with smooth image transitions
-- Auth flows (sign in, register customer, register manager) with subtle entry animations and spinner feedback
-- Owner dashboard for creating, editing, deleting venues, and managing bookings; responsive cards on mobile
-- Profile view with past/upcoming bookings, avatar editing, and owner-only rating updates
-- Shared UI based on shadcn/ui + Tailwind utility classes
+- Venue search with client-side filtering by text, amenities, and dates
+- Mobile bottom-sheet search UI with inline popovers
+- Venue detail gallery with smooth transitions
+- Auth flows for sign-in, customer, and manager registration
+- Owner dashboard for CRUD operations on venues and booking management
+- Profile view for bookings, avatar updates, and owner ratings (mock)
+- Shared UI built on shadcn/ui and Tailwind utility classes
 
 ---
 
@@ -106,21 +119,17 @@ Then open the printed local URL (usually http://localhost:5173).
 - Repository: [GitHub](https://github.com/johnsulf/project-exam-2)
 - Live Demo: [Holidaze](https://johnsulf.github.io/project-exam-2/)
 
-Keep these updated for examiner & collaborators.
-
 ---
 
 ## Project Structure
 
 ```
 src/
-  components/        # Reusable UI (incl. auth forms, layout)
+  components/        # Reusable UI (auth forms, layout, primitives)
   features/          # Domain features (venues, bookings, profile, manager)
   lib/               # API helpers, query keys, utilities
   pages/             # Route-level React components
   providers/         # Global context (auth, app)
   config/            # Runtime configuration
-  index.css          # Tailwind layers + motion utilities
+  index.css          # Tailwind layers and motion utilities
 ```
-
----
