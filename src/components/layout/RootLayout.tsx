@@ -21,21 +21,17 @@ export default function RootLayout() {
     const mainEl = mainRef.current;
     if (!mainEl) return;
 
-    const focusTarget =
-      (mainEl.querySelector("h1") as HTMLElement | null) ?? mainEl;
-
     if (
-      !focusTarget ||
-      focusTarget.closest('[aria-hidden="true"], [inert]') ||
-      focusTarget.hasAttribute("aria-hidden")
+      mainEl.hasAttribute("aria-hidden") ||
+      mainEl.closest('[aria-hidden="true"], [inert]')
     ) {
       return;
     }
 
-    if (focusTarget === mainEl || focusTarget.tabIndex < 0) {
-      focusTarget.tabIndex = -1;
+    if (mainEl.tabIndex < 0) {
+      mainEl.tabIndex = -1;
     }
-    focusTarget.focus({ preventScroll: true });
+    mainEl.focus({ preventScroll: true });
   }, [pathname]);
   return (
     <div className="min-h-dvh flex flex-col">

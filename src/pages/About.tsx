@@ -24,11 +24,11 @@ const gradingCriteria = [
 
 const gradeScale = [
   { grade: "A", label: "Outstanding", color: "bg-emerald-600" },
-  { grade: "B", label: "Excellent", color: "bg-green-500" },
+  { grade: "B", label: "Very good", color: "bg-green-500" },
   { grade: "C", label: "Good", color: "bg-lime-400" },
-  { grade: "D", label: "Satisfactory", color: "bg-yellow-400" },
-  { grade: "E", label: "Pass", color: "bg-orange-500" },
-  { grade: "F", label: "Redo", color: "bg-red-600" },
+  { grade: "D", label: "Fairly good", color: "bg-yellow-400" },
+  { grade: "E", label: "Sufficient", color: "bg-orange-500" },
+  { grade: "F", label: "Fail", color: "bg-red-600" },
 ];
 
 export default function About() {
