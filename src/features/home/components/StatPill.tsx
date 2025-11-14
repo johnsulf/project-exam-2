@@ -8,13 +8,13 @@ type StatPillProps = {
 
 export function StatPill({ icon, label, value }: StatPillProps) {
   return (
-    <div className="flex items-center gap-3 rounded-lg border border-neutral-200 bg-card px-4 py-3 shadow-sm">
-      <span className="flex size-8 items-center justify-center rounded-full bg-neutral-900/5 ">
+    <div className="flex items-center gap-3 rounded-lg bg-teal-100 text-teal-950 px-4 py-3 shadow-sm">
+      <span className="flex p-2 items-center justify-center rounded-full bg-neutral-50">
         {icon}
       </span>
       <div>
-        <p className="text-sm font-semibold">{value}</p>
-        <p className="text-xs text-muted-foreground">{label}</p>
+        <p className="font-semibold">{value}</p>
+        <p>{label}</p>
       </div>
     </div>
   );
