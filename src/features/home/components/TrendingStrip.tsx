@@ -51,7 +51,7 @@ export function TrendingStrip({ venues }: TrendingStripProps) {
             <Link
               key={venue.id}
               to={routes.venue(venue.id)}
-              className="group flex items-center gap-4 rounded-lg border border-white/10 bg-indigo-50 p-3 transition hover:bg-indigo-100 hover:shadow-lg lg:min-w-xs xl:min-w-0"
+              className="group flex items-center gap-4 rounded-lg border border-white/10 bg-indigo-100 p-3 transition hover:bg-indigo-200 hover:shadow-lg lg:min-w-xs xl:min-w-0"
             >
               <div className="relative h-20 w-24 overflow-hidden rounded-lg">
                 {cover?.url ? (
@@ -61,7 +61,7 @@ export function TrendingStrip({ venues }: TrendingStripProps) {
                     className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-card/20 text-xs text-white/70">
+                  <div className="flex h-full w-full items-center justify-center bg-card/20 text-xs">
                     No image
                   </div>
                 )}
@@ -77,7 +77,7 @@ export function TrendingStrip({ venues }: TrendingStripProps) {
                   </span>
                 </div>
                 <p className="text-sm font-semibold">{venue.name}</p>
-                <p className="text-xs ">{locationLabel}</p>
+                <p className="text-xs">{locationLabel}</p>
               </div>
               <ArrowRight
                 className="size-4 shrink-0 opacity-60 transition group-hover:translate-x-1 group-hover:opacity-100"
