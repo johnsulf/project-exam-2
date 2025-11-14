@@ -501,8 +501,11 @@ function MobileSearchSheet({
               </Button>
             </SheetClose>
           </SheetHeader>
-          <div className="p-4 overflow-y-auto">
-            <form onSubmit={onSubmit} className="space-y-6">
+          <form
+            onSubmit={onSubmit}
+            className="flex flex-1 flex-col overflow-hidden"
+          >
+            <div className="flex-1 overflow-y-auto p-4 space-y-6 pb-32">
               <SearchControl {...searchProps} />
               <GuestControl {...guestProps} />
               <InlineDatePicker
@@ -514,6 +517,8 @@ function MobileSearchSheet({
                 options={amenityOptions}
                 onClear={onResetAmenities}
               />
+            </div>
+            <div className="p-4 border-t bg-background sticky bottom-0">
               <Button
                 type="submit"
                 className="w-full"
@@ -523,8 +528,8 @@ function MobileSearchSheet({
                 {loading ? <Spinner className="mr-2" /> : <Search />}
                 Apply search
               </Button>
-            </form>
-          </div>
+            </div>
+          </form>
         </SheetContent>
       </Sheet>
     </div>
