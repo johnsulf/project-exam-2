@@ -27,8 +27,9 @@ Holidaze web app – browse venues, create a user to book venues or become a ven
 - React 19 + TypeScript
 - Vite 5
 - Tailwind CSS v4 with shadcn/ui primitives
-- TanStack Query
-- Zustand
+- TanStack Query for server-state caching and async data fetching
+- Zustand for lightweight global state management
+- Zod for runtime schema validation and type inference
 
 ---
 
@@ -111,13 +112,13 @@ Deployment pipelines require all automated test suites to succeed before release
 
 ## Required Project Links
 
-- Style Guide: [Figma](https://www.figma.com/proto/yZvqiW2RABCeLQqSNWAuhk/Holidaze---Style-Guide---Prototype?node-id=0-1&t=CzSYfnTh7sjlGqfT-1)
+- Gantt Chart: [GitHub Projects](https://github.com/users/johnsulf/projects/7/views/2)
 - Design Prototype Desktop: [Figma](https://www.figma.com/proto/yZvqiW2RABCeLQqSNWAuhk/Holidaze---Style-Guide---Prototype?node-id=57-6401&t=2xDY2KzqmgSfusDb-1)
 - Design Prototype Mobile: [Figma](https://www.figma.com/proto/yZvqiW2RABCeLQqSNWAuhk/Holidaze---Style-Guide---Prototype?node-id=68-3133&t=CzSYfnTh7sjlGqfT-1)
-- Gantt Chart: [GitHub Projects](https://github.com/users/johnsulf/projects/7/views/2)
+- Style Guide: [Figma](https://www.figma.com/proto/yZvqiW2RABCeLQqSNWAuhk/Holidaze---Style-Guide---Prototype?node-id=0-1&t=CzSYfnTh7sjlGqfT-1)
 - Kanban Board: [GitHub Projects](https://github.com/users/johnsulf/projects/7/views/1)
 - Repository: [GitHub](https://github.com/johnsulf/project-exam-2)
-- Live Demo: [Holidaze](https://johnsulf.github.io/project-exam-2/)
+- Hosted Demo: [Holidaze](https://johnsulf.github.io/project-exam-2/)
 
 ---
 
