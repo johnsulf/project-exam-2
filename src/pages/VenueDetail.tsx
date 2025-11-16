@@ -73,7 +73,7 @@ export default function VenueDetail() {
           )}
           {/* Owner */}
           {venue.owner?.name && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               {venue.owner.avatar?.url ? (
                 <img
                   src={venue.owner.avatar.url}
@@ -83,17 +83,10 @@ export default function VenueDetail() {
               ) : (
                 <div className="h-12 w-12 rounded-full bg-muted" />
               )}
-              <div className="text-sm">
-                <span className="font-medium text-secondary">
-                  {venue.owner.name}
-                </span>
-                <span>&nbsp;is the owner</span>
-              </div>
+              <p>{venue.owner.name} is the owner</p>
             </div>
           )}
-          <article className="prose max-w-none my-4">
-            <p className="font-light">{venue.description}</p>
-          </article>
+          <p className="max-w-none my-4">{venue.description}</p>
           <BookingWidget
             venueId={venue.id}
             price={venue.price}
