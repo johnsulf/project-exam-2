@@ -8,8 +8,8 @@ type StatPillProps = {
 
 export function StatPill({ icon, label, value }: StatPillProps) {
   return (
-    <div className="flex items-center gap-3 rounded-lg bg-teal-100 text-teal-950 px-4 py-3 shadow-sm">
-      <span className="flex p-2 items-center justify-center rounded-full bg-neutral-50">
+    <div className="flex items-center gap-3 rounded-lg bg-background px-4 py-3 shadow-sm">
+      <span className="flex p-2 items-center justify-center rounded-full bg-white">
         {icon}
       </span>
       <div>
