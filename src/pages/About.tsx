@@ -5,17 +5,20 @@ import { routes } from "@/router/routes";
 const gradingCriteria = [
   {
     label: "Design",
+    points: 1.6,
     max: 2,
     description:
       "A combination of user-interface design, user-experience design, and interaction design.",
   },
   {
     label: "Project management",
+    points: 2,
     max: 2,
     description: "A combination of planning, documentation, and testing.",
   },
   {
     label: "Technical",
+    points: 6,
     max: 6,
     description:
       "A combination of fulfilling the brief correctly while following best practices.",
@@ -126,14 +129,14 @@ export default function About() {
                 {gradingCriteria.map((item) => (
                   <div
                     key={item.label}
-                    className="rounded-lg border p-4 space-y-2 bg-gradient-to-br from-white to-muted/60"
+                    className="rounded-lg border p-4 space-y-2 bg-linear-to-br from-white to-muted/60"
                   >
                     <div className="flex items-center justify-between">
                       <p className="uppercase tracking-widest text-muted-foreground">
                         {item.label}
                       </p>
                       <span className="rounded-full bg-teal-100 px-2 py-0.5 text-sm font-medium text-teal-950">
-                        ? / {item.max}
+                        {item.points} / {item.max}
                       </span>
                     </div>
                     <p className="text-muted-foreground">{item.description}</p>
@@ -146,9 +149,7 @@ export default function About() {
                     <p className="uppercase tracking-widest text-muted-foreground">
                       Final grade
                     </p>
-                    <p className="text-2xl font-semibold text-foreground">
-                      A
-                    </p>
+                    <p className="text-2xl font-semibold text-foreground">A</p>
                   </div>
                 </div>
                 <div className="grid gap-2 sm:grid-cols-3">
