@@ -147,7 +147,7 @@ export default function About() {
                       Final grade
                     </p>
                     <p className="text-2xl font-semibold text-foreground">
-                      Pending<span className="pending-dots">...</span>
+                      A
                     </p>
                   </div>
                 </div>
